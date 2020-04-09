@@ -17,6 +17,9 @@ mainClassName = 'org.stapledon.photo.main.PhotoCatalogerAPI'
 
 dependencies {
     implementation 'io.dropwizard:dropwizard-core:2.0.2'
+    implementation 'io.dropwizard.modules:dropwizard-elasticsearch:1.2.0-1'
+    implementation 'net.java.dev.jna:jna:5.5.0'
+
     testImplementation 'io.dropwizard:dropwizard-testing:2.0.2'
     testImplementation 'com.google.code.gson:gson:2.8.6'
 

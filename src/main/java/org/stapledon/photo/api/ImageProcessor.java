@@ -1,13 +1,12 @@
 package org.stapledon.photo.api;
 
 import com.codahale.metrics.annotation.Timed;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.stapledon.photo.dto.Photo;
 import org.stapledon.photo.service.PhotoService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -16,7 +15,6 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ImageProcessor
 {
     private final AtomicLong counter;
-    //private static final Logger logger = LoggerFactory.getLogger(ImageProcessor.class);
 
     public ImageProcessor() {
         this.counter = new AtomicLong();
@@ -24,15 +22,25 @@ public class ImageProcessor
 
     @GET
     @Timed
+    @Path("/photo")
     public Photo photo(@QueryParam("path") String path)
     {
         counter.incrementAndGet();
 
-        Photo photodetails = new PhotoService().loadPhoto(path);
-        if (photodetails != null)
-            return photodetails;
+        Photo photo = new PhotoService().loadPhoto(path);
+        if (photo != null)
+            return photo;
 
         throw new NotFoundException();
+    }
+
+    @GET
+    @Timed
+    @Path("/search")
+    public List<Photo> photos(@QueryParam("path") String path)
+    {
+        counter.incrementAndGet();
+        return new PhotoService().load(path);
     }
 
 }

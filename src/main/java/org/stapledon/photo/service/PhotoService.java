@@ -9,6 +9,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class PhotoService {
 
@@ -30,6 +36,22 @@ public class PhotoService {
             }
         }
         return null;
+    }
+
+    public List<Photo> load(String path)
+    {
+        logger.info("Loading all photos under: {}", path);
+        List<Photo> results = new ArrayList<>();
+
+        try (Stream<Path> paths = Files.walk(Paths.get(path))) {
+            paths.map(Path::toString)
+                 .filter(f -> f.endsWith(".jpg"))
+                 .forEach(p -> { Photo photo = loadPhoto(p); if (photo != null) {  results.add(photo); } });
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage());
+        }
+        return results;
+
     }
 
 }
