@@ -4,6 +4,7 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.stapledon.photo.api.ImageProcessor;
 import org.stapledon.photo.configuration.PhotoAPIConfiguration;
 
 public class PhotoCatalogerAPI extends Application<PhotoAPIConfiguration> {
@@ -26,6 +27,9 @@ public class PhotoCatalogerAPI extends Application<PhotoAPIConfiguration> {
 
         final NoOpHealthCheck healthCheck = new NoOpHealthCheck();
         environment.healthChecks().register("template", healthCheck);
+
+        final ImageProcessor imageProcessor = new ImageProcessor();
+        environment.jersey().register(imageProcessor);
 
         //final ResourcesAPI resource = new ResourcesAPI(configuration.getResources());
         //environment.jersey().register(resource);
