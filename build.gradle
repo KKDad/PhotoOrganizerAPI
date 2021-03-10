@@ -1,46 +1,55 @@
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
-
 plugins {
-    id 'java'
-    id "com.github.johnrengelman.shadow" version "5.2.0"
-    id 'application'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'com.coditory.integration-test' version '1.1.11'
+    id "com.bmuschko.docker-remote-api" version "6.7.0"
 }
 
-repositories {
-    jcenter()
-    mavenCentral()
+ext {
+    // Organized alphabetically - Please keep it that way!
+    assertjVersion = "3.17.2"
+    commonsCliVersion = '1.4'
+    dropwizardMetricsServletsVersion = '4.1.12'
+    dropwizardSwaggerVersion = '2.0.12-1'
+    dropwizardVersion = '2.0.12'
+    elasticsearchVersion = '7.10.1'
+    gsonVersion = '2.8.6'
+    h2Version = '1.4.200'
+    hamcrestVersion = '1.3'
+    janinoVersion = '3.1.2'
+    jsonVersion = '20200518'
+    junitJupiterVersion = '5.5.1'
+    liquibaseVersion = "3.10.0"
+    log4jVersion="2.13.3"
+    mockitoVersion = '2.23.0'
+    reflectionsVersion = '0.9.12'
+    sseVersion = "2.31"
+    verticaVersion = "9.2.1"
 }
 
-mainClassName = 'org.stapledon.photo.main.PhotoCatalogerAPI'
+subprojects {
+    apply plugin: 'java'
 
-dependencies {
-    implementation 'io.dropwizard:dropwizard-core:2.0.2'
-    implementation 'io.dropwizard.modules:dropwizard-elasticsearch:1.2.0-1'
-    implementation 'net.java.dev.jna:jna:5.5.0'
-
-    testImplementation 'io.dropwizard:dropwizard-testing:2.0.2'
-    testImplementation 'com.google.code.gson:gson:2.8.6'
-
-    // Use JUnit test framework
-    testImplementation 'junit:junit:4.12'
-}
-
-shadowJar {
-    mergeServiceFiles()
-    exclude 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.SF'
-    manifest {
-        attributes 'Implementation-Title': rootProject.name
-        attributes 'Implementation-Version': rootProject.version
-        attributes 'Implementation-Vendor-Id': rootProject.group
-        attributes 'Build-Time': ZonedDateTime.now(ZoneId.of("UTC")).format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
-        attributes 'Built-By': InetAddress.localHost.hostName
-        attributes 'Created-By': 'Gradle ' + gradle.gradleVersion
-        attributes 'Main-Class': mainClassName
+    // Load our version number from the version.properties file.
+    def propFile = file('../version.properties')
+    if (propFile.canRead()){
+        Properties props = new Properties()
+        props.load(new FileInputStream(propFile))
+        if (props!=null && props.containsKey('PHOTO_ORGANIZER_VERSION'))
+            version = props['PHOTO_ORGANIZER_VERSION']
+        else
+            throw new GradleException('version.properties cannot be loaded or is missing key: PHOTO_ORGANIZER_VERSION')
+    } else {
+        throw new GradleException('version.properties cannot be read')
     }
-}
+    logger.warn "Building version: " + version
+    group = 'org.stapledon.photo'
 
-runShadow {
-    args = ['server', "${project.rootDir}/config.yml"]
+    sourceCompatibility = '1.8'
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    tasks.withType(Test) {
+        useJUnitPlatform()
+    }
 }

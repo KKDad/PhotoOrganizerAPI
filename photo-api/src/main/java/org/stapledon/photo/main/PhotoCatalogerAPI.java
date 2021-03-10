@@ -1,11 +1,11 @@
 package org.stapledon.photo.main;
 
 import io.dropwizard.Application;
-import io.dropwizard.elasticsearch.health.EsClusterHealthCheck;
-import io.dropwizard.elasticsearch.managed.ManagedEsClient;
 import io.dropwizard.setup.Environment;
 import org.stapledon.photo.api.ImageProcessor;
 import org.stapledon.photo.configuration.PhotoAPIConfiguration;
+import org.stapledon.photo.es.ManagedEsClient;
+import org.stapledon.photo.service.ElasticService;
 
 public class PhotoCatalogerAPI extends Application<PhotoAPIConfiguration> {
 
@@ -22,13 +22,12 @@ public class PhotoCatalogerAPI extends Application<PhotoAPIConfiguration> {
     @Override
     public void run(PhotoAPIConfiguration configuration, Environment environment)
     {
-
-
         final ImageProcessor imageProcessor = new ImageProcessor();
         environment.jersey().register(imageProcessor);
 
         final ManagedEsClient managedClient = new ManagedEsClient(configuration.getEsConfiguration());
         environment.lifecycle().manage(managedClient);
+        ElasticService.use(managedClient);
 
         final NoOpHealthCheck healthCheck = new NoOpHealthCheck();
         environment.healthChecks().register("template", healthCheck);

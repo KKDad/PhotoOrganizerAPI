@@ -1,18 +1,16 @@
 
 package org.stapledon.photo.dto;
 
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.Valid;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -25,9 +23,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
     "geoDataExif",
     "photoTakenTime"
 })
-public class Photo implements Serializable
+public class PhotoES implements Serializable
 {
-
     @JsonProperty("title")
     private String title;
     @JsonProperty("description")
@@ -36,33 +33,31 @@ public class Photo implements Serializable
     private String imageViews;
     @JsonProperty("creationTime")
     @Valid
-    private CreationTime creationTime;
+    private long creationTime;
     @JsonProperty("modificationTime")
     @Valid
-    private ModificationTime modificationTime;
+    private long modificationTime;
     @JsonProperty("geoData")
     @Valid
-    private GeoData geoData;
+    private GeoPoint geoData;
     @JsonProperty("geoDataExif")
     @Valid
-    private GeoDataExif geoDataExif;
+    private GeoPoint geoDataExif;
     @JsonProperty("photoTakenTime")
     @Valid
-    private PhotoTakenTime photoTakenTime;
-    @JsonIgnore
-    @Valid
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    private final static long serialVersionUID = -1493045639300665827L;
+    private long photoTakenTime;
+
+    private static final long serialVersionUID = 5091697974315856572L;
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
-    public Photo() {
+    public PhotoES() {
     }
 
     /**
-     * 
+     *
      * @param photoTakenTime
      * @param creationTime
      * @param modificationTime
@@ -72,7 +67,7 @@ public class Photo implements Serializable
      * @param geoData
      * @param imageViews
      */
-    public Photo(String title, String description, String imageViews, CreationTime creationTime, ModificationTime modificationTime, GeoData geoData, GeoDataExif geoDataExif, PhotoTakenTime photoTakenTime) {
+    public PhotoES(String title, String description, String imageViews, long creationTime, long modificationTime, GeoPoint geoData, GeoPoint geoDataExif, long photoTakenTime) {
         super();
         this.title = title;
         this.description = description;
@@ -115,68 +110,58 @@ public class Photo implements Serializable
     }
 
     @JsonProperty("creationTime")
-    public CreationTime getCreationTime() {
+    public long getCreationTime() {
         return creationTime;
     }
 
     @JsonProperty("creationTime")
-    public void setCreationTime(CreationTime creationTime) {
+    public void setCreationTime(long creationTime) {
         this.creationTime = creationTime;
     }
 
     @JsonProperty("modificationTime")
-    public ModificationTime getModificationTime() {
+    public long getModificationTime() {
         return modificationTime;
     }
 
     @JsonProperty("modificationTime")
-    public void setModificationTime(ModificationTime modificationTime) {
+    public void setModificationTime(long modificationTime) {
         this.modificationTime = modificationTime;
     }
 
     @JsonProperty("geoData")
-    public GeoData getGeoData() {
+    public GeoPoint getGeoData() {
         return geoData;
     }
 
     @JsonProperty("geoData")
-    public void setGeoData(GeoData geoData) {
+    public void setGeoData(GeoPoint geoData) {
         this.geoData = geoData;
     }
 
     @JsonProperty("geoDataExif")
-    public GeoDataExif getGeoDataExif() {
+    public GeoPoint getGeoDataExif() {
         return geoDataExif;
     }
 
     @JsonProperty("geoDataExif")
-    public void setGeoDataExif(GeoDataExif geoDataExif) {
+    public void setGeoDataExif(GeoPoint geoDataExif) {
         this.geoDataExif = geoDataExif;
     }
 
     @JsonProperty("photoTakenTime")
-    public PhotoTakenTime getPhotoTakenTime() {
+    public long getPhotoTakenTime() {
         return photoTakenTime;
     }
 
     @JsonProperty("photoTakenTime")
-    public void setPhotoTakenTime(PhotoTakenTime photoTakenTime) {
+    public void setPhotoTakenTime(long photoTakenTime) {
         this.photoTakenTime = photoTakenTime;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(photoTakenTime).append(creationTime).append(modificationTime).append(description).append(geoDataExif).append(additionalProperties).append(title).append(geoData).append(imageViews).toHashCode();
+        return new HashCodeBuilder().append(photoTakenTime).append(creationTime).append(modificationTime).append(description).append(geoDataExif).append(title).append(geoData).append(imageViews).toHashCode();
     }
 
     @Override
@@ -184,11 +169,18 @@ public class Photo implements Serializable
         if (other == this) {
             return true;
         }
-        if ((other instanceof Photo) == false) {
+        if (!(other instanceof PhotoES)) {
             return false;
         }
-        Photo rhs = ((Photo) other);
-        return new EqualsBuilder().append(photoTakenTime, rhs.photoTakenTime).append(creationTime, rhs.creationTime).append(modificationTime, rhs.modificationTime).append(description, rhs.description).append(geoDataExif, rhs.geoDataExif).append(additionalProperties, rhs.additionalProperties).append(title, rhs.title).append(geoData, rhs.geoData).append(imageViews, rhs.imageViews).isEquals();
+        PhotoES rhs = ((PhotoES) other);
+        return new EqualsBuilder().append(photoTakenTime, rhs.photoTakenTime).append(creationTime, rhs.creationTime).append(modificationTime, rhs.modificationTime).append(description, rhs.description).append(geoDataExif, rhs.geoDataExif).append(title, rhs.title).append(geoData, rhs.geoData).append(imageViews, rhs.imageViews).isEquals();
+    }
+
+    @JsonIgnore
+    public String toJson() throws JsonProcessingException
+    {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(this);
     }
 
 }
