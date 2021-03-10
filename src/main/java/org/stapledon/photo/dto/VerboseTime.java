@@ -19,7 +19,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
     "timestamp",
     "formatted"
 })
-public class PhotoTakenTime implements Serializable
+public class VerboseTime implements Serializable
 {
 
     @JsonProperty("timestamp")
@@ -29,13 +29,13 @@ public class PhotoTakenTime implements Serializable
     @JsonIgnore
     @Valid
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    private final static long serialVersionUID = -2852590486673881596L;
+    private final static long serialVersionUID = 1630535196126806716L;
 
     /**
      * No args constructor for use in serialization
      * 
      */
-    public PhotoTakenTime() {
+    public VerboseTime() {
     }
 
     /**
@@ -43,7 +43,7 @@ public class PhotoTakenTime implements Serializable
      * @param formatted
      * @param timestamp
      */
-    public PhotoTakenTime(String timestamp, String formatted) {
+    public VerboseTime(String timestamp, String formatted) {
         super();
         this.timestamp = timestamp;
         this.formatted = formatted;
@@ -89,10 +89,10 @@ public class PhotoTakenTime implements Serializable
         if (other == this) {
             return true;
         }
-        if ((other instanceof PhotoTakenTime) == false) {
+        if ((other instanceof VerboseTime) == false) {
             return false;
         }
-        PhotoTakenTime rhs = ((PhotoTakenTime) other);
+        VerboseTime rhs = ((VerboseTime) other);
         return new EqualsBuilder().append(additionalProperties, rhs.additionalProperties).append(formatted, rhs.formatted).append(timestamp, rhs.timestamp).isEquals();
     }
 

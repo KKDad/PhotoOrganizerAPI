@@ -1,11 +1,26 @@
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        jcenter()
+    }
+    dependencies {
+        classpath "com.bmuschko:gradle-docker-plugin:6.4.0"
+        classpath "com.github.johnrengelman.shadow:6.1.0"
+        classpath "com.coditory.integration-test:1.1.2"
+    }
+}
 
-plugins {
-    id 'java'
-    id "com.github.johnrengelman.shadow" version "5.2.0"
-    id 'application'
+apply plugin: "java"
+apply plugin: "application"
+apply plugin: "com.coditory.integration-test"
+apply plugin: "com.github.johnrengelman.shadow"
+apply plugin: DockerRemoteApiPlugin
+
+ext {
+    dropwizardVersion = '2.0.12'
+    elasticsearchVersion = '7.10.1'
+    gsonVersion = '2.8.6'
+    junitVersion = '4.12'
 }
 
 repositories {
@@ -13,19 +28,89 @@ repositories {
     mavenCentral()
 }
 
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+
+import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerStopContainer
+import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
+
 mainClassName = 'org.stapledon.photo.main.PhotoCatalogerAPI'
 
 dependencies {
-    implementation 'io.dropwizard:dropwizard-core:2.0.2'
-    implementation 'io.dropwizard.modules:dropwizard-elasticsearch:1.2.0-1'
-    implementation 'net.java.dev.jna:jna:5.5.0'
+    implementation "io.dropwizard:dropwizard-core:$dropwizardVersion"
+    implementation "net.java.dev.jna:jna:5.5.0"
+    implementation "org.elasticsearch.client:elasticsearch-rest-high-level-client:$elasticsearchVersion"
 
-    testImplementation 'io.dropwizard:dropwizard-testing:2.0.2'
-    testImplementation 'com.google.code.gson:gson:2.8.6'
+    testImplementation "io.dropwizard:dropwizard-testing:$dropwizardVersion"
+    testImplementation "com.google.code.gson:gson:$gsonVersion"
 
     // Use JUnit test framework
-    testImplementation 'junit:junit:4.12'
+    testImplementation "junit:junit:$junitVersion"
 }
+
+// Return true if ElasticSearch is running on the localhost:9200 and is in  a green state
+boolean get_es_status() {
+    def ready = false
+    try {
+        def get = new URL("http://127.0.0.1:9200/_cluster/health").openConnection();
+        def body = get.getContent().getText().toString()
+        ready = body.contains("green") || body.contains("yellow")
+        if (!ready)
+            logger.info body
+    } catch (Exception e1) {
+        logger.info "ES not ready: " + e1
+    }
+    ready
+}
+
+
+task pullImageElastic(type: DockerPullImage) {
+    image = "docker.elastic.co/elasticsearch/elasticsearch:$elasticsearchVersion"
+}
+
+task createContainer(type: DockerCreateContainer) {
+    dependsOn pullImageElastic
+    targetImageId "docker.elastic.co/elasticsearch/elasticsearch:$elasticsearchVersion"
+    containerName = "elastic"
+    hostConfig.portBindings  = ["9200:9200", "9300:9300" ]
+    hostConfig.autoRemove = true
+    withEnvVar("cluster.name", "interset")
+    withEnvVar("xpack.security.enabled", "false")
+    withEnvVar("discovery.type", "single-node")
+}
+
+task start_elasticsearch(type: DockerStartContainer) {
+    dependsOn createContainer
+    targetContainerId createContainer.getContainerId()
+}
+
+task wait_es_startup {
+    dependsOn start_elasticsearch
+    doLast {
+        timeout.set(Duration.ofMinutes(3))
+        logger.info("Waiting for ElasticSearch instance on localhost:9200")
+        while (!get_es_status())
+            sleep(5 * 1000)
+    }
+}
+
+task stop_elasticsearch(type: DockerStopContainer) {
+    targetContainerId createContainer.getContainerId()
+}
+
+task check_if_es_running {
+    def is_elastic_search_present = get_es_status()
+    if (is_elastic_search_present) {
+        logger.info("Using existing ElasticSearch instance running on localhost:9200")
+    } else {
+        integrationTest.dependsOn wait_es_startup
+        integrationTest.finalizedBy stop_elasticsearch
+    }
+}
+
 
 shadowJar {
     mergeServiceFiles()
@@ -40,6 +125,8 @@ shadowJar {
         attributes 'Main-Class': mainClassName
     }
 }
+
+integrationTest.dependsOn check_if_es_running
 
 runShadow {
     args = ['server', "${project.rootDir}/config.yml"]

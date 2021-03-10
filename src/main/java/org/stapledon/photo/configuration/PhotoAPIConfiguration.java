@@ -2,7 +2,6 @@ package org.stapledon.photo.configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
-import io.dropwizard.elasticsearch.config.EsConfiguration;
 
 public class PhotoAPIConfiguration extends Configuration {
     private EsConfiguration esConfiguration;

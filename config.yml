@@ -6,14 +6,6 @@ logging:
     org.reflections: ERROR
 
 EsConfiguration:
-  nodeClient: true
   clusterName: elasticsearch
   servers:
     - 10.109.186.194:9200
-  settings:
-    node.name: photoapi-client
-    node.data: false
-    node.ingest: false
-    node.master: false
-    path.home: /tmp
-    discovery.seed_hosts: 10.109.186.194
