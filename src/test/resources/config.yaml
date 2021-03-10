@@ -1,8 +1,0 @@
-server:
-  rootPath: /api/v1
-
-oauth:
-  baseUrl: https://dev-902181-admin.okta.com
-  clientId: 0oa4040j4MLee1dMV4x6
-  issuer: https://dev-902181.okta.com/oauth2/default
-  audience: api://default
