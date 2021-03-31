@@ -1,6 +1,7 @@
 package org.stapledon.photo.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -33,7 +34,8 @@ public class ElasticService
             request.source(indexDocument.toJson(), XContentType.JSON);
 
             IndexResponse indexResponse = esClient.getClient().index(request, RequestOptions.DEFAULT);
-            return indexResponse.getResult().ordinal() == 1;
+            return (indexResponse.getResult() == DocWriteResponse.Result.CREATED ||
+                    indexResponse.getResult() == DocWriteResponse.Result.UPDATED);
 
         } catch (IOException e ) {
             logger.error(e.getLocalizedMessage());
@@ -43,9 +45,16 @@ public class ElasticService
 
     public boolean IndexDirectory(String directory, String index)
     {
+        return IndexDirectory(directory, index, Integer.MAX_VALUE);
+    }
+
+    public boolean IndexDirectory(String directory, String index, int maxDocs)
+    {
         boolean success = true;
         PhotoService photoService = new PhotoService();
         List<Photo> photos = photoService.load(directory);
+        if (maxDocs < photos.size())
+            photos = photos.subList(0, maxDocs);
         try {
             for (Photo p : photos) {
                 IndexRequest request = new IndexRequest(index);

@@ -24,7 +24,7 @@ public class PhotoService {
 
 
     public Photo loadPhoto(String path) {
-        logger.info("Loading photo: {}", path);
+        logger.debug("Loading photo: {}", path);
 
         File cached = new File(path + ".json");
 
@@ -45,11 +45,11 @@ public class PhotoService {
         photoES.setTitle(photo.getTitle());
         photoES.setDescription(photo.getDescription());
         photoES.setImageViews(photo.getImageViews());
-        photoES.setCreationTime(Long.valueOf(photo.getCreationTime().getTimestamp()));
-        photoES.setModificationTime(Long.valueOf(photo.getModificationTime().getTimestamp()));
+        photoES.setCreationTime(Long.parseLong(photo.getCreationTime().getTimestamp()));
+        photoES.setModificationTime(Long.parseLong(photo.getModificationTime().getTimestamp()));
         photoES.setGeoData(new GeoPoint(photo.getGeoData().getLatitude(), photo.getGeoData().getLongitude()));
         photoES.setGeoDataExif(new GeoPoint(photo.getGeoDataExif().getLatitude(), photo.getGeoDataExif().getLongitude()));
-        photoES.setPhotoTakenTime(Long.valueOf(photo.getPhotoTakenTime().getTimestamp()));
+        photoES.setPhotoTakenTime(Long.parseLong(photo.getPhotoTakenTime().getTimestamp()));
 
         return photoES;
     }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%yellow(%d{ISO8601}) %highlight(%-5level) [%white(%t{5})] %green(%logger{15}): %m%n%boldRed(%ex{short})</Pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="FILE-THREAD" />
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

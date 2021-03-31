@@ -25,6 +25,7 @@ dependencies {
     implementation "net.java.dev.jna:jna:5.5.0"
     implementation "org.elasticsearch.client:elasticsearch-rest-high-level-client:$elasticsearchVersion"
 
+
     testImplementation "io.dropwizard:dropwizard-testing:$dropwizardVersion"
     testImplementation "com.google.code.gson:gson:$gsonVersion"
 

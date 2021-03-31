@@ -1,7 +1,6 @@
 package org.stapledon.photo.service;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -16,10 +15,9 @@ import java.io.File;
 class ElasticServiceIT
 {
     private ElasticService subject;
-    private static ManagedEsClient managedClient;
     private static final Logger logger = LoggerFactory.getLogger(ElasticServiceIT.class);
 
-    private String TEST_INDEX_NAME = "photos_test";
+    private final String TEST_INDEX_NAME = "photos_test";
 
 
     @BeforeEach
@@ -29,7 +27,7 @@ class ElasticServiceIT
         configuration.setEsConfiguration(new EsConfiguration());
         configuration.getEsConfiguration().setClusterName("elasticsearch");
         configuration.getEsConfiguration().getServers().add("127.0.0.1:9200");
-        managedClient = new ManagedEsClient(configuration.getEsConfiguration());
+        ManagedEsClient managedClient = new ManagedEsClient(configuration.getEsConfiguration());
         ElasticService.use(managedClient);
 
         subject = new ElasticService();
@@ -51,7 +49,7 @@ class ElasticServiceIT
 //    }
 
     @Test
-    public void indexDocumentTest()
+    void indexDocumentTest()
     {
         // Arrange
         ClassLoader classLoader = this.getClass().getClassLoader();
@@ -59,16 +57,16 @@ class ElasticServiceIT
         Photo photo = new PhotoService().loadPhoto(path + "/FB_IMG_13869672665371829.jpg");
 
         // Act
-        Boolean result = subject.IndexDocument(photo,TEST_INDEX_NAME);
+        boolean result = subject.IndexDocument(photo,TEST_INDEX_NAME);
 
         Assertions.assertTrue(result);
     }
 
     @Test
-    public void indexDirectoryTest()
+    void indexDirectoryTest()
     {
         // Act
-        Boolean result = subject.IndexDirectory("R:/Drive/Moments",TEST_INDEX_NAME);
+        boolean result = subject.IndexDirectory("R:/Drive/Moments",TEST_INDEX_NAME, 100);
 
         Assertions.assertTrue(result);
     }
