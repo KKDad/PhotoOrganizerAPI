@@ -6,7 +6,6 @@ logging:
     org.reflections: ERROR
 
 EsConfiguration:
-  nodeClient: true
   clusterName: elasticsearch
   servers:
     - 10.109.186.194:9200
