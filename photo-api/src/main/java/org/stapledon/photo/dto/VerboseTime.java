@@ -28,12 +28,11 @@ public class VerboseTime implements Serializable
     private String formatted;
     @JsonIgnore
     @Valid
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    private final static long serialVersionUID = 1630535196126806716L;
+    private Map<String, Object> additionalProperties = new HashMap<>();
+    private static final long serialVersionUID = 1630535196126806716L;
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VerboseTime() {
     }
@@ -89,7 +88,7 @@ public class VerboseTime implements Serializable
         if (other == this) {
             return true;
         }
-        if ((other instanceof VerboseTime) == false) {
+        if (!(other instanceof VerboseTime)) {
             return false;
         }
         VerboseTime rhs = ((VerboseTime) other);

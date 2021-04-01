@@ -54,15 +54,24 @@ public class PhotoService {
         return photoES;
     }
 
-    public List<Photo> load(String path)
-    {
+    public List<Photo> load(String path) {
+        return load(path, Integer.MAX_VALUE);
+    }
+
+    public List<Photo> load(String path, int maxDocs) {
         logger.info("Loading all photos under: {}", path);
         List<Photo> results = new ArrayList<>();
 
         try (Stream<Path> paths = Files.walk(Paths.get(path))) {
             paths.map(Path::toString)
-                 .filter(f -> f.endsWith(".jpg"))
-                 .forEach(p -> { Photo photo = loadPhoto(p); if (photo != null) {  results.add(photo); } });
+                    .filter(f -> f.endsWith(".jpg"))
+                    .takeWhile(p -> (results.size() <= maxDocs))
+                    .forEach(p -> {
+                        Photo photo = loadPhoto(p);
+                        if (photo != null) {
+                            results.add(photo);
+                        }
+                    });
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage());
         }

@@ -1,8 +1,6 @@
 package org.stapledon.photo.configuration;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.dropwizard.validation.ValidationMethod;
 
 import javax.validation.constraints.NotNull;
 import java.util.*;

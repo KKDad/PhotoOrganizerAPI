@@ -37,8 +37,8 @@ public class GeoData implements Serializable
     private Double longitudeSpan;
     @JsonIgnore
     @Valid
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    private final static long serialVersionUID = -2795432631768404853L;
+    private Map<String, Object> additionalProperties = new HashMap<>();
+    private static final long serialVersionUID = -2795432631768404853L;
 
     /**
      * No args constructor for use in serialization
@@ -134,7 +134,7 @@ public class GeoData implements Serializable
         if (other == this) {
             return true;
         }
-        if ((other instanceof GeoData) == false) {
+        if (!(other instanceof GeoData)) {
             return false;
         }
         GeoData rhs = ((GeoData) other);

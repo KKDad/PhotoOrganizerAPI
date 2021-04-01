@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-public class DateJsonDeserializer extends JsonDeserializer {
+public class DateJsonDeserializer extends JsonDeserializer<LocalDateTime> {
 
     private static DateTimeFormatter formatter = ISO_LOCAL_DATE_TIME;
 

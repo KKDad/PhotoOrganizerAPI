@@ -57,7 +57,7 @@ class ElasticServiceIT
         Photo photo = new PhotoService().loadPhoto(path + "/FB_IMG_13869672665371829.jpg");
 
         // Act
-        boolean result = subject.IndexDocument(photo,TEST_INDEX_NAME);
+        boolean result = subject.indexDocument(photo,TEST_INDEX_NAME);
 
         Assertions.assertTrue(result);
     }
@@ -66,7 +66,7 @@ class ElasticServiceIT
     void indexDirectoryTest()
     {
         // Act
-        boolean result = subject.IndexDirectory("R:/Drive/Moments",TEST_INDEX_NAME, 100);
+        boolean result = subject.indexDirectory("R:/Drive/Moments",TEST_INDEX_NAME, 100);
 
         Assertions.assertTrue(result);
     }

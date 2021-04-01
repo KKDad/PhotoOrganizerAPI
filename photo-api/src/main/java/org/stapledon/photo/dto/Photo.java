@@ -52,8 +52,8 @@ public class Photo implements Serializable
     private VerboseTime photoTakenTime;
     @JsonIgnore
     @Valid
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    private final static long serialVersionUID = -1493045639300665827L;
+    private Map<String, Object> additionalProperties = new HashMap<>();
+    private static final long serialVersionUID = -1493045639300665827L;
 
     /**
      * No args constructor for use in serialization
@@ -185,7 +185,7 @@ public class Photo implements Serializable
         if (other == this) {
             return true;
         }
-        if ((other instanceof Photo) == false) {
+        if (!(other instanceof Photo)) {
             return false;
         }
         Photo rhs = ((Photo) other);

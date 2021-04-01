@@ -10,8 +10,7 @@ import java.util.List;
 class PhotoServiceIT {
 
     @Test
-    void testLoadPhoto()
-    {
+    void testLoadPhoto() {
         ClassLoader classLoader = this.getClass().getClassLoader();
         String path = new File(classLoader.getResource("FB_IMG_13869672665371829.jpg.json").getPath()).getParent();
 
@@ -25,8 +24,7 @@ class PhotoServiceIT {
 
 
     @Test
-    void testLoadDirectory()
-    {
+    void testLoadDirectory() {
         PhotoService subject = new PhotoService();
         List<Photo> results = subject.load("R:/Drive/Moments/2013-12-13");
 

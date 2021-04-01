@@ -44,7 +44,7 @@ subprojects {
     logger.warn "Building version: " + version
     group = 'org.stapledon.photo'
 
-    sourceCompatibility = '1.8'
+    sourceCompatibility = '1.13'
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
     }

@@ -32,7 +32,7 @@ public class ManagedEsClient implements Managed {
 
         this.client = new RestHighLevelClient(RestClient.builder(
                 config.getServers().stream()
-                        .map(s -> HttpHost.create(s))
+                        .map(HttpHost::create)
                         .toArray(HttpHost[]::new))
         );
     }
