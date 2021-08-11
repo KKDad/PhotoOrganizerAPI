@@ -44,6 +44,7 @@ public class ElasticService {
 
     public boolean indexDirectory(String directory, String index, int maxDocs) {
         boolean success = true;
+        int count = 0;
         PhotoService photoService = new PhotoService();
         List<Photo> photos = photoService.load(directory, maxDocs);
         if (maxDocs < photos.size())
@@ -55,13 +56,15 @@ public class ElasticService {
                 request.source(indexDocument.toJson(), XContentType.JSON);
 
                 IndexResponse indexResponse = esClient.getClient().index(request, RequestOptions.DEFAULT);
-                if (indexResponse.getResult() != DocWriteResponse.Result.CREATED && indexResponse.getResult() != DocWriteResponse.Result.UPDATED) {
+                if (indexResponse.getResult() != DocWriteResponse.Result.CREATED && indexResponse.getResult() != DocWriteResponse.Result.UPDATED)
                     success = false;
-                }
+                else
+                    count++;
             }
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage());
         }
+        logger.info("Processed {} photos", count);
         return success;
     }
 }

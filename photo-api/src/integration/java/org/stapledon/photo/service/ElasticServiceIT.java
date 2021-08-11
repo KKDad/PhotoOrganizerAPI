@@ -66,8 +66,10 @@ class ElasticServiceIT
     void indexDirectoryTest()
     {
         // Act
-        boolean result = subject.indexDirectory("R:/Drive/Moments",TEST_INDEX_NAME, 100);
-
+        long startTime = System.currentTimeMillis();
+        boolean result = subject.indexDirectory("R:/Drive/Moments",TEST_INDEX_NAME);
+        long endTime = System.currentTimeMillis();
+        System.out.println("That took " + (endTime - startTime) + " milliseconds");
         Assertions.assertTrue(result);
     }
 
