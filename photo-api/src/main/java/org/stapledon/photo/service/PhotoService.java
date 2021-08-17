@@ -26,11 +26,11 @@ public class PhotoService {
     public Photo loadPhoto(String path) {
         logger.debug("Loading photo: {}", path);
 
-        File cached = new File(path + ".json");
+        var cached = new File(path + ".json");
 
         // Check if there is a cached Photo JSON, then use it
         if (cached.isFile()) {
-            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(cached))) {
+            try (var bufferedReader = new BufferedReader(new FileReader(cached))) {
                 return new ObjectMapper().readValue(bufferedReader, Photo.class);
             } catch (IOException ioe) {
                 logger.error("Failed to Load photo: {}", ioe.getLocalizedMessage());
@@ -41,15 +41,15 @@ public class PhotoService {
     }
 
     public PhotoES convert(Photo photo) {
-        PhotoES photoES = new PhotoES();
-        photoES.setTitle(photo.getTitle());
-        photoES.setDescription(photo.getDescription());
-        photoES.setImageViews(photo.getImageViews());
-        photoES.setCreationTime(Long.parseLong(photo.getCreationTime().getTimestamp()));
-        photoES.setModificationTime(Long.parseLong(photo.getModificationTime().getTimestamp()));
-        photoES.setGeoData(new GeoPoint(photo.getGeoData().getLatitude(), photo.getGeoData().getLongitude()));
-        photoES.setGeoDataExif(new GeoPoint(photo.getGeoDataExif().getLatitude(), photo.getGeoDataExif().getLongitude()));
-        photoES.setPhotoTakenTime(Long.parseLong(photo.getPhotoTakenTime().getTimestamp()));
+        var photoES = new PhotoES();
+        photoES.title = photo.title;
+        photoES.description =photo.description;
+        photoES.imageViews = photo.imageViews;
+        photoES.creationTime =Long.parseLong(photo.creationTime.timestamp);
+        photoES.modificationTime = Long.parseLong(photo.modificationTime.timestamp);
+        photoES.geoData = new GeoPoint(photo.geoData.latitude, photo.geoData.longitude);
+        photoES.geoDataExif  = new GeoPoint(photo.geoDataExif.latitude, photo.geoDataExif.longitude);
+        photoES.photoTakenTime = Long.parseLong(photo.photoTakenTime.timestamp);
 
         return photoES;
     }
@@ -67,7 +67,7 @@ public class PhotoService {
                     .filter(f -> f.endsWith(".jpg"))
                     .takeWhile(p -> (results.size() <= maxDocs))
                     .forEach(p -> {
-                        Photo photo = loadPhoto(p);
+                        var photo = loadPhoto(p);
                         if (photo != null) {
                             results.add(photo);
                         }

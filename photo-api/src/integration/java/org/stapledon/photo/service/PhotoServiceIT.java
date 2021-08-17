@@ -18,8 +18,8 @@ class PhotoServiceIT {
         Photo result = subject.loadPhoto(path + "/FB_IMG_13869672665371829.jpg");
 
         Assertions.assertNotNull(result);
-        Assertions.assertEquals("FB_IMG_13869672665371829.jpg", result.getTitle());
-        Assertions.assertEquals("1386967266", result.getPhotoTakenTime().getTimestamp());
+        Assertions.assertEquals("FB_IMG_13869672665371829.jpg", result.title);
+        Assertions.assertEquals("1386967266", result.photoTakenTime.timestamp);
     }
 
 
@@ -30,6 +30,6 @@ class PhotoServiceIT {
 
         Assertions.assertNotNull(results);
         Assertions.assertEquals(2, results.size());
-        Assertions.assertTrue(results.get(0).getTitle().contains("FB_IMG_13869"));
+        Assertions.assertTrue(results.get(0).title.contains("FB_IMG_13869"));
     }
 }

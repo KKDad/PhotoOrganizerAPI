@@ -26,8 +26,7 @@ public class ImageProcessor
     public Photo photo(@QueryParam("path") String path)
     {
         counter.incrementAndGet();
-
-        Photo photo = new PhotoService().loadPhoto(path);
+        var photo = new PhotoService().loadPhoto(path);
         if (photo != null)
             return photo;
 

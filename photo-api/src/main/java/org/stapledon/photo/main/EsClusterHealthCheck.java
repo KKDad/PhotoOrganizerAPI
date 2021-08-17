@@ -1,7 +1,6 @@
 package org.stapledon.photo.main;
 
 import com.codahale.metrics.health.HealthCheck;
-import org.elasticsearch.client.Response;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.cluster.health.ClusterHealthStatus;
@@ -57,8 +56,8 @@ public class EsClusterHealthCheck extends HealthCheck {
     @SuppressWarnings("java:S1192")
     protected Result check() throws Exception {
         logger.info("Retrieving cluster health status...");
-        Request request = new Request("GET","/_cluster/health");
-        Response response = client.getLowLevelClient().performRequest(request);
+        var request = new Request("GET","/_cluster/health");
+        var response = client.getLowLevelClient().performRequest(request);
 
         ClusterHealthStatus healthStatus;
         try (InputStream is = response.getEntity().getContent()) {

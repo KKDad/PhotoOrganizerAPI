@@ -14,7 +14,7 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
 public class DateJsonDeserializer extends JsonDeserializer<LocalDateTime> {
 
-    private static DateTimeFormatter formatter = ISO_LOCAL_DATE_TIME;
+    private static final DateTimeFormatter formatter = ISO_LOCAL_DATE_TIME;
 
     @Override
     public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {

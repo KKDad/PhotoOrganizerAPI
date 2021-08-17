@@ -22,14 +22,14 @@ public class PhotoCatalogerAPI extends Application<PhotoAPIConfiguration> {
     @Override
     public void run(PhotoAPIConfiguration configuration, Environment environment)
     {
-        final ImageProcessor imageProcessor = new ImageProcessor();
+        final var imageProcessor = new ImageProcessor();
         environment.jersey().register(imageProcessor);
 
-        final ManagedEsClient managedClient = new ManagedEsClient(configuration.getEsConfiguration());
+        final var managedClient = new ManagedEsClient(configuration.getEsConfiguration());
         environment.lifecycle().manage(managedClient);
         ElasticService.use(managedClient);
 
-        final NoOpHealthCheck healthCheck = new NoOpHealthCheck();
+        final var healthCheck = new NoOpHealthCheck();
         environment.healthChecks().register("template", healthCheck);
         environment.healthChecks().register("ES cluster health", new EsClusterHealthCheck(managedClient.getClient()));
     }

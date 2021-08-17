@@ -17,7 +17,7 @@ class ElasticServiceIT
     private ElasticService subject;
     private static final Logger logger = LoggerFactory.getLogger(ElasticServiceIT.class);
 
-    private final String TEST_INDEX_NAME = "photos_test";
+    private final String TEST_INDEX_NAME = "'photos_'yyyy";
 
 
     @BeforeEach
@@ -26,7 +26,8 @@ class ElasticServiceIT
         PhotoAPIConfiguration configuration = new PhotoAPIConfiguration();
         configuration.setEsConfiguration(new EsConfiguration());
         configuration.getEsConfiguration().setClusterName("elasticsearch");
-        configuration.getEsConfiguration().getServers().add("127.0.0.1:9200");
+        //configuration.getEsConfiguration().getServers().add("127.0.0.1:9200");
+        configuration.getEsConfiguration().getServers().add("https://elastic.gilbert.ca");
         ManagedEsClient managedClient = new ManagedEsClient(configuration.getEsConfiguration());
         ElasticService.use(managedClient);
 
