@@ -7,7 +7,7 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.stapledon.photo.configuration.EsConfiguration;
+import org.stapledon.photo.configuration.ElasticsearchConfig;
 
 import java.io.IOException;
 
@@ -23,11 +23,11 @@ public class ManagedEsClient implements Managed {
 
     /**
      * Create a new managed Elasticsearch {@link RestHighLevelClient}.
-     * {@link RestHighLevelClient} is being created with {@link EsConfiguration#servers} as node addresses.
+     * {@link RestHighLevelClient} is being created with {@link ElasticsearchConfig#servers} as node addresses.
      *
-     * @param config a valid {@link EsConfiguration} instance
+     * @param config a valid {@link ElasticsearchConfig} instance
      */
-    public ManagedEsClient(final EsConfiguration config) {
+    public ManagedEsClient(final ElasticsearchConfig config) {
         checkNotNull(config, "EsConfiguration must not be null");
 
         this.client = new RestHighLevelClient(RestClient.builder(

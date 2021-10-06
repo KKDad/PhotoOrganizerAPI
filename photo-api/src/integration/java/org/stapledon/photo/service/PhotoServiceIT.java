@@ -14,7 +14,7 @@ class PhotoServiceIT {
         ClassLoader classLoader = this.getClass().getClassLoader();
         String path = new File(classLoader.getResource("FB_IMG_13869672665371829.jpg.json").getPath()).getParent();
 
-        PhotoService subject = new PhotoService();
+        PhotoService subject = new PhotoService(true);
         Photo result = subject.loadPhoto(path + "/FB_IMG_13869672665371829.jpg");
 
         Assertions.assertNotNull(result);
@@ -25,7 +25,7 @@ class PhotoServiceIT {
 
     @Test
     void testLoadDirectory() {
-        PhotoService subject = new PhotoService();
+        PhotoService subject = new PhotoService(true);
         List<Photo> results = subject.load("R:/Drive/Moments/2013-12-13");
 
         Assertions.assertNotNull(results);

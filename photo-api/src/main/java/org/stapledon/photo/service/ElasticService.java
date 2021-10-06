@@ -27,7 +27,7 @@ public class ElasticService {
             String indexName = getIndexName(indexPattern, photo);
 
             var request = new IndexRequest(indexName);
-            PhotoES indexDocument = new PhotoService().convert(photo);
+            PhotoES indexDocument = new PhotoService(false).convert(photo);
             request.source(indexDocument.toJson(), XContentType.JSON);
 
             var indexResponse = esClient.getClient().index(request, RequestOptions.DEFAULT);
@@ -47,7 +47,7 @@ public class ElasticService {
     public boolean indexDirectory(String directory, String indexPattern, int maxDocs) {
         var success = true;
         var count = 0;
-        var photoService = new PhotoService();
+        var photoService = new PhotoService(false);
         List<Photo> photos = photoService.load(directory, maxDocs);
         if (maxDocs < photos.size())
             photos = photos.subList(0, maxDocs);

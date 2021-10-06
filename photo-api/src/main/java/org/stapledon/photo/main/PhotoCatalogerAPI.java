@@ -25,7 +25,7 @@ public class PhotoCatalogerAPI extends Application<PhotoAPIConfiguration> {
         final var imageProcessor = new ImageProcessor();
         environment.jersey().register(imageProcessor);
 
-        final var managedClient = new ManagedEsClient(configuration.getEsConfiguration());
+        final var managedClient = new ManagedEsClient(configuration.elasticsearchConfig);
         environment.lifecycle().manage(managedClient);
         ElasticService.use(managedClient);
 

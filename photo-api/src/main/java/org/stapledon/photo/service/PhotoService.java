@@ -22,6 +22,12 @@ public class PhotoService {
 
     private static final Logger logger = LoggerFactory.getLogger(PhotoService.class);
 
+    final boolean dryRun;
+
+    public PhotoService(boolean dryRun) {
+        this.dryRun = dryRun;
+    }
+
 
     public Photo loadPhoto(String path) {
         logger.debug("Loading photo: {}", path);

@@ -1,14 +1,17 @@
 package org.stapledon.photo.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.stapledon.photo.configuration.EsConfiguration;
 import org.stapledon.photo.configuration.PhotoAPIConfiguration;
 import org.stapledon.photo.dto.Photo;
 import org.stapledon.photo.es.ManagedEsClient;
+import org.stapledon.photo.utils.ResourceHelper;
 
 import java.io.File;
 
@@ -21,14 +24,12 @@ class ElasticServiceIT
 
 
     @BeforeEach
-    public void setUp()
-    {
-        PhotoAPIConfiguration configuration = new PhotoAPIConfiguration();
-        configuration.setEsConfiguration(new EsConfiguration());
-        configuration.getEsConfiguration().setClusterName("elasticsearch");
-        //configuration.getEsConfiguration().getServers().add("127.0.0.1:9200");
-        configuration.getEsConfiguration().getServers().add("https://elastic.gilbert.ca");
-        ManagedEsClient managedClient = new ManagedEsClient(configuration.getEsConfiguration());
+    public void setUp() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        mapper.findAndRegisterModules();
+        PhotoAPIConfiguration configuration = mapper.readValue(ResourceHelper.getContents("test.yml"), PhotoAPIConfiguration.class);
+
+        ManagedEsClient managedClient = new ManagedEsClient(configuration.elasticsearchConfig);
         ElasticService.use(managedClient);
 
         subject = new ElasticService();
@@ -55,7 +56,7 @@ class ElasticServiceIT
         // Arrange
         ClassLoader classLoader = this.getClass().getClassLoader();
         String path = new File(classLoader.getResource("FB_IMG_13869672665371829.jpg.json").getPath()).getParent();
-        Photo photo = new PhotoService().loadPhoto(path + "/FB_IMG_13869672665371829.jpg");
+        Photo photo = new PhotoService(false).loadPhoto(path + "/FB_IMG_13869672665371829.jpg");
 
         // Act
         boolean result = subject.indexDocument(photo,TEST_INDEX_NAME);

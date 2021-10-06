@@ -26,7 +26,7 @@ public class ImageProcessor
     public Photo photo(@QueryParam("path") String path)
     {
         counter.incrementAndGet();
-        var photo = new PhotoService().loadPhoto(path);
+        var photo = new PhotoService(false).loadPhoto(path);
         if (photo != null)
             return photo;
 
@@ -39,7 +39,7 @@ public class ImageProcessor
     public List<Photo> photos(@QueryParam("path") String path)
     {
         counter.incrementAndGet();
-        return new PhotoService().load(path);
+        return new PhotoService(false).load(path);
     }
 
 }
