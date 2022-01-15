@@ -6,9 +6,6 @@ Yes another photo organizer. To organize photos exported from takeout.google.com
 ### API
 API for interacting with the Photo Organizer
 
-### Engine
-Engine that performs jobs and reports status
-
 ### Common
 Utility functions and code shared between the API and the Engine
 - Database Daos (Managed by LiquidBase)

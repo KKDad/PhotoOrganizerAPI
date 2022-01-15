@@ -1,4 +1,3 @@
 rootProject.name = 'PhotoOrganizer'
 include(':common')
 include(':photo-api')
-include(':engine')
