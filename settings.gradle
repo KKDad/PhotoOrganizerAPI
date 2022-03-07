@@ -1,1 +1,7 @@
+<<<<<<< HEAD
 rootProject.name = 'photoOrganizer'
+=======
+rootProject.name = 'PhotoOrganizer'
+include(':common')
+include(':photo-api')
+>>>>>>> master
