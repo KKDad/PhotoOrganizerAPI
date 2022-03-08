@@ -1,0 +1,3 @@
+elastic:
+    hostAndPort: dockerhost.stapledon.local:9200
+
