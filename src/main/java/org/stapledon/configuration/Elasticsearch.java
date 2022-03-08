@@ -8,9 +8,10 @@ import org.springframework.data.elasticsearch.client.RestClients;
 
 @Configuration
 public class Elasticsearch {
+
     @Bean
     public RestHighLevelClient client() {
-        ClientConfiguration clientConfiguration
+        var clientConfiguration
                 = ClientConfiguration.builder()
                 .connectedTo("localhost:9200")
                 .build();

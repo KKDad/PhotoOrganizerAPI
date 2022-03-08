@@ -19,7 +19,7 @@ public class PhotoOrganizerApplication {
 		var ctx = SpringApplication.run(PhotoOrganizerApplication.class, args);
 
 		var photoService = ctx.getBean("photoService", PhotoService.class);
-		List<Photo> results = photoService.load("R:/Drive/Moments/2013-12-13");
+		List<Photo> results = photoService.load("R:/Photos/Moments/2013-12-13");
 		logger.info("Loaded {} items", results.size());
 
 		ctx.close();
