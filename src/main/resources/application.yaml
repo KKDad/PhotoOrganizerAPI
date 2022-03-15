@@ -1,3 +1,9 @@
 elastic:
     hostAndPort: dockerhost.stapledon.local:9200
 
+spring:
+    cloud:
+        gcp:
+            project-id: speedy-emissary-344223
+            credentials:
+                location: file:.//speedy-emissary-344223-ac439d946b21.json

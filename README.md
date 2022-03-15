@@ -38,4 +38,12 @@ $ ./gradlew bootrun
 2022-03-07 19:14:48.395  INFO 8852 --- [           main] org.stapledon.components.PhotoService    : Loading all photos under: R:/Photos/Moments/2013-12-13
 2022-03-07 19:14:48.503  INFO 8852 --- [           main] org.stapledon.PhotoOrganizerApplication  : Loaded 2 items
 
-B
+## Google API
+
+This project needs a Service Key. Follow the guide here https://cloud.google.com/vision/docs/setup 
+and download the service key json file. Eg: In the Cloud Console, click the email address for the 
+service account visionapio-453:
+- Click Keys.
+- Click Add key, then click Create new key.
+- Click Create. A JSON key file is downloaded to your computer.
+- Click Close.
