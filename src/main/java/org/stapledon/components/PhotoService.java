@@ -13,10 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Component
@@ -47,17 +44,17 @@ public class PhotoService {
      * Scan an path and return all the detected photos
      * @param path Path to scan
      */
-    public Map<String,Photo> scan(String path) {
+    public Map<String,Photo> scan(Path path) {
         return scan(path, Integer.MAX_VALUE);
     }
 
-    public Map<String,Photo> scan(String path, int maxDocs) {
+    public Map<String,Photo> scan(Path path, int maxDocs) {
         logger.info("Loading all photos under: {}", path);
         Map<String,Photo> results = new LinkedHashMap<>();
 
-        try (Stream<Path> paths = Files.walk(Paths.get(path))) {
+        try (Stream<Path> paths = Files.walk(path)) {
             paths.map(Path::toString)
-                    .filter(f -> f.endsWith(".jpg"))
+                    .filter(f -> f.toLowerCase(Locale.ROOT).endsWith(".jpg"))
                     .takeWhile(p -> (results.size() <= maxDocs))
                     .forEach(p -> {
                         var photo = loadPhoto(p);

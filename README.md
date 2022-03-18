@@ -3,7 +3,7 @@ Yet another photo organizer. To organize photos exported from takeout.google.com
 
 ## Components
 
-Built using Spring boot
+Built using Spring boot, Leverages the Google Visions APIs for photo classification.
 
 # Development
 
@@ -11,7 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## Running the application
 
-To run the API
+To run PhotoOrganizer
 ~~~
 ./gradlew bootrun
 ~~~
@@ -47,3 +47,4 @@ service account visionapio-453:
 - Click Add key, then click Create new key.
 - Click Create. A JSON key file is downloaded to your computer.
 - Click Close.
+~~~

@@ -12,6 +12,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.stapledon.components.PhotoService;
 import org.stapledon.dto.Photo;
 
+import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,7 +32,8 @@ public class VisionService {
     private ResourceLoader resourceLoader;
 
     public void enrich() {
-        Map<String, Photo> results = photos.scan("R:/Photos/Moments/2013-12-13");
+        var basePath = Path.of("R:/Photos/Moments/2013-12-13");
+        Map<String, Photo> results = photos.scan(basePath);
         logger.info("Loaded {} items", results.size());
 
         results.forEach((path,details) -> extractLabels(path));

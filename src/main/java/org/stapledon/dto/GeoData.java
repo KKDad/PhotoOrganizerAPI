@@ -2,26 +2,27 @@
 package org.stapledon.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.extern.jackson.Jacksonized;
 
 import java.io.Serializable;
 
+@ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@AllArgsConstructor
+@NoArgsConstructor
+@Jacksonized
+@Builder
 public class GeoData implements Serializable
 {
-
-    @JsonProperty("latitude")
-    public Double latitude;
-
-    @JsonProperty("longitude")
-    public Double longitude;
-
-    @JsonProperty("altitude")
-    public Double altitude;
-
-    @JsonProperty("latitudeSpan")
-    public Double latitudeSpan;
-
-    @JsonProperty("longitudeSpan")
-    public Double longitudeSpan;
+    Double latitude;
+    Double longitude;
+    Double altitude;
+    Double latitudeSpan;
+    Double longitudeSpan;
 }

@@ -1,0 +1,31 @@
+{
+  "title": "IMG_20191113_121213.jpg",
+  "description": "",
+  "imageViews": "0",
+  "creationTime": {
+    "timestamp": "1573665163",
+    "formatted": "Nov 13, 2019, 5:12:43 PM UTC"
+  },
+  "modificationTime": {
+    "timestamp": "1574459182",
+    "formatted": "Nov 22, 2019, 9:46:22 PM UTC"
+  },
+  "geoData": {
+    "latitude": 45.331136111111114,
+    "longitude": -75.79540555555555,
+    "altitude": 52.59,
+    "latitudeSpan": 0.0,
+    "longitudeSpan": 0.0
+  },
+  "geoDataExif": {
+    "latitude": 45.331136111111114,
+    "longitude": -75.79540555555555,
+    "altitude": 52.59,
+    "latitudeSpan": 0.0,
+    "longitudeSpan": 0.0
+  },
+  "photoTakenTime": {
+    "timestamp": "1573665133",
+    "formatted": "Nov 13, 2019, 5:12:13 PM UTC"
+  }
+}
