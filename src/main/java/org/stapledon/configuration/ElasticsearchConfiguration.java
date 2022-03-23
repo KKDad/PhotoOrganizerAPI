@@ -11,7 +11,7 @@ import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.RestClients;
 
 @Configuration
-public class Elasticsearch {
+public class ElasticsearchConfiguration {
 
     @Getter
     @Setter

@@ -1,16 +1,16 @@
 
-package org.stapledon.dto;
+package org.stapledon.dto.takeout;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.extern.jackson.Jacksonized;
 
 import java.io.Serializable;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
+@Builder
+@Jacksonized
 public class VerboseTime implements Serializable
 {
 

@@ -1,63 +1,32 @@
-
 package org.stapledon.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
-import lombok.extern.jackson.Jacksonized;
+import lombok.experimental.SuperBuilder;
+import org.stapledon.dto.takeout.PhotoDetails;
+import org.stapledon.dto.vision.VisionDetails;
 
-import java.io.Serializable;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.TimeZone;
+import java.nio.file.Path;
+import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@SuperBuilder
 @ToString
-public class Photo implements Serializable
-{
-    @JsonProperty("title")
-    public String title;
+@EqualsAndHashCode
+@Getter
+@Setter
+public class Photo {
 
-    @JsonProperty("description")
-    public String description;
+    String name;
 
-    @JsonProperty("imageViews")
-    public String imageViews;
+    List<Path> pathList;
 
-    @JsonProperty("creationTime")
-    public VerboseTime creationTime;
+    PhotoDetails takeOutDetails;
 
-    @JsonProperty("modificationTime")
-    public VerboseTime modificationTime;
+    VisionDetails visionDetails;
 
-    @JsonProperty("geoData")
-    public GeoData geoData;
-
-    @JsonProperty("geoDataExif")
-    public GeoData geoDataExif;
-
-    @JsonProperty("photoTakenTime")
-    public VerboseTime photoTakenTime;
-
-    @JsonIgnore
-    public String toJson() throws JsonProcessingException
-    {
-        var objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(this);
-    }
-
-    @JsonIgnore
-    public LocalDateTime getLocalDate() {
-        if (this.photoTakenTime != null && Long.parseLong(this.photoTakenTime.timestamp) > 0L) {
-            return LocalDateTime.ofInstant(Instant.ofEpochSecond(Long.parseLong(this.photoTakenTime.timestamp)), TimeZone.getDefault().toZoneId());
-        }
-        return LocalDateTime.now();
+    public Path imagePath() {
+        return pathList.stream().filter(p -> p.toString().endsWith(".jpg")).findFirst().orElse(null);
     }
 }
