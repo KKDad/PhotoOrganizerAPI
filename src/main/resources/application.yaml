@@ -2,6 +2,8 @@ elastic:
     hostAndPort: dockerhost.stapledon.local:9200
 
 spring:
+    application:
+        name: PhotoOrganizer
     cloud:
         gcp:
             project-id: speedy-emissary-344223

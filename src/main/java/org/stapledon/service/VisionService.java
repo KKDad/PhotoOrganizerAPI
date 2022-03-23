@@ -15,6 +15,7 @@ import org.stapledon.dto.vision.LabelAnnotation;
 import org.stapledon.dto.vision.VisionDetails;
 
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Service
@@ -32,23 +33,31 @@ public class VisionService {
     private ResourceLoader resourceLoader;
 
     public void enrich() {
-        var basePath = Path.of("R:/Photos/Moments/2019-10-12");
-        Map<String, Photo> results = photos.scan(basePath);
-        logger.info("Loaded {} items", results.size());
+        logger.info("Enriching photos");
 
-        results.forEach((name, photo) -> extractLabels(photo));
+        var basePath = Path.of("R:/Photos/Moments/2019-10-12");
+        Map<String, Photo> results = photos.fetchAll(basePath);
+        results.forEach((name, photo) -> performDetection(photo));
+        photos.persistAll(results);
     }
 
 
-    public boolean extractLabels(Photo photo) {
-        if (photo.imagePath() == null)
-            return true;
+    /**
+     * Call Google Vision API to analyze a single image and perform Label and Image analysis.
+     *
+     * @param photo Photo to perform vision detection on
+     * @return True if the detection is successfully performed
+     */
+    public boolean performDetection(Photo photo) {
+        if (photo.getImagePath() == null || (photo.getVisionDetails() != null && photo.getVisionDetails().isProcessed()))
+            return false;
 
-        var image = this.resourceLoader.getResource("file:" + photo.imagePath());
+        var image = this.resourceLoader.getResource("file:" + photo.getImagePath());
         AnnotateImageResponse response = this.cloudVisionTemplate.analyzeImage(image, Feature.Type.LABEL_DETECTION, Feature.Type.IMAGE_PROPERTIES);
 
         if (!response.hasError()) {
             var details = new VisionDetails();
+            details.setResultDate(LocalDateTime.now());
             details.setProcessed(true);
             if (!response.getLabelAnnotationsList().isEmpty())
                 response.getLabelAnnotationsList().forEach(item ->
@@ -67,6 +76,7 @@ public class VisionService {
                             .score(item.getScore())
                             .build()));
                 photo.setVisionDetails(details);
+                photo.setVisionDetailsModified(true);
             return true;
         }
         return false;

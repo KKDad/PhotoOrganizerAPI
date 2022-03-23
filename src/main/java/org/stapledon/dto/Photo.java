@@ -1,32 +1,40 @@
 package org.stapledon.dto;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.jackson.Jacksonized;
 import org.stapledon.dto.takeout.PhotoDetails;
 import org.stapledon.dto.vision.VisionDetails;
 
 import java.nio.file.Path;
-import java.util.List;
 
-@SuperBuilder
-@ToString
-@EqualsAndHashCode
-@Getter
-@Setter
+@Data
+@Jacksonized
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Photo {
 
     String name;
 
-    List<Path> pathList;
+    Path imagePath;
+
+    Path takeOutDetailsPath;
+
+    Path visionDetailsPath;
 
     PhotoDetails takeOutDetails;
 
     VisionDetails visionDetails;
 
-    public Path imagePath() {
-        return pathList.stream().filter(p -> p.toString().endsWith(".jpg")).findFirst().orElse(null);
-    }
+    @JsonIgnore
+    @Builder.Default
+    boolean takeOutDetailsModified = false;
+
+    @JsonIgnore
+    @Builder.Default
+    boolean visionDetailsModified = false;
 }

@@ -20,10 +20,9 @@ public class ElasticsearchConfiguration {
 
     @Bean
     public RestHighLevelClient restHighLevelClient() {
-        var clientConfiguration
-                = ClientConfiguration.builder()
-                .connectedTo(getHostAndPort())
-                .build();
+        var clientConfiguration = ClientConfiguration.builder()
+                                                    .connectedTo(getHostAndPort())
+                                                    .build();
 
         return RestClients.create(clientConfiguration).rest();
     }
