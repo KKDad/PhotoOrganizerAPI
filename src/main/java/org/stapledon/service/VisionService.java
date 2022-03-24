@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gcp.vision.CloudVisionTemplate;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
-import org.stapledon.components.PhotoService;
+import org.stapledon.components.PhotoMetadataComponent;
 import org.stapledon.dto.Photo;
 import org.stapledon.dto.vision.DominantColors;
 import org.stapledon.dto.vision.LabelAnnotation;
@@ -24,7 +24,7 @@ public class VisionService {
     private static final Logger logger = LoggerFactory.getLogger(VisionService.class);
 
     @Autowired
-    PhotoService photos;
+    PhotoMetadataComponent photos;
 
     @Autowired
     private CloudVisionTemplate cloudVisionTemplate;

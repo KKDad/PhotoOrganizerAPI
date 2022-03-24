@@ -18,12 +18,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Component to handle loading and saving of Metadata associated with a photo downloaded from Google Takeout
+ */
 @Component
-public class PhotoService {
+public class PhotoMetadataComponent {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PhotoService.class);
-
-    private static final boolean dryRun = false;
+    private static final Logger LOG = LoggerFactory.getLogger(PhotoMetadataComponent.class);
 
     public static final String VISION_EXT = ".vision";
     public static final String TAKEOUT_EXT = ".json";
@@ -34,7 +35,6 @@ public class PhotoService {
 
     /**
      * Scan a path and load all photos and associated metadata
-     *
      * @param basePath Path to scan
      */
     public Map<String, Photo> fetchAll(Path basePath) {
@@ -113,7 +113,7 @@ public class PhotoService {
         }
     }
 
-    public PhotoDetails loadPhotoTakeout(Path path) {
+    private PhotoDetails loadPhotoTakeout(Path path) {
         LOG.debug("Loading vision data: {}", path);
         try {
             return objectMapper.readValue(path.toFile(), PhotoDetails.class);
@@ -131,7 +131,7 @@ public class PhotoService {
         }
     }
 
-    public VisionDetails loadVision(Path path) {
+    private VisionDetails loadVision(Path path) {
         LOG.debug("Loading vision data: {}", path);
         try {
             return objectMapper.readValue(path.toFile(), VisionDetails.class);
