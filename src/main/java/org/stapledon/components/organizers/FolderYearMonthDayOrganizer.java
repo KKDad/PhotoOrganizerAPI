@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatterBuilder;
 
 @Component
 @Slf4j
-public class YearMonthOrganizer implements IOrganizer {
+public class FolderYearMonthDayOrganizer implements IOrganizer {
 
     @Value("${organizer.base-path}")
     Path destinationBasePath;
@@ -21,7 +21,7 @@ public class YearMonthOrganizer implements IOrganizer {
         if (taken == null)
             return null;
 
-        var formatter = new DateTimeFormatterBuilder().appendPattern("yyyy-MM").toFormatter();
+        var formatter = new DateTimeFormatterBuilder().appendPattern("yyyy/yyyy-MM-dd").toFormatter();
         return Path.of(destinationBasePath.toString(), taken.toLocalDateTime().format(formatter));
     }
 }

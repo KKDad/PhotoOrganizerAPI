@@ -18,8 +18,10 @@ public class YearMonthDayOrganizer implements IOrganizer {
 
     public Path choose(Photo photo) {
         var taken = photo.getTakeOutDetails().creationTime;
-        var formatter = new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd").toFormatter();
+        if (taken == null)
+            return null;
 
+        var formatter = new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd").toFormatter();
         return Path.of(destinationBasePath.toString(), taken.toLocalDateTime().format(formatter));
     }
 }

@@ -1,4 +1,4 @@
-package org.stapledon.components;
+package org.stapledon.components.organizers;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ class YearMonthOrganizerTest {
     private YearMonthOrganizer subject;
 
     @Test
-    void chooseTest() {
+    void whenValidDate_returnsPathTest() {
         var photo = Photo.builder()
                 .name("IMG000001")
                 .takeOutDetails(PhotoDetails.builder()
@@ -31,5 +31,14 @@ class YearMonthOrganizerTest {
         Assertions.assertEquals("R:\\Photos\\Sorted\\2019-11", result.toString());
     }
 
+    @Test
+    void whenInvalidDate_returnsNullTest() {
+        var photo = Photo.builder()
+                .name("IMG000001")
+                .takeOutDetails(PhotoDetails.builder().build()
+                ).build();
 
+        var result = subject.choose(photo);
+        Assertions.assertNull(result);
+    }
 }

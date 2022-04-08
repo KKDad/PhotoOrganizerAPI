@@ -8,13 +8,12 @@ import org.springframework.stereotype.Component;
 import org.stapledon.dto.Photo;
 import org.stapledon.dto.takeout.PhotoDetails;
 import org.stapledon.dto.vision.VisionDetails;
+import org.stapledon.service.TidyUpException;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -26,7 +25,7 @@ public class MetadataTool {
 
     public static final String VISION_EXT = ".vision";
     public static final String TAKEOUT_EXT = ".json";
-    public static final String IMAGE_EXT = ".jpg";
+    private static final List<String> IMAGES_EXT = List.of(".jpg", ".jpeg", ".mp4", ".gif");
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -38,13 +37,19 @@ public class MetadataTool {
      */
     public Map<String, Photo> fetchAll(Path basePath) {
         log.info("Loading all photos and details under: {}", basePath);
-        Map<String, Photo> results = new LinkedHashMap<>();
 
+        Map<String, Photo> unfiltered = new LinkedHashMap<>();
         var paths = MoreFiles.fileTraverser().breadthFirst(basePath);
-        paths.forEach(path -> load(results, path));
-        log.info("Loaded {} photos.", results.size());
+        paths.forEach(path -> load(unfiltered, path));
 
-        return results;
+        Map<String, Photo> filtered = new LinkedHashMap<>();
+        unfiltered.forEach((k, v) -> {
+            if (v.getImagePath() != null)
+                filtered.put(k, v);
+        });
+        log.info("Loaded {} photos.", unfiltered.size());
+
+        return filtered;
     }
 
     /**
@@ -93,22 +98,28 @@ public class MetadataTool {
 
         var photo = results.computeIfAbsent(baseName, name -> Photo.builder().name(name).basePath(path.getParent()).build());
 
-        switch (fileExt) {
-            case TAKEOUT_EXT:
-                var photoDetails = loadPhotoTakeout(path);
-                photo.setTakeOutDetails(photoDetails);
-                photo.setTakeOutDetailsPath(path);
-                break;
-            case IMAGE_EXT:
-                photo.setImagePath(path);
-                break;
-            case VISION_EXT:
-                var visionDetails = loadVision(path);
-                photo.setVisionDetails(visionDetails);
-                photo.setVisionDetailsPath(path);
-                break;
-            default:
-                log.warn("Unknown Extension: {} : {}", fileExt, path);
+        if (IMAGES_EXT.contains(fileExt)) {
+            if (photo.getImagePath() != null && !photo.getImagePath().equals(path)) {
+                log.error("Cannot set image {}", path);
+                log.error("Current value is {}", photo.getImagePath());
+                throw new TidyUpException("Multiple images for the same takeout item detected");
+            }
+            photo.setImagePath(path);
+        } else {
+            switch (fileExt) {
+                case TAKEOUT_EXT:
+                    var photoDetails = loadPhotoTakeout(path);
+                    photo.setTakeOutDetails(photoDetails);
+                    photo.setTakeOutDetailsPath(path);
+                    break;
+                case VISION_EXT:
+                    var visionDetails = loadVision(path);
+                    photo.setVisionDetails(visionDetails);
+                    photo.setVisionDetailsPath(path);
+                    break;
+                default:
+                    log.warn("Unknown Extension: {} : {}", fileExt, path);
+            }
         }
     }
 
