@@ -9,24 +9,23 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 
 @SpringBootTest
-class PhotoMetadataComponentIntegrationTest {
+class MetadataToolIntegrationTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PhotoMetadataComponentIntegrationTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MetadataToolIntegrationTest.class);
 
 
     @Autowired
-    private PhotoMetadataComponent photoMetadataComponent;
+    private MetadataTool metadataTool;
 
     @Test
     void loadDirectory() throws IOException {
         var classPathResource = new ClassPathResource("2019-11-13");
         var testResources = Path.of(classPathResource.getURI());
 
-        var results = photoMetadataComponent.fetchAll(testResources);
+        var results = metadataTool.fetchAll(testResources);
         Assertions.assertEquals(5, results.size());
         LOG.info("Loaded {} items", results.size());    }
 }

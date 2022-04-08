@@ -8,9 +8,7 @@ import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.TimeZone;
 
 @Data
 @Builder
@@ -43,8 +41,8 @@ public class PhotoDetails implements Serializable
 
     @JsonIgnore
     public LocalDateTime getLocalDate() {
-        if (this.photoTakenTime != null && Long.parseLong(this.photoTakenTime.timestamp) > 0L) {
-            return LocalDateTime.ofInstant(Instant.ofEpochSecond(Long.parseLong(this.photoTakenTime.timestamp)), TimeZone.getDefault().toZoneId());
+        if (this.photoTakenTime != null && this.photoTakenTime.timestamp != null) {
+            return this.photoTakenTime.toLocalDateTime();
         }
         return LocalDateTime.now();
     }

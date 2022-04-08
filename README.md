@@ -1,13 +1,15 @@
 # PhotoOrganizer
-Yet another photo organizer. To organize photos exported from takeout.google.com
+Yet another photo organizer. To organize photos exported from social services, and enriched using Google Vision
+
+Current services supported:
+- Google, exports from takeout.google.com
+
+Planned:
+- Facebook
 
 ## Components
 
 Built using Spring boot, Leverages the Google Visions APIs for photo classification.
-
-# Development
-
-This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Running the application
 
@@ -41,7 +43,7 @@ $ ./gradlew bootrun
 2022-03-23 20:07:44.408  INFO 7772 --- [           main] o.s.c.g.core.DefaultCredentialsProvider  : Default credentials provider for service account visionapio-453@speedy-emissary-344223.iam.gserviceaccount.com
 2022-03-23 20:07:45.566  INFO 7772 --- [           main] o.s.c.g.a.c.GcpContextAutoConfiguration  : The default project ID is speedy-emissary-344223
 2022-03-23 20:07:45.569  INFO 7772 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoint(s) beneath base path '/actuator'
-
+~~~
 
 ## Google API
 

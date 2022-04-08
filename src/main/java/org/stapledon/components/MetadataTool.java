@@ -2,8 +2,7 @@ package org.stapledon.components;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.MoreFiles;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.stapledon.dto.Photo;
@@ -22,9 +21,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Component to handle loading and saving of Metadata associated with a photo downloaded from Google Takeout
  */
 @Component
-public class PhotoMetadataComponent {
-
-    private static final Logger LOG = LoggerFactory.getLogger(PhotoMetadataComponent.class);
+@Slf4j
+public class MetadataTool {
 
     public static final String VISION_EXT = ".vision";
     public static final String TAKEOUT_EXT = ".json";
@@ -35,15 +33,16 @@ public class PhotoMetadataComponent {
 
     /**
      * Scan a path and load all photos and associated metadata
+     *
      * @param basePath Path to scan
      */
     public Map<String, Photo> fetchAll(Path basePath) {
-        LOG.info("Loading all photos and details under: {}", basePath);
+        log.info("Loading all photos and details under: {}", basePath);
         Map<String, Photo> results = new LinkedHashMap<>();
 
         var paths = MoreFiles.fileTraverser().breadthFirst(basePath);
         paths.forEach(path -> load(results, path));
-        LOG.info("Loaded {} photos.", results.size());
+        log.info("Loaded {} photos.", results.size());
 
         return results;
     }
@@ -67,7 +66,7 @@ public class PhotoMetadataComponent {
             details.setTakeOutDetailsModified(false);
         }
         if (details.isVisionDetailsModified()) {
-            if (details.getVisionDetailsPath() == null ) {
+            if (details.getVisionDetailsPath() == null) {
                 details.setVisionDetailsPath(new File(details.getImagePath().toString() + VISION_EXT).toPath());
             }
             saveVision(details.getVisionDetails(), details.getVisionDetailsPath());
@@ -75,7 +74,6 @@ public class PhotoMetadataComponent {
         }
         return false;
     }
-
 
 
     private void load(Map<String, Photo> results, Path path) {
@@ -92,7 +90,8 @@ public class PhotoMetadataComponent {
         if (baseName.equalsIgnoreCase("metadata") || path.toFile().isDirectory())
             return;
 
-        var photo = results.computeIfAbsent(baseName, name -> Photo.builder().name(name).build());
+
+        var photo = results.computeIfAbsent(baseName, name -> Photo.builder().name(name).basePath(path.getParent()).build());
 
         switch (fileExt) {
             case TAKEOUT_EXT:
@@ -109,16 +108,16 @@ public class PhotoMetadataComponent {
                 photo.setVisionDetailsPath(path);
                 break;
             default:
-                LOG.warn("Unknown Extension: {} : {}", fileExt, path);
+                log.warn("Unknown Extension: {} : {}", fileExt, path);
         }
     }
 
     private PhotoDetails loadPhotoTakeout(Path path) {
-        LOG.debug("Loading vision data: {}", path);
+        log.debug("Loading vision data: {}", path);
         try {
             return objectMapper.readValue(path.toFile(), PhotoDetails.class);
         } catch (IOException e) {
-            LOG.error("Failed to Load photo takeout details: {}", e.getLocalizedMessage());
+            log.error("Failed to Load photo takeout details: {}", e.getLocalizedMessage());
         }
         return null;
     }
@@ -127,16 +126,16 @@ public class PhotoMetadataComponent {
         try {
             objectMapper.writeValue(takeOutDetailsPath.toFile(), takeOutDetails);
         } catch (IOException e) {
-            LOG.error("Failed to Save photo takeout details: {}", e.getLocalizedMessage());
+            log.error("Failed to Save photo takeout details: {}", e.getLocalizedMessage());
         }
     }
 
     private VisionDetails loadVision(Path path) {
-        LOG.debug("Loading vision data: {}", path);
+        log.debug("Loading vision data: {}", path);
         try {
             return objectMapper.readValue(path.toFile(), VisionDetails.class);
         } catch (IOException e) {
-            LOG.error("Failed to Load vision: {}", e.getLocalizedMessage());
+            log.error("Failed to Load vision: {}", e.getLocalizedMessage());
         }
         return null;
     }
@@ -145,7 +144,7 @@ public class PhotoMetadataComponent {
         try {
             objectMapper.writeValue(visionDetailsPath.toFile(), visionDetails);
         } catch (IOException e) {
-            LOG.error("Failed to Save vision details: {}", e.getLocalizedMessage());
+            log.error("Failed to Save vision details: {}", e.getLocalizedMessage());
         }
     }
 }

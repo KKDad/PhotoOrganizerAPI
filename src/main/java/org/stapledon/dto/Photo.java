@@ -20,6 +20,8 @@ public class Photo {
 
     String name;
 
+    Path basePath;
+
     Path imagePath;
 
     Path takeOutDetailsPath;
