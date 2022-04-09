@@ -13,7 +13,10 @@ import org.stapledon.service.TidyUpException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -30,26 +33,29 @@ public class MetadataTool {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private final Map<String, Photo> photos = new LinkedHashMap<>();
+
     /**
      * Scan a path and load all photos and associated metadata
      *
      * @param basePath Path to scan
      */
     public Map<String, Photo> fetchAll(Path basePath) {
-        log.info("Loading all photos and details under: {}", basePath);
+        if (photos.size() > 0)
+            return photos;
 
+        log.info("Loading all photos and details under: {}", basePath);
         Map<String, Photo> unfiltered = new LinkedHashMap<>();
         var paths = MoreFiles.fileTraverser().breadthFirst(basePath);
         paths.forEach(path -> load(unfiltered, path));
 
-        Map<String, Photo> filtered = new LinkedHashMap<>();
         unfiltered.forEach((k, v) -> {
             if (v.getImagePath() != null)
-                filtered.put(k, v);
+                photos.put(k, v);
         });
-        log.info("Loaded {} photos.", unfiltered.size());
 
-        return filtered;
+        log.info("Loaded {} photos.", unfiltered.size());
+        return photos;
     }
 
     /**

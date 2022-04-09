@@ -8,8 +8,6 @@ import org.stapledon.dto.Photo;
 import org.stapledon.dto.takeout.PhotoDetails;
 import org.stapledon.dto.takeout.VerboseTime;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class FolderYearMonthDayOrganizerTest {
 
@@ -24,8 +22,8 @@ class FolderYearMonthDayOrganizerTest {
                         .creationTime(VerboseTime.builder().timestamp(1572795292L).formatted("Nov 3, 2019, 11:22:43 PM UTC").build())
                         .photoTakenTime(VerboseTime.builder().timestamp(1572823363L).formatted("Nov 3, 2019, 11:22:43 PM UTC").build())
                         .modificationTime(VerboseTime.builder().timestamp(1572823363L).formatted("Nov 3, 2019, 11:22:43 PM UTC").build())
-                        .build()
-                ).build();
+                        .build())
+                .build();
 
         var result = subject.choose(photo);
         Assertions.assertNotNull(result);

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.stapledon.components.MetadataTool;
+import org.stapledon.components.duplicates.IDupDetector;
 import org.stapledon.components.organizers.IOrganizer;
 import org.stapledon.dto.Photo;
 
@@ -28,6 +29,9 @@ public class TidyUpService {
 
     @Autowired
     Map<String, IOrganizer> organizers;
+
+    @Autowired
+    Map<String, IDupDetector> dupDetector;
 
     @Autowired
     MetadataTool photos;
