@@ -4,12 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
 import org.stapledon.dto.Photo;
-import org.stapledon.dto.takeout.PhotoDetails;
-import org.stapledon.dto.takeout.VerboseTime;
 
 import java.io.FileNotFoundException;
-import java.nio.file.Path;
-import java.util.Objects;
 
 class ChecksumDetectorTest {
 
