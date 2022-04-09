@@ -6,6 +6,7 @@ import org.springframework.util.ResourceUtils;
 import org.stapledon.dto.Photo;
 
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
 
 class ChecksumDetectorTest {
 
@@ -37,5 +38,22 @@ class ChecksumDetectorTest {
 
         var subject = new ChecksumDetector();
         Assertions.assertTrue(subject.isDuplicate(photo1, photo2));
+    }
+
+    @Test
+    void whenGiveInvalidPath_ErrorThrownTest()  {
+        var photo1 = Photo.builder()
+                .name("Siamese")
+                .imagePath(Path.of("C:/bad/path.png"))
+                .build();
+        var photo2 = Photo.builder()
+                .name("Tabby")
+                .imagePath(Path.of("C:/bad/path.png"))
+                .build();
+
+        var subject = new ChecksumDetector();
+        Assertions.assertThrows(CannotDetermineException.class, () -> {
+            subject.isDuplicate(photo1, photo2);
+        });
     }
 }
