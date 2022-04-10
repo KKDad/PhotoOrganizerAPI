@@ -27,7 +27,7 @@ $ ./gradlew bootrun
  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
   '  |____| .__|_| |_|_| |_\__, | / / / /
  =========|_|==============|___/=/_/_/_/
- :: Spring Boot ::                (v2.6.4)
+ :: Spring Boot ::                (v2.6.6)
 
 2022-03-23 20:07:42.987  INFO 7772 --- [           main] org.stapledon.PhotoOrganizerApplication  : Starting PhotoOrganizerApplication using Java 13 on VDI-w10-Development with PID 7772 (C:\git\PhotoOrganizer\build\classes\java\main started by Adrian in C:\git\PhotoOrganizer)
 2022-03-23 20:07:42.989  INFO 7772 --- [           main] org.stapledon.PhotoOrganizerApplication  : No active profile set, falling back to 1 default profile: "default"

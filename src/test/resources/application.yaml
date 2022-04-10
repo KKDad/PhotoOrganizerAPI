@@ -1,5 +1,6 @@
 elastic:
     hostAndPort: dockerhost.stapledon.local:9200
+    password: day@force
 
 spring:
     application:

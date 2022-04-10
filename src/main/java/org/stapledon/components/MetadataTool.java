@@ -8,15 +8,11 @@ import org.springframework.stereotype.Component;
 import org.stapledon.dto.Photo;
 import org.stapledon.dto.takeout.PhotoDetails;
 import org.stapledon.dto.vision.VisionDetails;
-import org.stapledon.service.TidyUpException;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -28,12 +24,14 @@ public class MetadataTool {
 
     public static final String VISION_EXT = ".vision";
     public static final String TAKEOUT_EXT = ".json";
-    private static final List<String> IMAGES_EXT = List.of(".jpg", ".jpeg", ".mp4", ".gif");
+    private static final List<String> IMAGES_EXT = List.of(".jpg", ".jpeg", ".mp4", ".gif", ".png", ".mov", ".m4v");
 
     @Autowired
     private ObjectMapper objectMapper;
 
     private final Map<String, Photo> photos = new LinkedHashMap<>();
+
+    private final List<Path> duplicates = new ArrayList<>();
 
     /**
      * Scan a path and load all photos and associated metadata
@@ -101,14 +99,20 @@ public class MetadataTool {
         if (baseName.equalsIgnoreCase("metadata") || path.toFile().isDirectory())
             return;
 
+        var key = String.format("%s/%s", path.getName(path.getNameCount() - 2), baseName);
 
-        var photo = results.computeIfAbsent(baseName, name -> Photo.builder().name(name).basePath(path.getParent()).build());
+        var finalBaseName = baseName;
+        var photo = results.computeIfAbsent(key, name -> Photo.builder()
+                .name(finalBaseName)
+                .basePath(path.getParent())
+                .folder(path.getName(path.getNameCount() - 2).toString())
+                .build());
 
         if (IMAGES_EXT.contains(fileExt)) {
             if (photo.getImagePath() != null && !photo.getImagePath().equals(path)) {
                 log.error("Cannot set image {}", path);
                 log.error("Current value is {}", photo.getImagePath());
-                throw new TidyUpException("Multiple images for the same takeout item detected");
+                duplicates.add(path);
             }
             photo.setImagePath(path);
         } else {

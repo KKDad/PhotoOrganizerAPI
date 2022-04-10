@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.jackson.Jacksonized;
+import org.springframework.data.annotation.Id;
 import org.stapledon.dto.takeout.PhotoDetails;
 import org.stapledon.dto.vision.VisionDetails;
 
@@ -18,7 +19,10 @@ import java.nio.file.Path;
 @AllArgsConstructor
 public class Photo {
 
+    @Id
     String name;
+
+    String folder;
 
     Path basePath;
 

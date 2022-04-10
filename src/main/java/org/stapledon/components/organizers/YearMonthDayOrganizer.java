@@ -17,9 +17,9 @@ public class YearMonthDayOrganizer implements IOrganizer {
     Path destinationBasePath;
 
     public Path choose(Photo photo) {
-        var taken = photo.getTakeOutDetails().creationTime;
-        if (taken == null)
+        if (photo.getTakeOutDetails() == null || photo.getTakeOutDetails().creationTime == null)
             return null;
+        var taken = photo.getTakeOutDetails().creationTime;
 
         var formatter = new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd").toFormatter();
         return Path.of(destinationBasePath.toString(), taken.toLocalDateTime().format(formatter));
