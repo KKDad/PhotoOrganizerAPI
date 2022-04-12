@@ -16,10 +16,15 @@ public class YearMonthDayOrganizer implements IOrganizer {
     @Value("${organizer.base-path}")
     Path destinationBasePath;
 
-    public Path choose(Photo photo) {
-        if (photo.getTakeOutDetails() == null || photo.getTakeOutDetails().creationTime == null)
+    public Path choosePath(Photo photo) {
+        if (photo.getTakeOutDetails() == null)
             return null;
-        var taken = photo.getTakeOutDetails().creationTime;
+        var taken = photo.getTakeOutDetails().getPhotoTakenTime() == null ?
+                photo.getTakeOutDetails().getCreationTime() :
+                photo.getTakeOutDetails().getPhotoTakenTime();
+
+        if (taken == null)
+            return null;
 
         var formatter = new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd").toFormatter();
         return Path.of(destinationBasePath.toString(), taken.toLocalDateTime().format(formatter));

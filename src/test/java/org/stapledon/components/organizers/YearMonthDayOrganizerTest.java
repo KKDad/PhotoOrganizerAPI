@@ -19,15 +19,15 @@ class YearMonthDayOrganizerTest {
         var photo = Photo.builder()
                 .name("IMG000001")
                 .takeOutDetails(PhotoDetails.builder()
-                        .creationTime(VerboseTime.builder().timestamp(1572795292L).formatted("Nov 3, 2019, 11:22:43 PM UTC").build())
-                        .photoTakenTime(VerboseTime.builder().timestamp(1572823363L).formatted("Nov 3, 2019, 11:22:43 PM UTC").build())
-                        .modificationTime(VerboseTime.builder().timestamp(1572823363L).formatted("Nov 3, 2019, 11:22:43 PM UTC").build())
+                        .creationTime(VerboseTime.builder().timestamp(1433089679L).formatted("May 31, 2015, 4:27:59 PM UTC").build())
+                        .photoTakenTime(VerboseTime.builder().timestamp(1418583092L).formatted("Dec 14, 2014, 6:51:32 PM UTC").build())
+                        .modificationTime(VerboseTime.builder().timestamp(1554324586L).formatted("Apr 3, 2019, 8:49:46 PM UTC").build())
                         .build())
                 .build();
 
-        var result = subject.choose(photo);
+        var result = subject.choosePath(photo);
         Assertions.assertNotNull(result);
-        Assertions.assertEquals("R:\\Photos\\Sorted\\2019-11-03", result.toString());
+        Assertions.assertEquals("U:\\Sorted\\2014-12-14", result.toString());
     }
 
     @Test
@@ -37,7 +37,7 @@ class YearMonthDayOrganizerTest {
                 .takeOutDetails(PhotoDetails.builder().build())
                 .build();
 
-        var result = subject.choose(photo);
+        var result = subject.choosePath(photo);
         Assertions.assertNull(result);
     }
 }

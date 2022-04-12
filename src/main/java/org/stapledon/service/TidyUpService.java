@@ -9,23 +9,29 @@ import org.stapledon.components.duplicates.IDupDetector;
 import org.stapledon.components.organizers.IOrganizer;
 import org.stapledon.dto.Photo;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 
 @Service
 @Slf4j
 public class TidyUpService {
 
-    @Value("${verbose:true}")
+    @Value("${tidyup/verbose:true}")
     private boolean verbose;
 
-    @Value("${is-copy:true}")
+    @Value("${tidyup.is-copy:true}")
     private boolean isCopy;
 
-    @Value("${dry-run:true}")
+    @Value("${tidyup.dry-run:true}")
     private boolean dryRun;
+
+    @Value("${takeout.exports}")
+    private Path sourcePath;
+
 
     @Autowired
     Map<String, IOrganizer> organizers;
@@ -37,8 +43,7 @@ public class TidyUpService {
     MetadataTool photos;
 
     public void organize() {
-        var basePath = Path.of("R:/Photos/Moments");
-        Map<String, Photo> results = photos.fetchAll(basePath);
+        Map<String, Photo> results = photos.fetchAll(sourcePath);
         results.forEach((name, photo) -> doOrganize(photo));
     }
 
@@ -47,7 +52,7 @@ public class TidyUpService {
 
         log.info("Processing {}", photo.getName());
 
-        var result = selected.choose(photo);
+        var result = selected.choosePath(photo);
         if (result == null) {
             log.warn("No destination chosen for {}", photo.getImagePath());
         } else
@@ -58,6 +63,14 @@ public class TidyUpService {
                 photo.setImagePath(copyMove(photo.getImagePath(), result));
                 photo.setTakeOutDetailsPath(copyMove(photo.getTakeOutDetailsPath(), result));
                 photo.setTakeOutDetailsPath(copyMove(photo.getVisionDetailsPath(), result));
+
+//                var parent = Path.of(photo.getFolder());
+//                if (parent.toFile().list().length == 0) {
+//                    if (verbose)
+//                        log.info("Removing empty folder {}", photo.getFolder());
+//                    if (!dryRun)
+//                        Files.delete(parent);
+//                }
 
             } catch (IOException ie) {
                 log.error(ie.getLocalizedMessage());

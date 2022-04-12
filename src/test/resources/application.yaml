@@ -31,5 +31,13 @@ management:
         elasticsearch:
             enabled: false
 
+tidyup:
+    verbose: true
+    is-copy: false
+    dry-run: false
+
+takeout:
+    exports: U:\Google Exports\Unsorted\2014-12-14
+
 organizer:
-    base-path: R:\Photos\Sorted
+    base-path: U:\Sorted

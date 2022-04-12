@@ -5,5 +5,5 @@ import org.stapledon.dto.Photo;
 import java.nio.file.Path;
 
 public interface IOrganizer {
-    Path choose(Photo photo);
+    Path choosePath(Photo photo);
 }
