@@ -33,13 +33,13 @@ dependencies {
 	//implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.projectlombok:lombok:1.18.22'
+	implementation 'org.projectlombok:lombok:1.18.24'
 
 	// Google Vision APIs
 	implementation platform('org.springframework.cloud:spring-cloud-gcp-dependencies:1.2.8.RELEASE')
 	implementation 'org.springframework.cloud:spring-cloud-gcp-starter-vision'
 
-	annotationProcessor 'org.projectlombok:lombok:1.18.22'
+	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
