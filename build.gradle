@@ -17,6 +17,15 @@ tasks.withType(JavaCompile) {
 tasks.withType(Test) {
 	useJUnitPlatform()
 }
+springBoot {
+	buildInfo()
+}
+
+jar {
+	enabled = false
+}
+
+jar.dependsOn(bootJar)
 
 configurations {
 	compileOnly {
