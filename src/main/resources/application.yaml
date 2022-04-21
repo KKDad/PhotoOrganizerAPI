@@ -31,13 +31,12 @@ management:
         elasticsearch:
             enabled: false
 
-tidyup:
-    verbose: true
-    is-copy: false
-    dry-run: false
-
-takeout:
-    exports: U:\Google Exports\Unsorted-Live
-
 organizer:
-    base-path: U:\Sorted
+    tidyup:
+        verbose: true
+        is-copy: false
+        dry-run: false
+    takeout:
+        exports: U:\Google Exports\Unsorted-Live
+    destination:
+        base-path: U:\Sorted

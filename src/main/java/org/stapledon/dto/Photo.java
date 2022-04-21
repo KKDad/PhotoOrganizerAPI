@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.jackson.Jacksonized;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.stapledon.dto.takeout.PhotoDetails;
 import org.stapledon.dto.vision.VisionDetails;
 
@@ -19,7 +21,7 @@ import java.nio.file.Path;
 @AllArgsConstructor
 public class Photo {
 
-    @Id
+    @Id @Field(type = FieldType.Keyword)
     String name;
 
     String folder;

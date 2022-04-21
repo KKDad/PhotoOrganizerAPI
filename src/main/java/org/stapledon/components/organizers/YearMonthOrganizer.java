@@ -1,32 +1,31 @@
 package org.stapledon.components.organizers;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.stapledon.configuration.properties.OrganizerProperties;
 import org.stapledon.dto.Photo;
 
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatterBuilder;
 
 
 @Component
 @Slf4j
-public class YearMonthOrganizer implements IOrganizer {
+public class YearMonthOrganizer extends Organizer {
 
-    @Value("${organizer.base-path}")
-    Path destinationBasePath;
+    @Autowired
+    OrganizerProperties config;
 
+    @Override
     public Path choosePath(Photo photo) {
-        if (photo.getTakeOutDetails() == null)
-            return null;
-        var taken = photo.getTakeOutDetails().getPhotoTakenTime() == null ?
-                photo.getTakeOutDetails().getCreationTime() :
-                photo.getTakeOutDetails().getPhotoTakenTime();
-
+        LocalDateTime taken = getPhotoTakenTime(photo);
         if (taken == null)
             return null;
 
         var formatter = new DateTimeFormatterBuilder().appendPattern("yyyy-MM").toFormatter();
-        return Path.of(destinationBasePath.toString(), taken.toLocalDateTime().format(formatter));
+        return Path.of(config.getDestination().getBasePath(), taken.format(formatter));
     }
+
 }

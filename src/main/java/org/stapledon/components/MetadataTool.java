@@ -27,11 +27,11 @@ public class MetadataTool {
     private static final List<String> IMAGES_EXT = List.of(".jpg", ".jpeg", ".mp4", ".gif", ".png", ".mov", ".m4v");
 
     @Autowired
-    private ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
 
-    private final Map<String, Photo> photos = new LinkedHashMap<>();
+    final Map<String, Photo> photos = new LinkedHashMap<>();
 
-    private final List<Path> duplicates = new ArrayList<>();
+    final List<Path> duplicates = new ArrayList<>();
 
     /**
      * Scan a path and load all photos and associated metadata

@@ -27,5 +27,6 @@ class MetadataToolIntegrationTest {
 
         var results = metadataTool.fetchAll(testResources);
         Assertions.assertEquals(5, results.size());
-        LOG.info("Loaded {} items", results.size());    }
+        LOG.info("Loaded {} items", results.size());
+    }
 }
