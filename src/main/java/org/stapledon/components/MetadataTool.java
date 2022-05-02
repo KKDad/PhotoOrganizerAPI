@@ -26,6 +26,8 @@ public class MetadataTool {
     public static final String TAKEOUT_EXT = ".json";
     private static final List<String> IMAGES_EXT = List.of(".jpg", ".jpeg", ".mp4", ".gif", ".png", ".mov", ".m4v");
 
+    private static final List<String> EDITS = List.of("-edited");
+
     @Autowired
     ObjectMapper objectMapper;
 
@@ -69,7 +71,7 @@ public class MetadataTool {
         return result.get();
     }
 
-    private boolean persist(Photo details) {
+    protected boolean persist(Photo details) {
         if (details.isTakeOutDetailsModified()) {
             savePhotoTakeout(details.getTakeOutDetails(), details.getTakeOutDetailsPath());
             details.setTakeOutDetailsModified(false);
@@ -85,15 +87,21 @@ public class MetadataTool {
     }
 
 
-    private void load(Map<String, Photo> results, Path path) {
+    protected void load(Map<String, Photo> results, Path path) {
         var fileName = path.getFileName().toString().toLowerCase(Locale.ROOT);
+        var fileNameWithoutExtension = fileName.indexOf('.') > -1 ? fileName.substring(0, fileName.indexOf('.')) : "";
         var fileExt = fileName.lastIndexOf('.') > 0 ? fileName.substring(fileName.lastIndexOf('.')) : "";
         // If the basename has more then one extension, then keep stripping it back
-        var baseName = fileName;
-        do {
-            if (baseName.contains("."))
-                baseName = baseName.substring(0, baseName.indexOf('.'));
-        } while (baseName.contains("."));
+        var baseName = fileNameWithoutExtension;
+        var isEdit = false;
+        if (baseName.contains("."))
+            baseName = baseName.substring(0, baseName.indexOf('.'));
+        for (String edit : EDITS) {
+            if (baseName.endsWith(edit)) {
+                baseName = baseName.replace(edit, "");
+                isEdit = true;
+            }
+        }
 
         // Skip any Metadata entries or directories
         if (baseName.equalsIgnoreCase("metadata") || path.toFile().isDirectory())
@@ -109,7 +117,9 @@ public class MetadataTool {
                 .build());
 
         if (IMAGES_EXT.contains(fileExt)) {
-            if (photo.getImagePath() != null && !photo.getImagePath().equals(path)) {
+            if (isEdit) {
+              photo.getAdditionalImages().add(path);
+            } else if (photo.getImagePath() != null && !photo.getImagePath().equals(path)) {
                 log.error("Cannot set image {}", path);
                 log.error("Current value is {}", photo.getImagePath());
                 duplicates.add(path);
@@ -133,7 +143,7 @@ public class MetadataTool {
         }
     }
 
-    private PhotoDetails loadPhotoTakeout(Path path) {
+    protected PhotoDetails loadPhotoTakeout(Path path) {
         log.debug("Loading vision data: {}", path);
         try {
             return objectMapper.readValue(path.toFile(), PhotoDetails.class);
@@ -143,7 +153,7 @@ public class MetadataTool {
         return null;
     }
 
-    private void savePhotoTakeout(PhotoDetails takeOutDetails, Path takeOutDetailsPath) {
+    protected void savePhotoTakeout(PhotoDetails takeOutDetails, Path takeOutDetailsPath) {
         try {
             objectMapper.writeValue(takeOutDetailsPath.toFile(), takeOutDetails);
         } catch (IOException e) {
@@ -151,7 +161,7 @@ public class MetadataTool {
         }
     }
 
-    private VisionDetails loadVision(Path path) {
+    protected VisionDetails loadVision(Path path) {
         log.debug("Loading vision data: {}", path);
         try {
             return objectMapper.readValue(path.toFile(), VisionDetails.class);
@@ -161,7 +171,7 @@ public class MetadataTool {
         return null;
     }
 
-    private void saveVision(VisionDetails visionDetails, Path visionDetailsPath) {
+    protected void saveVision(VisionDetails visionDetails, Path visionDetailsPath) {
         try {
             objectMapper.writeValue(visionDetailsPath.toFile(), visionDetails);
         } catch (IOException e) {

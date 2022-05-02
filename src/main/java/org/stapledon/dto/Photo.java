@@ -13,6 +13,8 @@ import org.stapledon.dto.takeout.PhotoDetails;
 import org.stapledon.dto.vision.VisionDetails;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Jacksonized
@@ -33,6 +35,9 @@ public class Photo {
     Path takeOutDetailsPath;
 
     Path visionDetailsPath;
+
+    @Builder.Default
+    List<Path> additionalImages = new ArrayList<>();
 
     PhotoDetails takeOutDetails;
 
