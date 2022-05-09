@@ -9,9 +9,12 @@ import org.stapledon.components.organizers.IOrganizer;
 import org.stapledon.configuration.properties.OrganizerProperties;
 import org.stapledon.dto.Photo;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -29,6 +32,9 @@ public class TidyUpService {
 
     @Autowired
     MetadataTool photos;
+
+    private static final List<String> TEMP_FILES = List.of("metadata.json");
+
 
     public void organize() {
         Map<String, Photo> results = photos.fetchAll(config.getTakeout().getExports());
@@ -52,6 +58,10 @@ public class TidyUpService {
                 photo.setImagePath(copyMove(photo.getImagePath(), result));
                 photo.setTakeOutDetailsPath(copyMove(photo.getTakeOutDetailsPath(), result));
                 photo.setTakeOutDetailsPath(copyMove(photo.getVisionDetailsPath(), result));
+                var addition = new ArrayList<Path>();
+                for (Path item : photo.getAdditionalImages())
+                    addition.add(copyMove(item, result));
+                photo.setAdditionalImages(addition);
 
                 // Clean up original file location
                 removeIfEmpty(photo.getBasePath());
@@ -63,13 +73,20 @@ public class TidyUpService {
     }
 
     /**
-     * If the directory is empty, delete it
+     * If the directory is empty or if the directory only contains garbage items, then delete it
      *
      * @param target - Path to delete
      */
     protected void removeIfEmpty(Path target) {
         try {
             var fileList = target.toFile().list();
+            if (fileList != null && fileList.length > 0) {
+                for (var f: fileList) {
+                    if (TEMP_FILES.contains(f))
+                        Files.delete(new File(f).toPath());
+                }
+                fileList = target.toFile().list();
+            }
             if (fileList != null && fileList.length == 0) {
                 if (config.getTidyUp().isVerbose())
                     log.info("Removing empty folder {}", target);
