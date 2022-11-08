@@ -1,9 +1,10 @@
 package org.stapledon.configuration;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+
+import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
 class BuildVersionTest {
 
@@ -18,12 +19,4 @@ class BuildVersionTest {
             assertNotNull(buildProperty, String.format("Expected %s to be defined", prop));
         });
     }
-
-    @Test
-    void logTest() {
-        BuildVersion version = new BuildVersion();
-        assertThat(version.logProperties())
-    }
-
-
 }
