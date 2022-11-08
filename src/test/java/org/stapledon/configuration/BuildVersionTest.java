@@ -15,8 +15,14 @@ class BuildVersionTest {
 
         props.forEach(prop -> {
             String buildProperty = version.getBuildProperty(prop);
-            Assertions.assertNotNull(buildProperty, String.format("Expected %s to be defined", prop));
+            assertNotNull(buildProperty, String.format("Expected %s to be defined", prop));
         });
+    }
+
+    @Test
+    void logTest() {
+        BuildVersion version = new BuildVersion();
+        assertThat(version.logProperties())
     }
 
 
