@@ -1,4 +1,7 @@
 # PhotoOrganizer
+
+[![Java CI with Gradle](https://github.com/KKDad/PhotoOrganizerAPI/actions/workflows/gradle.yml/badge.svg)](https://github.com/KKDad/PhotoOrganizerAPI/actions/workflows/gradle.yml)
+
 Yet another photo organizer. To organize photos exported from social services, and enriched using Google Vision
 
 Current services supported:
