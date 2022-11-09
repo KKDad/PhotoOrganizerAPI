@@ -37,6 +37,6 @@ organizer:
         is-copy: false
         dry-run: false
     takeout:
-        exports: U:\Google Exports\Unsorted\2014-12-14
+        exports: U:/Google Exports/Unsorted/2014-12-14
     destination:
-        base-path: U:\Sorted
+        base-path: U:/Sorted

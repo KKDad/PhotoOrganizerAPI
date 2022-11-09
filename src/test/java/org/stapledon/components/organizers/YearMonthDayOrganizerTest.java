@@ -34,7 +34,7 @@ class YearMonthDayOrganizerTest {
         var result = subject.choosePath(photo);
         log.info("result={}", result);
         Assertions.assertNotNull(result);
-        Assertions.assertEquals("U:\\Sorted\\2014-12-14", result.toString());
+        Assertions.assertEquals("U:/Sorted/2014-12-14", result.toString());
     }
 
     @Test
