@@ -1,9 +1,10 @@
 package org.stapledon.configuration;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+
+import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
 class BuildVersionTest {
 
@@ -15,9 +16,7 @@ class BuildVersionTest {
 
         props.forEach(prop -> {
             String buildProperty = version.getBuildProperty(prop);
-            Assertions.assertNotNull(buildProperty, String.format("Expected %s to be defined", prop));
+            assertNotNull(buildProperty, String.format("Expected %s to be defined", prop));
         });
     }
-
-
 }

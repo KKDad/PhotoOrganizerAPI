@@ -4,11 +4,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.stapledon.GoogleCredentialConfig;
 import org.stapledon.dto.Photo;
 import org.stapledon.dto.takeout.PhotoDetails;
 import org.stapledon.dto.takeout.VerboseTime;
 
 @SpringBootTest
+@Import(GoogleCredentialConfig.class)
 class YearMonthOrganizerTest {
 
     @Autowired
@@ -27,7 +30,7 @@ class YearMonthOrganizerTest {
 
         var result = subject.choosePath(photo);
         Assertions.assertNotNull(result);
-        Assertions.assertEquals("U:\\Sorted\\2014-12", result.toString());
+        Assertions.assertEquals("U:/Sorted/2014-12", result.toString());
     }
 
     @Test

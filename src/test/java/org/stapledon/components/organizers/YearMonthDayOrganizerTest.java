@@ -1,14 +1,20 @@
 package org.stapledon.components.organizers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Import;
+import org.stapledon.GoogleCredentialConfig;
 import org.stapledon.dto.Photo;
 import org.stapledon.dto.takeout.PhotoDetails;
 import org.stapledon.dto.takeout.VerboseTime;
 
+@Slf4j
 @SpringBootTest
+@Import(GoogleCredentialConfig.class)
 class YearMonthDayOrganizerTest {
 
     @Autowired
@@ -26,8 +32,9 @@ class YearMonthDayOrganizerTest {
                 .build();
 
         var result = subject.choosePath(photo);
+        log.info("result={}", result);
         Assertions.assertNotNull(result);
-        Assertions.assertEquals("U:\\Sorted\\2014-12-14", result.toString());
+        Assertions.assertEquals("U:/Sorted/2014-12-14", result.toString());
     }
 
     @Test

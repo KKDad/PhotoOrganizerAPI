@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.stapledon.PhotoOrganizerApplication;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Properties;
 
 @Component
@@ -33,5 +34,13 @@ public class BuildVersion {
             return null;
         }
         return (String) buildProps.getOrDefault(key, null);
+    }
+
+    public void logProperties() {
+        var props = Arrays.asList("build.artifact", "build.group", "build.name", "build.time", "build.version");
+        props.forEach(prop -> {
+            String buildProperty = getBuildProperty(prop);
+            log.info("       -> {}", buildProperty);
+        });
     }
 }
