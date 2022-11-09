@@ -4,11 +4,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Import;
+import org.stapledon.GoogleCredentialConfig;
 import org.stapledon.dto.Photo;
 import org.stapledon.dto.takeout.PhotoDetails;
 import org.stapledon.dto.takeout.VerboseTime;
 
 @SpringBootTest
+@Import(GoogleCredentialConfig.class)
 class YearMonthDayOrganizerTest {
 
     @Autowired
