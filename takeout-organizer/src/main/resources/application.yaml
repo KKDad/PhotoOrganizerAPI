@@ -1,5 +1,5 @@
 elastic:
-    hostAndPort: dockerhost.stapledon.local:9200
+    hostAndPort: dockerhost.stapledon.ca:9200
     password: day@force
 
 spring:
@@ -9,7 +9,7 @@ spring:
         gcp:
             project-id: speedy-emissary-344223
             credentials:
-                location: file:.//speedy-emissary-344223-ac439d946b21.json
+                location: classpath:speedy-emissary-344223-ac439d946b21.json
 
 management:
     endpoint:
@@ -37,6 +37,6 @@ organizer:
         is-copy: false
         dry-run: false
     takeout:
-        exports: U:\Google Exports\Unsorted-Live
+        exports: /vault/Google Exports/Unsorted-Live
     destination:
-        base-path: U:\Sorted
+        base-path: /vault/Google Exports/Sorted
