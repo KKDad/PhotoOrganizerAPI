@@ -10,7 +10,7 @@ apply plugin: "java"
 group = 'org.stapledon'
 version = '0.0.1-SNAPSHOT'
 
-sourceCompatibility = '1.11'
+sourceCompatibility = "${java_version}"
 tasks.withType(JavaCompile).configureEach {
 	options.encoding = 'UTF-8'
 }
