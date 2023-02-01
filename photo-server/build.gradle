@@ -75,3 +75,11 @@ configurations {
 repositories {
 	mavenCentral()
 }
+
+bootBuildImage {
+	imageName = "eu.gcr.io/company/imagename"
+	builder = "paketobuildpacks/builder:tiny"
+	if (System.getenv("IMAGE_TAGS")) {
+		tags = (System.getenv("IMAGE_TAGS").split(",") as List<String>).collect { "$imageName:$it" }
+	}
+}

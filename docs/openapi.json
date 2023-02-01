@@ -19,16 +19,22 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "List Users",
+      "description": "List all users"
+    }
+  ],
   "paths": {
     "/api/v1/users": {
       "get": {
         "tags": [
-          "user-controller"
+          "List Users"
         ],
         "operationId": "allUsers",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "successful operation",
             "content": {
               "*/*": {
                 "schema": {
@@ -39,6 +45,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid status value"
           }
         }
       }
@@ -74,19 +83,29 @@
         "type": "object",
         "properties": {
           "email": {
-            "type": "string"
+            "type": "string",
+            "description": "Email address, used to log in",
+            "example": "john@stapledon.local"
           },
           "firstName": {
-            "type": "string"
+            "type": "string",
+            "description": "User\u0027s firstname",
+            "nullable": true,
+            "example": "John"
           },
           "lastName": {
-            "type": "string"
+            "type": "string",
+            "description": "User\u0027s surname",
+            "nullable": true,
+            "example": "Doe"
           },
           "roles": {
             "uniqueItems": true,
             "type": "array",
+            "description": "Assigned Roles",
             "items": {
               "type": "string",
+              "description": "Assigned Roles",
               "enum": [
                 "USER",
                 "ADMIN"
