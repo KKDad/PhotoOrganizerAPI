@@ -9,22 +9,50 @@ apply plugin: "java"
 
 group = 'org.stapledon'
 version = '0.0.1-SNAPSHOT'
-
 sourceCompatibility = "${java_version}"
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	implementation 'org.projectlombok:lombok:1.18.24'
+	implementation 'io.springfox:springfox-swagger2:3.0.0'
+	implementation 'io.springfox:springfox-bean-validators:2.9.2'
+
+	annotationProcessor 'org.projectlombok:lombok:1.18.24'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+	testImplementation 'org.mockito:mockito-core:5.0.0'
+	testImplementation 'org.mockito:mockito-inline:5.0.0'
+
+	runtimeOnly 'org.postgresql:postgresql:42.5.1'
+	testRuntimeOnly 'org.postgresql:postgresql:42.5.1'
+
+}
+
+springBoot {
+	buildInfo()
+}
+
 tasks.withType(JavaCompile).configureEach {
 	options.encoding = 'UTF-8'
 }
 tasks.withType(Test).configureEach {
 	useJUnitPlatform()
 }
-springBoot {
-	buildInfo()
-}
+
 
 jar {
 	enabled = false
 }
-
 jar.dependsOn(bootJar)
 
 configurations {
@@ -36,19 +64,3 @@ configurations {
 repositories {
 	mavenCentral()
 }
-
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.projectlombok:lombok:1.18.24'
-
-	annotationProcessor 'org.projectlombok:lombok:1.18.24'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
-	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'io.projectreactor:reactor-test'
-	testImplementation 'org.mockito:mockito-core:5.0.0'
-	testImplementation 'org.mockito:mockito-inline:5.0.0'
-}
-

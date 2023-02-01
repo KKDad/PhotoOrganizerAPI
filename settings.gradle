@@ -1,4 +1,4 @@
 rootProject.name = 'PhotoOrganizer'
-include 'takeout-organizer'
-include 'photo-server'
+include ':takeout-organizer'
+include ':photo-server'
 

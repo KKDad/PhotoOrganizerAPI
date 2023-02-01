@@ -7,12 +7,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.ClassPathResource;
+import org.stapledon.GoogleCredentialConfig;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
 @SpringBootTest
+@Import(GoogleCredentialConfig.class)
 class MetadataToolIntegrationTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(MetadataToolIntegrationTest.class);

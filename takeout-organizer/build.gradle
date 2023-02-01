@@ -9,29 +9,8 @@ apply plugin: "java"
 
 group = 'org.stapledon'
 version = '0.0.1-SNAPSHOT'
-
 sourceCompatibility = "${java_version}"
-tasks.withType(JavaCompile).configureEach {
-	options.encoding = 'UTF-8'
-}
-tasks.withType(Test).configureEach {
-	useJUnitPlatform()
-}
-springBoot {
-	buildInfo()
-}
 
-jar {
-	enabled = false
-}
-
-jar.dependsOn(bootJar)
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
 
 repositories {
 	mavenCentral()
@@ -55,4 +34,23 @@ dependencies {
 	testImplementation 'org.mockito:mockito-core:5.0.0'
 	testImplementation 'org.mockito:mockito-inline:5.0.0'
 }
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
+}
+tasks.withType(Test).configureEach {
+	useJUnitPlatform()
+}
+
+jar {
+	enabled = false
+}
+jar.dependsOn(bootJar)
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
 

@@ -13,7 +13,10 @@ import org.stapledon.dto.takeout.PhotoDetails;
 import org.stapledon.dto.takeout.VerboseTime;
 
 @Slf4j
-@SpringBootTest
+@SpringBootTest(properties = {
+        "organizer.takeout.exports=U:/Sorted/Unsorted-Live",
+        "organizer.destination.base-path=U:/Sorted"
+})
 @Import(GoogleCredentialConfig.class)
 class YearMonthDayOrganizerTest {
 
