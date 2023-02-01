@@ -1,0 +1,100 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "PhotoOrganizer API",
+    "description": "PhotoOrganizer image organizer",
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/KKDad/PhotoOrganizerAPI/LICENSE"
+    },
+    "version": "v0.0.1"
+  },
+  "externalDocs": {
+    "description": "PhotoOrganizer Documentation",
+    "url": "https://github.com/KKDad/PhotoOrganizerAPI/docs"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/v1/users": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "allUsers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/": {
+      "get": {
+        "tags": [
+          "home-controller"
+        ],
+        "operationId": "getHome",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "required": [
+          "email",
+          "roles"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "USER",
+                "ADMIN"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
