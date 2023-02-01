@@ -1,0 +1,119 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "PhotoOrganizer API",
+    "description": "PhotoOrganizer image organizer",
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/KKDad/PhotoOrganizerAPI/LICENSE"
+    },
+    "version": "v0.0.1"
+  },
+  "externalDocs": {
+    "description": "PhotoOrganizer Documentation",
+    "url": "https://github.com/KKDad/PhotoOrganizerAPI/docs"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "List Users",
+      "description": "List all users"
+    }
+  ],
+  "paths": {
+    "/api/v1/users": {
+      "get": {
+        "tags": [
+          "List Users"
+        ],
+        "operationId": "allUsers",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/api/v1/": {
+      "get": {
+        "tags": [
+          "home-controller"
+        ],
+        "operationId": "getHome",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "required": [
+          "email",
+          "roles"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email address, used to log in",
+            "example": "john@stapledon.local"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "User\u0027s firstname",
+            "nullable": true,
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "User\u0027s surname",
+            "nullable": true,
+            "example": "Doe"
+          },
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "Assigned Roles",
+            "items": {
+              "type": "string",
+              "description": "Assigned Roles",
+              "enum": [
+                "USER",
+                "ADMIN"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

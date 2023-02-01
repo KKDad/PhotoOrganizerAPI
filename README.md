@@ -10,6 +10,9 @@ Current services supported:
 Planned:
 - Facebook
 
+## Accessing the API
+See [photo-server](photo-server/README.md) API documentation.
+
 ## Components
 
 Built using Spring boot, Leverages the Google Visions APIs for photo classification.
@@ -30,7 +33,7 @@ $ ./gradlew bootrun
  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
   '  |____| .__|_| |_|_| |_\__, | / / / /
  =========|_|==============|___/=/_/_/_/
- :: Spring Boot ::                (v2.6.6)
+ :: Spring Boot ::                (v2.7.5)
 
 2022-03-23 20:07:42.987  INFO 7772 --- [           main] org.stapledon.PhotoOrganizerApplication  : Starting PhotoOrganizerApplication using Java 13 on VDI-w10-Development with PID 7772 (C:\git\PhotoOrganizer\build\classes\java\main started by Adrian in C:\git\PhotoOrganizer)
 2022-03-23 20:07:42.989  INFO 7772 --- [           main] org.stapledon.PhotoOrganizerApplication  : No active profile set, falling back to 1 default profile: "default"
@@ -57,4 +60,11 @@ service account visionapio-453:
 - Click Add key, then click Create new key.
 - Click Create. A JSON key file is downloaded to your computer.
 - Click Close.
+~~~
+
+## Docker
+
+Docker image build using buildpacks
+~~~
+$ ./gradlew bootBuildImage
 ~~~

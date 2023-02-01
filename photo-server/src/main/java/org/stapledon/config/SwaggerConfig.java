@@ -1,30 +1,23 @@
 package org.stapledon.config;
 
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.models.ExternalDocumentation;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-//@EnableSwagger2
 public class SwaggerConfig {
     @Bean
-    public Docket docket() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .enable(true)
-                .apiInfo(new ApiInfoBuilder()
-                        .title("Swagger Super")
-                        .description("Swagger Description details")
-                        .version("1.0").build())
-                .select()
-                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
-                .paths(PathSelectors.any()).build();
+    public OpenAPI photoOrganizerOpenAPI() {
+        return new OpenAPI()
+                .info(new Info().title("PhotoOrganizer API")
+                        .description("PhotoOrganizer image organizer")
+                        .version("v0.0.1")
+                        .license(new License().name("MIT").url("https://github.com/KKDad/PhotoOrganizerAPI/LICENSE")))
+                .externalDocs(new ExternalDocumentation()
+                        .description("PhotoOrganizer Documentation")
+                        .url("https://github.com/KKDad/PhotoOrganizerAPI/docs"));
     }
 }

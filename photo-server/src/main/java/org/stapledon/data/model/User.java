@@ -1,23 +1,32 @@
 package org.stapledon.data.model;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.lang.NonNull;
 import org.stapledon.data.domain.Role;
 
-import java.util.EnumSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @ToString
 public class User {
     @NonNull
-    public String email;
-    public String firstName;
-    @ApiModelProperty(notes = "User's surname")
-    public String lastName;
+    @Schema(description = "Email address, used to log in",
+            example = "john@stapledon.local")
+    private String email;
+    @Schema(description = "User's firstname",
+            nullable = true,
+            example = "John")
+
+    private String firstName;
+    @Schema(description = "User's surname",
+            nullable = true,
+            example = "Doe")
+    private String lastName;
     @NonNull
-    public EnumSet<Role> roles;
+    @Schema(description = "Assigned Roles")
+    private Set<Role> roles;
 }
