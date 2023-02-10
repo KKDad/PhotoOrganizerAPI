@@ -36,7 +36,8 @@ dependencies {
 	testImplementation 'org.mockito:mockito-inline:5.1.1'
 
 	runtimeOnly 'org.postgresql:postgresql:42.5.1'
-	testRuntimeOnly 'org.postgresql:postgresql:42.5.1'
+	runtimeOnly 'com.h2database:h2'
+	testRuntimeOnly 'com.h2database:h2'
 
 }
 
@@ -62,7 +63,7 @@ tasks.register("updateApiDocs") {
 	}
 }
 
-jar.dependsOn(bootJar)
+//jar.dependsOn(bootJar)
 jar.dependsOn('updateApiDocs')
 updateApiDocs.dependsOn('generateOpenApiDocs')
 
