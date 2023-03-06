@@ -18,6 +18,10 @@ repositories {
 }
 
 dependencies {
+	annotationProcessor 'org.projectlombok:lombok:1.18.24'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -26,19 +30,19 @@ dependencies {
 	implementation 'org.projectlombok:lombok:1.18.24'
 	implementation 'io.springfox:springfox-swagger2:3.0.0'
 
-	annotationProcessor 'org.projectlombok:lombok:1.18.24'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
-	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-
+//	testImplementation 'net.java.dev.jna:jna:5.13.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'io.projectreactor:reactor-test'
-	testImplementation 'org.mockito:mockito-core:5.1.1'
-	testImplementation 'org.mockito:mockito-inline:5.1.1'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+	//testImplementation 'org.mockito:mockito-core:5.1.1'
+	//testImplementation 'org.mockito:mockito-inline:5.1.1'
+
+//	testImplementation "org.testcontainers:postgresql:1.17.6"
+//	testImplementation "org.testcontainers:junit-jupiter:1.17.6"
+	implementation "org.testcontainers:postgresql:1.17.6"
+	implementation "org.testcontainers:junit-jupiter:1.17.6"
 
 	runtimeOnly 'org.postgresql:postgresql:42.5.1'
-	runtimeOnly 'com.h2database:h2'
-	testRuntimeOnly 'com.h2database:h2'
-
 }
 
 springBoot {

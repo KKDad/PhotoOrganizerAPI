@@ -1,28 +1,30 @@
 package org.stapledon.data.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.lang.NonNull;
-import org.stapledon.data.domain.Role;
+import org.stapledon.data.entities.Role;
 
 import java.util.Set;
 
 @Getter
 @Setter
+@Builder
 @ToString
-public class User {
+public class AccountAto {
     @NonNull
     @Schema(description = "Email address, used to log in",
             example = "john@stapledon.local")
     private String email;
-    @Schema(description = "User's firstname",
+    @Schema(description = "users firstname",
             nullable = true,
             example = "John")
 
     private String firstName;
-    @Schema(description = "User's surname",
+    @Schema(description = "users surname",
             nullable = true,
             example = "Doe")
     private String lastName;
