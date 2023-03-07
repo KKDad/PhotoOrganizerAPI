@@ -63,6 +63,9 @@
         ],
         "operationId": "fetchAllAccounts",
         "responses": {
+          "400": {
+            "description": "Invalid status value"
+          },
           "200": {
             "description": "successful operation",
             "content": {
@@ -75,9 +78,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid status value"
           }
         }
       }
