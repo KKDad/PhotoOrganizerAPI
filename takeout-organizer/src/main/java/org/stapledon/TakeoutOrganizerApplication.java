@@ -12,10 +12,10 @@ import java.io.IOException;
 
 @SpringBootApplication
 @Slf4j
-public class PhotoOrganizerApplication {
+public class TakeoutOrganizerApplication {
 
     public static void main(String[] args) throws IOException {
-        var ctx = SpringApplication.run(PhotoOrganizerApplication.class, args);
+        var ctx = SpringApplication.run(TakeoutOrganizerApplication.class, args);
 
 		var elastic = ctx.getBean("restHighLevelClient", RestHighLevelClient.class);
 		var health = elastic.cluster().health(new ClusterHealthRequest(), RequestOptions.DEFAULT);

@@ -21,18 +21,51 @@
   ],
   "tags": [
     {
-      "name": "List Users",
-      "description": "List all users"
+      "name": "List Accounts",
+      "description": "List all accounts"
     }
   ],
   "paths": {
+    "/api/v1/accountAto": {
+      "put": {
+        "tags": [
+          "account-controller"
+        ],
+        "operationId": "saveAccount",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountAto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountAto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/users": {
       "get": {
         "tags": [
-          "List Users"
+          "List Accounts"
         ],
-        "operationId": "allUsers",
+        "operationId": "fetchAllAccounts",
         "responses": {
+          "400": {
+            "description": "Invalid status value"
+          },
           "200": {
             "description": "successful operation",
             "content": {
@@ -40,14 +73,42 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/User"
+                    "$ref": "#/components/schemas/AccountAto"
                   }
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/api/v1/user/{id}": {
+      "get": {
+        "tags": [
+          "account-controller"
+        ],
+        "operationId": "fetchAccount",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountAto"
+                }
+              }
+            }
           }
         }
       }
@@ -75,7 +136,7 @@
   },
   "components": {
     "schemas": {
-      "User": {
+      "AccountAto": {
         "required": [
           "email",
           "roles"
@@ -89,13 +150,13 @@
           },
           "firstName": {
             "type": "string",
-            "description": "User\u0027s firstname",
+            "description": "users firstname",
             "nullable": true,
             "example": "John"
           },
           "lastName": {
             "type": "string",
-            "description": "User\u0027s surname",
+            "description": "users surname",
             "nullable": true,
             "example": "Doe"
           },
