@@ -16,13 +16,18 @@ import java.util.Set;
 @ToString
 public class AccountAto {
     @NonNull
-    @Schema(description = "Email address, used to log in",
+    @Schema(description = "Email address",
             example = "john@stapledon.local")
     private String email;
+
+    @NonNull
+    @Schema(description = "Username used to log in",
+            example = "kkdad")
+    private String username;
+
     @Schema(description = "users firstname",
             nullable = true,
             example = "John")
-
     private String firstName;
     @Schema(description = "users surname",
             nullable = true,

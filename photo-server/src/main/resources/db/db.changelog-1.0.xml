@@ -10,6 +10,9 @@
             <column name="id" type="serial" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
+            <column name="username" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="email" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
