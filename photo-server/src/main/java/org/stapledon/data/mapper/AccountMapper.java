@@ -10,6 +10,8 @@ import java.util.EnumSet;
 public class AccountMapper {
     public AccountAto toAto(Account account) {
         return AccountAto.builder()
+                .email(account.getEmail())
+                .username(account.getUsername())
                 .firstName(account.getFirstName())
                 .lastName(account.getLastName())
                 .roles(account.getRoles())
@@ -18,6 +20,8 @@ public class AccountMapper {
 
     public Account toModel(AccountAto accountAto) {
         return Account.builder()
+                .email(accountAto.getEmail())
+                .username(accountAto.getUsername())
                 .firstName(accountAto.getFirstName())
                 .lastName(accountAto.getLastName())
                 .roles(EnumSet.copyOf(accountAto.getRoles()))

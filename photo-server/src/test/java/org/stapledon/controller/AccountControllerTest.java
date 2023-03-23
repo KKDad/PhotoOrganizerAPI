@@ -11,9 +11,11 @@ import org.stapledon.data.model.AccountAto;
 import org.stapledon.service.AccountService;
 
 import java.util.EnumSet;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AccountControllerTest {
@@ -44,5 +46,29 @@ class AccountControllerTest {
 
     @Test
     void allUsers() {
+        when(accountService.fetchAll()).thenReturn(List.of(
+                AccountAto
+                        .builder()
+                        .email("notreal@email.com")
+                        .firstName("John")
+                        .lastName("Doe")
+                        .roles(EnumSet.of(Role.USER))
+                        .build(),
+                AccountAto.builder()
+                        .email("notreal2@email.com")
+                        .firstName("Jane")
+                        .lastName("Doe")
+                        .roles(EnumSet.of(Role.ADMIN, Role.USER))
+                        .build()));
+        var results = accountController.fetchAllAccounts();
+
+        assertThat(results).hasSize(2);
+        assertThat(results.get(0).getFirstName()).isEqualTo("John");
+        assertThat(results.get(0).getLastName()).isEqualTo("Doe");
+        assertThat(results.get(0).getRoles()).containsExactly(Role.USER);
+
+        assertThat(results.get(1).getFirstName()).isEqualTo("Jane");
+        assertThat(results.get(1).getLastName()).isEqualTo("Doe");
+        assertThat(results.get(1).getRoles()).containsExactly(Role.ADMIN, Role.USER);
     }
 }

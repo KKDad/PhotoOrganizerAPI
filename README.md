@@ -1,4 +1,4 @@
-# PhotoOrganizer
+# PhotoOrganizerAPI
 
 [![Java CI with Gradle](https://github.com/KKDad/PhotoOrganizerAPI/actions/workflows/gradle.yml/badge.svg)](https://github.com/KKDad/PhotoOrganizerAPI/actions/workflows/gradle.yml)
 

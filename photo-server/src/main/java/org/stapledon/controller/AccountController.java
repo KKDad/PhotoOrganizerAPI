@@ -32,7 +32,8 @@ public class AccountController {
 
     @PutMapping("/accountAto")
     public AccountAto saveAccount(@RequestBody AccountAto accountAto) {
-        return accountService.save(accountAto);
+        accountService.save(accountAto);
+        return accountAto;
     }
 
     @GetMapping("/user/{id}")
@@ -43,5 +44,15 @@ public class AccountController {
             log.error("No account located");
         }
         return result;
+    }
+
+    @DeleteMapping("/user/{id}")
+    public void deleteAccount(@PathVariable("id") Long id) {
+        accountService.delete(id);
+    }
+
+    @GetMapping("/user/username/{username}")
+    public AccountAto fetchAccountByUsername(@PathVariable("username") String username) {
+        return accountService.fetchByUsername(username);
     }
 }
