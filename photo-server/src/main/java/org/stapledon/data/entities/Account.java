@@ -3,7 +3,11 @@ package org.stapledon.data.entities;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.EnumSet;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -11,21 +15,34 @@ import java.util.EnumSet;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "account")
+@Table(name = "account",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email")
+})
 @ToString(of={ "firstName", "lastName"})
 public class Account {
 
     @Id
-    @GeneratedValue
-    private Long id;
-    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long accountId;
+    @NotBlank
+    @Size(max = 50)
+    @Email
     private String email;
-    @Column(nullable = false)
+    @NotBlank
+    @Size(max = 20)
     private String username;
-    @Column(nullable = false)
+    @NotBlank
+    @Size(max = 20)
     private String firstName;
-    @Column(nullable = false)
+    @NotBlank
+    @Size(max = 20)
     private String lastName;
-    @Column(nullable = false)
-    private EnumSet<Role> roles;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "account_role",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @Builder.Default
+    private Set<Role> roles = new HashSet<>();
 }

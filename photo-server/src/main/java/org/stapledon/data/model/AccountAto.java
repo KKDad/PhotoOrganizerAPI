@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.lang.NonNull;
-import org.stapledon.data.entities.Role;
 
 import java.util.Set;
 
@@ -35,5 +34,5 @@ public class AccountAto {
     private String lastName;
     @NonNull
     @Schema(description = "Assigned Roles")
-    private Set<Role> roles;
+    private Set<RoleAto> roles;
 }
