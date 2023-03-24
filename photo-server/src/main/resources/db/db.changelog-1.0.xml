@@ -42,15 +42,11 @@
         <addForeignKeyConstraint baseColumnNames="account_id"
                                  baseTableName="account_role"
                                  constraintName="fk_account_role_account_id"
-                                 deferrable="false" initiallyDeferred="false"
-                                 onDelete="CASCADE" onUpdate="NO ACTION"
                                  referencedColumnNames="account_id"
                                  referencedTableName="account"/>
 
         <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="account_role"
                                  constraintName="fk_account_role_role_id"
-                                 deferrable="false" initiallyDeferred="false"
-                                 onDelete="CASCADE" onUpdate="NO ACTION"
                                  referencedColumnNames="role_id"
                                  referencedTableName="role"/>
 

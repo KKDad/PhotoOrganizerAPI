@@ -42,7 +42,7 @@ dependencies {
 	testImplementation "org.testcontainers:postgresql:1.17.6"
 	testImplementation "org.testcontainers:junit-jupiter:1.17.6"
 
-	runtimeOnly 'org.postgresql:postgresql:42.5.4'
+	implementation 'org.postgresql:postgresql:42.5.4'
 }
 
 springBoot {
@@ -54,10 +54,6 @@ tasks.withType(JavaCompile).configureEach {
 }
 tasks.withType(Test).configureEach {
 	useJUnitPlatform()
-}
-
-jar {
-	enabled = false
 }
 
 tasks.register("updateApiDocs") {
@@ -79,14 +75,6 @@ configurations {
 
 repositories {
 	mavenCentral()
-}
-
-bootBuildImage {
-	imageName = "eu.gcr.io/company/imagename"
-	builder = "paketobuildpacks/builder:tiny"
-	if (System.getenv("IMAGE_TAGS")) {
-		tags = (System.getenv("IMAGE_TAGS").split(",") as List<String>).collect { "$imageName:$it" }
-	}
 }
 
 test {
