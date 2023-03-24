@@ -35,6 +35,7 @@ class AccountControllerTest {
                 .username("Douglas.Adams")
                 .firstName("Douglas")
                 .lastName("Adams")
+                .password("password")
                 .roles(Set.of(RoleAto.builder().roleName(AccountRole.ROLE_ADMIN).build()))
                 .build();
 
@@ -55,6 +56,7 @@ class AccountControllerTest {
                         .username("notreal")
                         .firstName("John")
                         .lastName("Doe")
+                        .password("password")
                         .roles(Set.of(RoleAto.builder().roleName(AccountRole.ROLE_USER).build()))
                         .build(),
                 AccountAto.builder()
@@ -62,6 +64,7 @@ class AccountControllerTest {
                         .username("notreal2")
                         .firstName("Jane")
                         .lastName("Doe")
+                        .password("password")
                         .roles(Set.of(RoleAto.builder().roleName(AccountRole.ROLE_ADMIN).build(),
                                 RoleAto.builder().roleName(AccountRole.ROLE_USER).build()))
                         .build()));

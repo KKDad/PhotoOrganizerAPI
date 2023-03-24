@@ -6,7 +6,6 @@ import org.stapledon.data.entities.Role;
 import org.stapledon.data.entities.enums.AccountRole;
 import org.stapledon.data.model.AccountAto;
 import org.stapledon.data.model.RoleAto;
-import org.yaml.snakeyaml.util.EnumUtils;
 
 @Component
 public class AccountMapper {
@@ -19,6 +18,7 @@ public class AccountMapper {
 
         return AccountAto.builder()
                 .email(account.getEmail())
+                .password(account.getPassword())
                 .username(account.getUsername())
                 .firstName(account.getFirstName())
                 .lastName(account.getLastName())
@@ -33,6 +33,7 @@ public class AccountMapper {
 
         return Account.builder()
                 .email(accountAto.getEmail())
+                .password(accountAto.getPassword())
                 .username(accountAto.getUsername())
                 .firstName(accountAto.getFirstName())
                 .lastName(accountAto.getLastName())

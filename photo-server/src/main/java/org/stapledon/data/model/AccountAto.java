@@ -20,6 +20,11 @@ public class AccountAto {
     private String email;
 
     @NonNull
+    @Schema(description = "Password",
+            example = "password")
+    private String password;
+
+    @NonNull
     @Schema(description = "Username used to log in",
             example = "kkdad")
     private String username;

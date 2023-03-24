@@ -30,7 +30,7 @@ public class AccountController {
         return accountService.fetchAll();
     }
 
-    @PutMapping("/accountAto")
+    @PutMapping("/user")
     public AccountAto saveAccount(@RequestBody AccountAto accountAto) {
         accountService.save(accountAto);
         return accountAto;

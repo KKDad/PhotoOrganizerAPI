@@ -84,6 +84,7 @@ class AccountServiceTest {
                 .username("foobar")
                 .firstName("Foo")
                 .lastName("Bar")
+                .password("password")
                 .roles(Set.of(Role.builder().roleName(AccountRole.ROLE_USER).build()))
                 .build();
         return account;
