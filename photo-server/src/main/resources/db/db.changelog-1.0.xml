@@ -6,7 +6,7 @@
 
     <changeSet author="agilbert" id="changelog-1.0" >
 
-        <createTable tablename="role">
+        <createTable tableName="role">
             <column name="role_id" type="serial" autoIncrement="true" startWith="5000">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
