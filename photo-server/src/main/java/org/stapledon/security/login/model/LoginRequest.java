@@ -1,8 +1,9 @@
 package org.stapledon.security.login.model;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
+
 
 @Getter
 @Setter

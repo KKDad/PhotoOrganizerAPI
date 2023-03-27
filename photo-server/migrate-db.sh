@@ -1,12 +1,15 @@
 #!/bin/sh
 #
-# Using docker, drop and recreate the database
+# Using docker, drop and recreate the database used by photo-organizer-api
 
 set +e
-
+DATASOURCE_PASSWORD=$1
+if [ -z DATASOURCE_PASSWORD ]; then
+   echo "DATASOURCE_PASSWORD is required"
+   exit
+fi
 DATASOURCE_HOST=photo-api-postgres
 DATASOURCE_PORT=5432
-DATASOURCE_PASSWORD=mysecretpassword
 DATASOURCE_USERNAME=postgres
 
 SCHEMA_TO_CREATE=photo_organizer
@@ -33,3 +36,6 @@ docker run --pull=always --network=stapledon-network \
            -e SPRING_DATASOURCE_USERNAME=$DATASOURCE_USERNAME \
            -e SPRING_MAIN_WEB-APPLICATION-TYPE=none \
            -d $DOCKER_REGISTRY:5000/kkdad/photo-organizer-api:latest --db-setup
+
+# After the migrations are done, clean up the container
+docker ps -a | grep "photo-organizer-api" | awk '{print $1}' | xargs docker rm

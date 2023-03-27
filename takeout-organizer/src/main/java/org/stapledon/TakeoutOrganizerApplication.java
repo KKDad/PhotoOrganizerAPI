@@ -1,9 +1,7 @@
 package org.stapledon;
 
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.RestClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.stapledon.service.TidyUpService;
@@ -17,11 +15,13 @@ public class TakeoutOrganizerApplication {
     public static void main(String[] args) throws IOException {
         var ctx = SpringApplication.run(TakeoutOrganizerApplication.class, args);
 
-		var elastic = ctx.getBean("restHighLevelClient", RestHighLevelClient.class);
-		var health = elastic.cluster().health(new ClusterHealthRequest(), RequestOptions.DEFAULT);
-		log.info("Elastic: {}", health.getClusterName());
-        log.info(" Status: {}", health.getStatus());
-        log.info("  Nodes: {}", health.getNumberOfNodes());
+		var elastic = ctx.getBean("httpClient", RestClient.class);
+        elastic.getNodes().forEach(node -> log.info("Elasticsearch Node: {}:{} - {} - {}",
+                node.getHost().getHostName(),
+                node.getHost().getPort(),
+                node.getVersion(),
+                node.getRoles()
+        ));
 
 //		logger.info("Being Enrichment Scan");
 //		var vision = ctx.getBean("visionService", VisionService.class);

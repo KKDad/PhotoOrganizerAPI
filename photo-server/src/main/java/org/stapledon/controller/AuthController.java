@@ -1,5 +1,6 @@
 package org.stapledon.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -16,7 +17,6 @@ import org.stapledon.security.login.model.MessageResponse;
 import org.stapledon.security.login.model.UserInfoResponse;
 import org.stapledon.security.login.security.AccountDetailsImpl;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -1,9 +1,8 @@
 package org.stapledon.data.entities;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.stapledon.data.entities.enums.AccountRole;
-
-import javax.persistence.*;
 
 @Entity
 @Getter

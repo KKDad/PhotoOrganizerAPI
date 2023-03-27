@@ -1,6 +1,8 @@
 package org.stapledon.security.jwt;
 
 import io.jsonwebtoken.*;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
@@ -8,8 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 import org.stapledon.security.login.security.AccountDetailsImpl;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Slf4j
