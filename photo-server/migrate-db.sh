@@ -38,4 +38,4 @@ docker run --pull=always --network=stapledon-network \
            -d $DOCKER_REGISTRY:5000/kkdad/photo-organizer-api:latest --db-setup
 
 # After the migrations are done, clean up the container
-docker ps -a | grep "photo-organizer-api" | awk '{print $1}' | xargs docker rm
+#docker ps -a | grep "photo-organizer-api" | awk '{print $1}' | xargs docker rm
