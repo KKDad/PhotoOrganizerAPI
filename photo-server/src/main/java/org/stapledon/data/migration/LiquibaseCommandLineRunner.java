@@ -37,8 +37,8 @@ public class LiquibaseCommandLineRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         for (String arg : args) {
-            if (arg.equals("--db-setup")) {
-                runLiquibaseMigration(datasource, username, password, "db/changelog/db.changelog-master.yaml");
+            if (arg.equalsIgnoreCase("--db-setup")) {
+                runLiquibaseMigration(datasource, username, password, "db/changelog/db.changelog-master.xml");
                 System.exit(SpringApplication.exit(ctx, () -> 0));
             }
         }

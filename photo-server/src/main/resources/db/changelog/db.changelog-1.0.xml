@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet author="agilbert" id="changelog-1.0" >
+    <changeSet author="agilbert" id="db.changelog-1.0" >
 
         <createTable tableName="role">
             <column name="role_id" type="serial" autoIncrement="true" startWith="5000">
