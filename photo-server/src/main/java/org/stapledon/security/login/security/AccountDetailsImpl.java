@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @EqualsAndHashCode
 public class AccountDetailsImpl implements UserDetails {
-    private Long id;
+    private Integer id;
     private String username;
     private String email;
     @JsonIgnore
@@ -21,7 +21,7 @@ public class AccountDetailsImpl implements UserDetails {
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public AccountDetailsImpl(Long id, String username, String email, String password,
+    public AccountDetailsImpl(Integer id, String username, String email, String password,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
@@ -48,7 +48,7 @@ public class AccountDetailsImpl implements UserDetails {
         return authorities;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 

@@ -10,7 +10,7 @@
             <column name="role_id" type="serial" autoIncrement="true" startWith="5000">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="role" type="varchar(20)">
+            <column name="role_name" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -25,16 +25,19 @@
             <column name="email" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
+            <column name="password" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
             <column name="first_name" type="varchar(20)"/>
             <column name="last_name" type="varchar(20)"/>
             <column name="role" type="varchar(200)"/>
         </createTable>
 
         <createTable tableName="account_role">
-            <column name="account_id" type="int">
+            <column name="account_id" type="integer">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="role_id" type="int">
+            <column name="role_id" type="integer">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
         </createTable>
@@ -51,10 +54,10 @@
                                  referencedTableName="role"/>
 
         <insert tableName="role">
-            <column name="role" value="ROLE_USER"/>
+            <column name="role_name" value="ROLE_USER"/>
         </insert>
         <insert tableName="role">
-            <column name="role" value="ROLE_ADMIN"/>
+            <column name="role_name" value="ROLE_ADMIN"/>
         </insert>
 
         <rollback>

@@ -9,7 +9,7 @@ And then run the PhotoOrganizer API docker image:
 ~~~
 docker stop photo-api
 docker rm photo-api
-docker run --network=stapledon-network --name photo-api -e SPRING_DATASOURCE_URL=jdbc:postgresql://photo-api-postgres:5432/postgres -e SPRING_DATASOURCE_PASSWORD=mysecretpassword -e SPRING_DATASOURCE_USERNAME=postgres -d kkdad/photo-organizer-api:0.0.3
+docker run --network=stapledon-network --name photo-api -e SPRING_DATASOURCE_URL=jdbc:postgresql://photo-api-postgres:5432/photo_organizer -e SPRING_DATASOURCE_PASSWORD=mysecretpassword -e SPRING_DATASOURCE_USERNAME=postgres -d kkdad/photo-organizer-api:0.0.3
 ~~~
 
 

@@ -24,7 +24,7 @@ import java.util.Set;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long accountId;
+    private Integer accountId;
     @NotBlank
     @Size(max = 50)
     @Email
