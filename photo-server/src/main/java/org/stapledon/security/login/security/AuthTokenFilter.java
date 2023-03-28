@@ -21,8 +21,8 @@ import java.io.IOException;
 @Service
 @RequiredArgsConstructor
 public class AuthTokenFilter extends OncePerRequestFilter {
-    private JwtUtils jwtUtils;
-    private AccountDetailsService accountDetailsService;
+    private final JwtUtils jwtUtils;
+    private final AccountDetailsService accountDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -44,7 +44,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
-            log.error("Cannot set user authentication: {}", e.getLocalizedMessage(), e);
+            log.error("Cannot set user authentication: {}", e.getLocalizedMessage());
         }
 
         filterChain.doFilter(request, response);
