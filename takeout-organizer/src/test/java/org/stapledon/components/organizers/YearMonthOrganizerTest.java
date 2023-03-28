@@ -11,8 +11,8 @@ import org.stapledon.dto.takeout.PhotoDetails;
 import org.stapledon.dto.takeout.VerboseTime;
 
 @SpringBootTest(properties = {
-        "organizer.takeout.exports=U:/Sorted/Unsorted-Live",
-        "organizer.destination.base-path=U:/Sorted"
+        "organizer.takeout.exports=resources/unsorted",
+        "organizer.destination.base-path=resources/sorted"
 })
 @Import(GoogleCredentialConfig.class)
 class YearMonthOrganizerTest {
@@ -33,7 +33,7 @@ class YearMonthOrganizerTest {
 
         var result = subject.choosePath(photo);
         Assertions.assertNotNull(result);
-        Assertions.assertEquals("U:/Sorted/2014-12", result.toString());
+        Assertions.assertEquals("resources/sorted/2014-12", result.toString().replace("\\", "/"));
     }
 
     @Test

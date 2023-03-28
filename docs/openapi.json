@@ -26,7 +26,7 @@
     }
   ],
   "paths": {
-    "/api/v1/accountAto": {
+    "/api/v1/user": {
       "put": {
         "tags": [
           "account-controller"
@@ -56,6 +56,56 @@
         }
       }
     },
+    "/api/v1/auth/signout": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "logoutUser",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/signin": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "authenticateUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserInfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/users": {
       "get": {
         "tags": [
@@ -63,9 +113,6 @@
         ],
         "operationId": "fetchAllAccounts",
         "responses": {
-          "400": {
-            "description": "Invalid status value"
-          },
           "200": {
             "description": "successful operation",
             "content": {
@@ -78,6 +125,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid status value"
           }
         }
       }
@@ -96,6 +146,58 @@
             "schema": {
               "type": "integer",
               "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountAto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "account-controller"
+        ],
+        "operationId": "deleteAccount",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/user/username/{username}": {
+      "get": {
+        "tags": [
+          "account-controller"
+        ],
+        "operationId": "fetchAccountByUsername",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -139,14 +241,26 @@
       "AccountAto": {
         "required": [
           "email",
-          "roles"
+          "password",
+          "roles",
+          "username"
         ],
         "type": "object",
         "properties": {
           "email": {
             "type": "string",
-            "description": "Email address, used to log in",
+            "description": "Email address",
             "example": "john@stapledon.local"
+          },
+          "password": {
+            "type": "string",
+            "description": "Password",
+            "example": "password"
+          },
+          "username": {
+            "type": "string",
+            "description": "Username used to log in",
+            "example": "kkdad"
           },
           "firstName": {
             "type": "string",
@@ -165,12 +279,67 @@
             "type": "array",
             "description": "Assigned Roles",
             "items": {
-              "type": "string",
-              "description": "Assigned Roles",
-              "enum": [
-                "USER",
-                "ADMIN"
-              ]
+              "$ref": "#/components/schemas/RoleAto"
+            }
+          }
+        }
+      },
+      "RoleAto": {
+        "type": "object",
+        "properties": {
+          "roleName": {
+            "type": "string",
+            "description": "role name",
+            "nullable": true,
+            "example": "ROLE_USER",
+            "enum": [
+              "ROLE_USER",
+              "ROLE_ADMIN"
+            ]
+          }
+        },
+        "description": "Assigned Roles"
+      },
+      "MessageResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginRequest": {
+        "required": [
+          "password",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "UserInfoResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           }
         }

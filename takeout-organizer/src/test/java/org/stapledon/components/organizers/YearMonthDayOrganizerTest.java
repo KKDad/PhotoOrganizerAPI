@@ -13,8 +13,8 @@ import org.stapledon.dto.takeout.VerboseTime;
 
 @Slf4j
 @SpringBootTest(properties = {
-        "organizer.takeout.exports=U:/Sorted/Unsorted-Live",
-        "organizer.destination.base-path=U:/Sorted"
+        "organizer.takeout.exports=resources/unsorted",
+        "organizer.destination.base-path=resources/sorted"
 })
 @Import(GoogleCredentialConfig.class)
 class YearMonthDayOrganizerTest {
@@ -36,7 +36,7 @@ class YearMonthDayOrganizerTest {
         var result = subject.choosePath(photo);
         log.info("result={}", result);
         Assertions.assertNotNull(result);
-        Assertions.assertEquals("U:/Sorted/2014-12-14", result.toString());
+        Assertions.assertEquals("resources/sorted/2014-12-14", result.toString().replace("\\", "/"));
     }
 
     @Test

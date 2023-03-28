@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.lang.NonNull;
-import org.stapledon.data.entities.Role;
 
 import java.util.Set;
 
@@ -19,6 +18,11 @@ public class AccountAto {
     @Schema(description = "Email address",
             example = "john@stapledon.local")
     private String email;
+
+    @NonNull
+    @Schema(description = "Password",
+            example = "password")
+    private String password;
 
     @NonNull
     @Schema(description = "Username used to log in",
@@ -35,5 +39,5 @@ public class AccountAto {
     private String lastName;
     @NonNull
     @Schema(description = "Assigned Roles")
-    private Set<Role> roles;
+    private Set<RoleAto> roles;
 }

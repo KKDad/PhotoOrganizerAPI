@@ -8,13 +8,14 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.stapledon.data.entities.Account;
 import org.stapledon.data.entities.Role;
+import org.stapledon.data.entities.enums.AccountRole;
 import org.stapledon.data.mapper.AccountMapper;
 import org.stapledon.data.repository.AccountRepository;
 
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -83,7 +84,8 @@ class AccountServiceTest {
                 .username("foobar")
                 .firstName("Foo")
                 .lastName("Bar")
-                .roles(EnumSet.of(Role.USER))
+                .password("password")
+                .roles(Set.of(Role.builder().roleName(AccountRole.ROLE_USER).build()))
                 .build();
         return account;
     }

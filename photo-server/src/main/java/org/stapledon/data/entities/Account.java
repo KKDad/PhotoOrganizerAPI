@@ -1,9 +1,13 @@
 package org.stapledon.data.entities;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import javax.persistence.*;
-import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -11,21 +15,36 @@ import java.util.EnumSet;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "account")
+@Table(name = "account",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email")
+})
 @ToString(of={ "firstName", "lastName"})
 public class Account {
-
     @Id
-    @GeneratedValue
-    private Long id;
-    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer accountId;
+    @NotBlank
+    @Size(max = 50)
+    @Email
     private String email;
-    @Column(nullable = false)
+    @NotBlank
+    @Size(max = 120)
+    private String password;
+    @NotBlank
+    @Size(max = 20)
     private String username;
-    @Column(nullable = false)
+    @NotBlank
+    @Size(max = 20)
     private String firstName;
-    @Column(nullable = false)
+    @NotBlank
+    @Size(max = 20)
     private String lastName;
-    @Column(nullable = false)
-    private EnumSet<Role> roles;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "account_role",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @Builder.Default
+    private Set<Role> roles = new HashSet<>();
 }

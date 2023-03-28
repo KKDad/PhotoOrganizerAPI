@@ -6,12 +6,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.stapledon.data.entities.Role;
+import org.stapledon.data.entities.enums.AccountRole;
 import org.stapledon.data.model.AccountAto;
+import org.stapledon.data.model.RoleAto;
 import org.stapledon.service.AccountService;
 
-import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
@@ -34,7 +35,8 @@ class AccountControllerTest {
                 .username("Douglas.Adams")
                 .firstName("Douglas")
                 .lastName("Adams")
-                .roles(EnumSet.of(Role.ADMIN))
+                .password("password")
+                .roles(Set.of(RoleAto.builder().roleName(AccountRole.ROLE_ADMIN).build()))
                 .build();
 
         doReturn(accountEntity).when(accountService).fetch(id);
@@ -42,7 +44,7 @@ class AccountControllerTest {
 
         assertThat(result.getFirstName()).isEqualTo("Douglas");
         assertThat(result.getLastName()).isEqualTo("Adams");
-        assertThat(result.getRoles()).containsExactly(Role.ADMIN);
+        assertThat(result.getRoles()).containsExactly(RoleAto.builder().roleName(AccountRole.ROLE_ADMIN).build());
     }
 
     @Test
@@ -54,14 +56,17 @@ class AccountControllerTest {
                         .username("notreal")
                         .firstName("John")
                         .lastName("Doe")
-                        .roles(EnumSet.of(Role.USER))
+                        .password("password")
+                        .roles(Set.of(RoleAto.builder().roleName(AccountRole.ROLE_USER).build()))
                         .build(),
                 AccountAto.builder()
                         .email("notreal2@email.com")
                         .username("notreal2")
                         .firstName("Jane")
                         .lastName("Doe")
-                        .roles(EnumSet.of(Role.ADMIN, Role.USER))
+                        .password("password")
+                        .roles(Set.of(RoleAto.builder().roleName(AccountRole.ROLE_ADMIN).build(),
+                                RoleAto.builder().roleName(AccountRole.ROLE_USER).build()))
                         .build()));
         var results = accountController.fetchAllAccounts();
 
@@ -70,12 +75,13 @@ class AccountControllerTest {
         assertThat(results.get(0).getUsername()).isEqualTo("notreal");
         assertThat(results.get(0).getFirstName()).isEqualTo("John");
         assertThat(results.get(0).getLastName()).isEqualTo("Doe");
-        assertThat(results.get(0).getRoles()).containsExactly(Role.USER);
+        assertThat(results.get(0).getRoles()).containsExactly(RoleAto.builder().roleName(AccountRole.ROLE_USER).build());
 
         assertThat(results.get(1).getEmail()).isEqualTo("notreal2@email.com");
         assertThat(results.get(1).getUsername()).isEqualTo("notreal2");
         assertThat(results.get(1).getFirstName()).isEqualTo("Jane");
         assertThat(results.get(1).getLastName()).isEqualTo("Doe");
-        assertThat(results.get(1).getRoles()).containsExactlyInAnyOrder(Role.ADMIN, Role.USER);
+        assertThat(results.get(1).getRoles()).containsExactlyInAnyOrder(RoleAto.builder().roleName(AccountRole.ROLE_ADMIN).build(),
+                RoleAto.builder().roleName(AccountRole.ROLE_USER).build());
     }
 }
