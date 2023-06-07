@@ -9,12 +9,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseCookie;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.stapledon.security.login.security.AccountDetailsImpl;
+import org.stapledon.security.auth.AccountDetailsImpl;
 
+import java.time.Clock;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,7 +29,12 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class JwtUtilsTest {
 
-    private static final JwtUtils jwtUtils = new JwtUtils();
+    @Mock
+    private Clock clock = Clock.fixed(Instant.now(), ZoneId.of("UTC"));
+
+    @InjectMocks
+    private JwtUtils jwtUtils;
+
 
     @BeforeEach
     void setUp() {

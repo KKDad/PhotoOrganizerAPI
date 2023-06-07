@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.*;
 import org.stapledon.GoogleCredentialConfig;
-import org.stapledon.security.login.model.LoginRequest;
-import org.stapledon.security.login.model.UserInfoResponse;
+import org.stapledon.security.model.LoginRequest;
+import org.stapledon.security.model.UserInfoResponse;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

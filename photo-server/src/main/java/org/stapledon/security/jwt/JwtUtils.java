@@ -3,18 +3,23 @@ package org.stapledon.security.jwt;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
-import org.stapledon.security.login.security.AccountDetailsImpl;
+import org.stapledon.security.auth.AccountDetailsImpl;
 
+import java.time.Clock;
 import java.util.Date;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtUtils {
+
+    private final Clock clock;
     @Value("${security.app.jwtSecret}")
     private String jwtSecret;
 
