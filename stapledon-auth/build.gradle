@@ -1,0 +1,9 @@
+dependencies {
+	testImplementation project(":common-utils")
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}

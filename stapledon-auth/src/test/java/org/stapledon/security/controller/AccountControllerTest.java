@@ -1,4 +1,4 @@
-package org.stapledon.security.jwt.controller;
+package org.stapledon.security.controller;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Test;

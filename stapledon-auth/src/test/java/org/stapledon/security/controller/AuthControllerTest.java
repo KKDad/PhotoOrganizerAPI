@@ -1,4 +1,4 @@
-package org.stapledon.security.jwt.controller;
+package org.stapledon.security.controller;
 
 import org.junit.jupiter.api.Test;
 

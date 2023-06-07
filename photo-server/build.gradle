@@ -1,61 +1,9 @@
-plugins {
-	id 'java'
-	id 'jacoco'
-	id 'com.coditory.integration-test' version '1.4.5'
-	id 'io.spring.dependency-management' version '1.1.0'
-	id 'org.springdoc.openapi-gradle-plugin' version "1.6.0"
-	id 'org.springframework.boot' version '3.1.0'
-}
-
-apply plugin: "java"
-apply plugin: "jacoco"
-
-group = 'org.stapledon'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = "${java_version}"
-
-repositories {
-	mavenCentral()
-}
-
-dependencies {
-	testImplementation 'org.springframework.boot:org.springframework.boot.gradle.plugin:3.1.0'
-	annotationProcessor 'org.projectlombok:lombok:1.18.26'
-	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
-
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'
-	implementation 'io.springfox:springfox-swagger2:3.0.0'
-	implementation 'io.swagger.core.v3:swagger-annotations:2.2.10'
-	implementation 'org.liquibase:liquibase-core:4.22.0'
-	implementation 'org.projectlombok:lombok:1.18.26'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
-	implementation 'org.postgresql:postgresql:42.6.0'
-
-	testImplementation 'org.testcontainers:postgresql:1.18.1'
-	testImplementation 'org.testcontainers:junit-jupiter:1.18.1'
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
-
-	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
+dependencies{
+	implementation project(":stapledon-auth")
 }
 
 springBoot {
 	buildInfo()
-}
-
-tasks.withType(JavaCompile).configureEach {
-	options.encoding = 'UTF-8'
-}
-tasks.withType(Test).configureEach {
-	useJUnitPlatform()
 }
 
 tasks.register("updateApiDocs") {
@@ -75,10 +23,6 @@ configurations {
 	}
 }
 
-repositories {
-	mavenCentral()
-}
-
 test {
 	finalizedBy jacocoTestReport
 }
@@ -90,10 +34,4 @@ jacocoTestReport {
 bootRun {
 	environment("SPRING_DATASOURCE_URL", "jdbc:tc:postgresql:13.9://localhost/testdb?TC_TMPFS=/var/lib/postgresql/data:rw")
 	environment("SPRING_DATASOURCE_DRIVERCLASSNAME", "org.testcontainers.jdbc.ContainerDatabaseDriver")
-}
-
-java {
-	toolchain {
-		languageVersion.set(JavaLanguageVersion.of("${java_version}"))
-	}
 }
