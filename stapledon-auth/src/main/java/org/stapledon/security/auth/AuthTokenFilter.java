@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.stapledon.security.jwt.JwtUtils;
-import org.stapledon.security.service.AccountDetailsService;
+import org.stapledon.security.service.StapledonUserDetailsService;
 
 import java.io.IOException;
 
@@ -23,7 +23,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthTokenFilter extends OncePerRequestFilter {
     private final JwtUtils jwtUtils;
-    private final AccountDetailsService accountDetailsService;
+    private final StapledonUserDetailsService stapledonUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -33,7 +33,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
-                UserDetails userDetails = accountDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = stapledonUserDetailsService.loadUserByUsername(username);
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(userDetails,

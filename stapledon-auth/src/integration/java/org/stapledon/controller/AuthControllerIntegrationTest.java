@@ -1,5 +1,6 @@
 package org.stapledon.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,16 +17,13 @@ import org.stapledon.security.model.UserInfoResponse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@EnableJpaRepositories(basePackages = {
-        "org.stapledon"
-})
-@Import(GoogleCredentialConfig.class)
+@EnableJpaRepositories(basePackages = {"org.stapledon" })
+@RequiredArgsConstructor
 public class AuthControllerIntegrationTest {
 
     @Value(value="${local.server.port}")
     private int port;
 
-    @Autowired
     private TestRestTemplate restTemplate;
 
     @Test

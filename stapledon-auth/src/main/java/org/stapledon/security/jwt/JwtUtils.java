@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
-import org.stapledon.security.auth.AccountDetailsImpl;
+import org.stapledon.security.service.StapledonUserDetails;
 
 import java.time.Clock;
 import java.util.Date;
@@ -38,7 +38,7 @@ public class JwtUtils {
         }
     }
 
-    public ResponseCookie generateJwtCookie(AccountDetailsImpl userPrincipal) {
+    public ResponseCookie generateJwtCookie(StapledonUserDetails userPrincipal) {
         String jwt = generateTokenFromUsername(userPrincipal.getUsername());
         return ResponseCookie.from(jwtCookie, jwt).path("/api").maxAge(24 * 60 * 60L).httpOnly(true).build();
     }

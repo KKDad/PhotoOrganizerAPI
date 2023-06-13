@@ -11,11 +11,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.stapledon.security.service.StapledonUserDetails;
 import org.stapledon.security.jwt.JwtUtils;
 import org.stapledon.security.model.LoginRequest;
 import org.stapledon.security.model.MessageResponse;
 import org.stapledon.security.model.UserInfoResponse;
-import org.stapledon.security.auth.AccountDetailsImpl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,7 +36,7 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        AccountDetailsImpl userDetails = (AccountDetailsImpl) authentication.getPrincipal();
+        StapledonUserDetails userDetails = (StapledonUserDetails) authentication.getPrincipal();
 
         ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 

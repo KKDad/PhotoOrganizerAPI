@@ -3,33 +3,41 @@ plugins {
     id 'jacoco'
     id 'com.coditory.integration-test' version '1.4.5'
     id 'io.spring.dependency-management' version '1.1.0'
-    id 'org.springdoc.openapi-gradle-plugin' version "1.6.0"
     id 'org.springframework.boot' version '3.1.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+bootJar {
+    enabled = false
+}
+jar {
+    enabled = false
 }
 
 subprojects {
     apply plugin: "java"
-    apply plugin: "idea"
     apply plugin: "jacoco"
     apply plugin: "com.coditory.integration-test"
-    apply plugin: "org.springframework.boot"
-    apply plugin: "org.springdoc.openapi-gradle-plugin"
     apply plugin: "io.spring.dependency-management"
+    apply plugin: "org.springframework.boot"
 
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
     group = 'org.stapledon'
-
 
     repositories {
         mavenCentral()
     }
 
     dependencies {
-        testImplementation 'org.springframework.boot:org.springframework.boot.gradle.plugin:3.1.0'
         annotationProcessor 'org.projectlombok:lombok:1.18.26'
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+        integrationAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
+        testImplementation 'org.springframework.boot:org.springframework.boot.gradle.plugin:3.1.0'
 
         implementation 'org.springframework.boot:spring-boot-starter-web'
         implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -46,7 +54,7 @@ subprojects {
         implementation 'org.postgresql:postgresql:42.6.0'
 
         testImplementation 'org.testcontainers:postgresql:1.18.1'
-        testImplementation 'org.testcontainers:junit-jupiter:1.18.1'
+        //testImplementation 'org.testcontainers:junit-jupiter:1.18.1'
         testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation 'org.springframework.boot:spring-boot-testcontainers'
@@ -69,5 +77,12 @@ subprojects {
         toolchain {
             languageVersion.set(JavaLanguageVersion.of(JavaVersion.VERSION_17.toString()))
         }
+    }
+    bootJar {
+        mainClass = "org.stapledon.PhotoOrganizerApplication"
+        enabled = false
+    }
+    jar {
+        enabled = true
     }
 }

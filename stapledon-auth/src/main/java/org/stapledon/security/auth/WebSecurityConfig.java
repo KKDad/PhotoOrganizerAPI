@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.stapledon.security.jwt.AuthEntryPointJwt;
-import org.stapledon.security.service.AccountDetailsService;
+import org.stapledon.security.service.StapledonUserDetailsService;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
@@ -23,7 +23,7 @@ import org.stapledon.security.service.AccountDetailsService;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    private final AccountDetailsService accountDetailsService;
+    private final StapledonUserDetailsService stapledonUserDetailsService;
 
     private final AuthEntryPointJwt unauthorizedHandler;
 
@@ -38,7 +38,7 @@ public class WebSecurityConfig {
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
-        authProvider.setUserDetailsService(accountDetailsService);
+        authProvider.setUserDetailsService(stapledonUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
 
         return authProvider;
@@ -56,17 +56,17 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests()
-                .requestMatchers("/api/v1/auth/**").permitAll()
-                .requestMatchers("/error").permitAll()          // Needed for generateOpenApiDocs
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                .anyRequest().authenticated();
-
-        http.authenticationProvider(authenticationProvider());
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+//        http.cors().and().csrf().disable()
+//                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+//                .authorizeHttpRequests()
+//                .requestMatchers("/api/v1/auth/**").permitAll()
+//                .requestMatchers("/error").permitAll()          // Needed for generateOpenApiDocs
+//                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+//                .anyRequest().authenticated();
+//
+//        http.authenticationProvider(authenticationProvider());
+//        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

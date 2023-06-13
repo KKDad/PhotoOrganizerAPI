@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseCookie;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.stapledon.security.auth.AccountDetailsImpl;
+import org.stapledon.security.service.StapledonUserDetails;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -74,7 +74,7 @@ class JwtUtilsTest {
     @Test
     void generateJwtCookie_ReturnsValidCookie_WhenUserPrincipalIsNotNull() {
         // Arrange
-        AccountDetailsImpl userPrincipal = mock(AccountDetailsImpl.class);
+        StapledonUserDetails userPrincipal = mock(StapledonUserDetails.class);
         when(userPrincipal.getUsername()).thenReturn("testUser");
 
         // Act

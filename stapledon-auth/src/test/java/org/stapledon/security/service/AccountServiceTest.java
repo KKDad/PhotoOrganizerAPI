@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -60,8 +60,27 @@ class AccountServiceTest {
     void save() {
         Account account = getAccount("foo@bar.com");
         when(accountRepository.save(any())).thenReturn(account);
-        accountService.save(accountMapper.toAto(account));
+        // Assert no exception is thrown when saving
+        assertDoesNotThrow(() -> accountService.save(accountMapper.toAto(account)));
         verify(accountRepository, times(1)).save(any());
+    }
+
+    @Test
+    void saveDuplicateUsername() {
+        Account account = getAccount("foo@bar.com");
+        when(accountRepository.existsByUsername(any())).thenReturn(true);
+        // Assert exception is thrown when saving
+        assertThrows(DuplicateAccountException.class, () -> accountService.save(accountMapper.toAto(account)));
+        verify(accountRepository, times(0)).save(any());
+    }
+
+    @Test
+    void saveDuplicateEmail() {
+        Account account = getAccount("foo@bar.com");
+        when(accountRepository.existsByEmail(any())).thenReturn(true);
+        // Assert exception is thrown when saving
+        assertThrows(DuplicateAccountException.class, () -> accountService.save(accountMapper.toAto(account)));
+        verify(accountRepository, times(0)).save(any());
     }
 
     @Test
@@ -69,6 +88,14 @@ class AccountServiceTest {
         Account account = getAccount("foo@bar.com");
         when(accountRepository.findByUsername("foobar")).thenReturn(Optional.of(account));
         assertEquals(account.getEmail(), accountService.fetchByUsername("foobar").getEmail());
+        verify(accountMapper, times(1)).toAto(any());
+    }
+
+    @Test
+    void fetchByEmail() {
+        Account account = getAccount("foo@bar.com");
+        when(accountRepository.findByEmail("foo@bar.com")).thenReturn(Optional.of(account));
+        assertEquals(account.getEmail(), accountService.fetchByEmail("foo@bar.com").getEmail());
         verify(accountMapper, times(1)).toAto(any());
     }
 
