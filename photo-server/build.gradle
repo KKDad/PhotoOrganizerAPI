@@ -3,11 +3,6 @@ plugins {
 }
 
 
-group = 'org.stapledon'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = "${java_version}"
-
-
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -38,10 +33,4 @@ tasks.register("updateApiDocs") {
 
 tasks.named("build") {
 	finalizedBy("updateApiDocs")
-}
-
-
-bootRun {
-	environment("SPRING_DATASOURCE_URL", "jdbc:tc:postgresql:13.9://localhost/testdb?TC_TMPFS=/var/lib/postgresql/data:rw")
-	environment("SPRING_DATASOURCE_DRIVERCLASSNAME", "org.testcontainers.jdbc.ContainerDatabaseDriver")
 }

@@ -4,7 +4,7 @@
 
 set +e
 DATASOURCE_PASSWORD=$1
-if [ -z DATASOURCE_PASSWORD ]; then
+if [ -z "$DATASOURCE_PASSWORD" ]; then
    echo "DATASOURCE_PASSWORD is required"
    exit
 fi
@@ -32,8 +32,8 @@ docker run --rm \
 # Run the migrations
 docker run --pull=always --network=stapledon-network \
            -e SPRING_DATASOURCE_URL=jdbc:postgresql://$DATASOURCE_HOST:$DATASOURCE_PORT/$SCHEMA_TO_CREATE \
-           -e SPRING_DATASOURCE_PASSWORD=$DATASOURCE_PASSWORD \
-           -e SPRING_DATASOURCE_USERNAME=$DATASOURCE_USERNAME \
+           -e SPRING_DATASOURCE_PASSWORD="$DATASOURCE_PASSWORD" \
+           -e SPRING_DATASOURCE_USERNAME="$DATASOURCE_USERNAME" \
            -e SPRING_MAIN_WEB-APPLICATION-TYPE=none \
            -d $DOCKER_REGISTRY:5000/kkdad/photo-organizer-api:latest --db-setup
 

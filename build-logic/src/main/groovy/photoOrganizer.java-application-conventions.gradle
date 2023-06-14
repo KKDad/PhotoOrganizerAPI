@@ -7,7 +7,17 @@ plugins {
     id 'application'
 }
 
+
+group = 'org.stapledon'
+version = '0.0.3-SNAPSHOT'
+
 jar {
 	enabled = false
 }
 jar.dependsOn(bootJar)
+
+
+bootJar {
+	mainClass = "org.stapledon.PhotoOrganizerApplication"
+	enabled = true
+}
