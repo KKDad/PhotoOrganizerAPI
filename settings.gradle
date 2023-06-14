@@ -3,5 +3,6 @@ pluginManagement {
     includeBuild('build-logic')
 }
 
-rootProject.name = 'foo'
+rootProject.name = 'PhotoOrganizer'
 include('takeout-organizer', 'common-util', "stapledon-auth", 'photo-server')
+
