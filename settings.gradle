@@ -4,5 +4,5 @@ pluginManagement {
 }
 
 rootProject.name = 'PhotoOrganizer'
-include('takeout-organizer', 'common-util', "stapledon-auth", 'photo-server')
+include('takeout-organizer', 'common-utils', "stapledon-auth", 'photo-server')
 
