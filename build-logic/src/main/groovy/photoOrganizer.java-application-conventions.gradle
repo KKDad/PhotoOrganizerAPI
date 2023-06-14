@@ -1,0 +1,13 @@
+plugins {
+    // Apply the common convention plugin for shared build configuration between modules and 
+    // the main application
+    id 'photoOrganizer.java-common-conventions'
+
+    // Apply the application plugin to add support for building a CLI application in Java.
+    id 'application'
+}
+
+jar {
+	enabled = false
+}
+jar.dependsOn(bootJar)

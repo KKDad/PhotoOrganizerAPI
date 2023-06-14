@@ -1,4 +1,7 @@
-rootProject.name = 'PhotoOrganizer'
-include ':takeout-organizer'
-include ':photo-server'
+pluginManagement {
+    // Include 'plugins build' to define convention plugins.
+    includeBuild('build-logic')
+}
 
+rootProject.name = 'foo'
+include('takeout-organizer', 'common-util', "stapledon-auth", 'photo-server')

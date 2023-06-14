@@ -1,0 +1,14 @@
+plugins {
+    id 'groovy-gradle-plugin'
+}
+
+repositories {
+    gradlePluginPortal()
+}
+
+dependencies {
+    
+    implementation 'com.coditory.integration-test:com.coditory.integration-test.gradle.plugin:1.4.5'
+	implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.1.0'
+    implementation 'io.spring.dependency-management:io.spring.dependency-management.gradle.plugin:1.1.0'
+}
