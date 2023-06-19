@@ -1,8 +1,6 @@
 plugins {
-    // Apply the common convention plugin for shared build configuration between modules and 
-    // the main application
     id 'photoOrganizer.java-common-conventions'
+    id 'photoOrganizer.java-common-springboot-conventions'
 
-    // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
 }

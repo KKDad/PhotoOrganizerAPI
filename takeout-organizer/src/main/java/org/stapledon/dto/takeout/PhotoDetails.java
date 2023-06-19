@@ -5,14 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
-import lombok.extern.jackson.Jacksonized;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
-@Jacksonized
 public class PhotoDetails implements Serializable
 {
     @JsonProperty("title")

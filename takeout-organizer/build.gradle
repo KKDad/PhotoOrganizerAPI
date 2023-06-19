@@ -4,12 +4,9 @@ plugins {
 
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.google.cloud:spring-cloud-gcp-dependencies:4.4.0'
+	implementation 'com.google.cloud:spring-cloud-gcp-starter-vision:4.4.0'
 
-	implementation 'com.google.cloud:spring-cloud-gcp-dependencies:4.3.1'
-	implementation 'com.google.cloud:spring-cloud-gcp-starter-vision:4.3.0'
+	implementation project(':common-utils')
+	testImplementation project(':common-utils')
 }
-
-
-

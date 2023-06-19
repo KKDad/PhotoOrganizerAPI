@@ -2,7 +2,6 @@ package org.stapledon.configuration;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.stapledon.TakeoutOrganizerApplication;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -15,7 +14,7 @@ public class BuildVersion {
     private Properties buildProps;
 
     public BuildVersion() {
-        var url = TakeoutOrganizerApplication.class.getClassLoader().getResource("META-INF/build-info.properties");
+        var url = BuildVersion.class.getClassLoader().getResource("META-INF/build-info.properties");
         if (url == null) {
             buildProps = new Properties();
             return;
