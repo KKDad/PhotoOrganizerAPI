@@ -29,7 +29,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@40b6781dcdec2762ad36556682ac74e31030cfe2
+      uses: gradle/gradle-build-action@243af859f8ca30903d9d7f7936897ca0358ba691
       with:
         arguments: build  -x integrationTest
     - name: Store reports
