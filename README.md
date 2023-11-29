@@ -46,7 +46,7 @@ $ ./gradlew bootrun
 2022-03-23 20:07:44.108  INFO 7772 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.58]
 2022-03-23 20:07:44.210  INFO 7772 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
 2022-03-23 20:07:44.211  INFO 7772 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1187 ms
-2022-03-23 20:07:44.408  INFO 7772 --- [           main] o.s.c.g.core.DefaultCredentialsProvider  : Default credentials provider for service account visionapio-453@speedy-emissary-344223.iam.gserviceaccount.com
+2022-03-23 20:07:44.408  INFO 7772 --- [           main] o.s.c.g.core.DefaultCredentialsProvider  : Default credentials provider for service userInfo visionapio-453@speedy-emissary-344223.iam.gserviceaccount.com
 2022-03-23 20:07:45.566  INFO 7772 --- [           main] o.s.c.g.a.c.GcpContextAutoConfiguration  : The default project ID is speedy-emissary-344223
 2022-03-23 20:07:45.569  INFO 7772 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoint(s) beneath base path '/actuator'
 ~~~
@@ -55,7 +55,7 @@ $ ./gradlew bootrun
 
 This project needs a Service Key. Follow the guide here https://cloud.google.com/vision/docs/setup 
 and download the service key json file. Eg: In the Cloud Console, click the email address for the 
-service account visionapio-453:
+service userInfo visionapio-453:
 - Click Keys.
 - Click Add key, then click Create new key.
 - Click Create. A JSON key file is downloaded to your computer.

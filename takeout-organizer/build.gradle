@@ -1,8 +1,8 @@
 plugins {
 	id 'java'
 	id 'com.coditory.integration-test' version '1.4.5'
-	id 'org.springframework.boot' version '3.1.4'
-	id 'io.spring.dependency-management' version '1.1.2'
+	id 'org.springframework.boot' version '3.1.5'
+	id 'io.spring.dependency-management' version '1.1.4'
 }
 
 apply plugin: "java"
@@ -19,19 +19,20 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.projectlombok:lombok:1.18.28'
+	implementation 'org.projectlombok:lombok:1.18.30'
 
 	// Google Vision APIs
-	implementation 'com.google.cloud:spring-cloud-gcp-dependencies:4.7.2'
-	implementation 'com.google.cloud:spring-cloud-gcp-starter-vision:4.5.1'
+	implementation 'com.google.cloud:spring-cloud-gcp-dependencies:4.8.4'
+	implementation 'com.google.cloud:spring-cloud-gcp-starter-vision:4.8.4'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
 
-	annotationProcessor 'org.projectlombok:lombok:1.18.28'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
-	testImplementation 'org.mockito:mockito-core:5.5.0'
+	testImplementation 'org.mockito:mockito-core:5.7.0'
 	testImplementation 'org.mockito:mockito-inline:5.2.0'
 }
 

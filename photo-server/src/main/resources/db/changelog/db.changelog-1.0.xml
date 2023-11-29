@@ -15,8 +15,8 @@
             </column>
         </createTable>
 
-        <createTable tableName="account">
-            <column name="account_id" type="serial" autoIncrement="true" startWith="100">
+        <createTable tableName="user">
+            <column name="user_id" type="serial" autoIncrement="true" startWith="100">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="username" type="varchar(20)">
@@ -33,8 +33,8 @@
             <column name="role" type="varchar(200)"/>
         </createTable>
 
-        <createTable tableName="account_role">
-            <column name="account_id" type="integer">
+        <createTable tableName="user_role">
+            <column name="user_id" type="integer">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="role_id" type="integer">
@@ -42,14 +42,14 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseColumnNames="account_id"
-                                 baseTableName="account_role"
-                                 constraintName="fk_account_role_account_id"
-                                 referencedColumnNames="account_id"
-                                 referencedTableName="account"/>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="user_role"
+                                 constraintName="fk_user_role_user_id"
+                                 referencedColumnNames="user_id"
+                                 referencedTableName="user"/>
 
         <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="account_role"
-                                 constraintName="fk_account_role_role_id"
+                                 constraintName="fk_user_role_role_id"
                                  referencedColumnNames="role_id"
                                  referencedTableName="role"/>
 
@@ -62,7 +62,7 @@
 
         <rollback>
             <dropTable tableName="account_role"/>
-            <dropTable tableName="account"/>
+            <dropTable tableName="userInfo"/>
             <dropTable tableName="role"/>
         </rollback>
     </changeSet>
