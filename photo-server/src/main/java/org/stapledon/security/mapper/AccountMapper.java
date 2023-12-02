@@ -46,7 +46,7 @@ public class AccountMapper {
 
     public UserInfoDetails toUserInfoDetails(UserInfo userInfo) {
         return UserInfoDetails.builder()
-                .username(userInfo.getEmail())
+                .username(userInfo.getUsername())
                 .password(userInfo.getPassword())
                 .authorities(userInfo.getRoles()
                         .stream()

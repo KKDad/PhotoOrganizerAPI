@@ -1,6 +1,7 @@
 package org.stapledon.security.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,6 +15,8 @@ import org.stapledon.security.model.AuthRequest;
 import org.stapledon.security.service.JwtService;
 import org.stapledon.security.service.UserInfoService;
 
+import java.net.URI;
+
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -25,8 +28,9 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/addNewUser")
-    public String addNewUser(@RequestBody UserInfo userInfo) {
-        return userInfoFacade.addUser(userInfo);
+    public ResponseEntity<Object> addNewUser(@RequestBody UserInfo userInfo) {
+        UserInfo createdUser = userInfoFacade.addUser(userInfo);
+        return ResponseEntity.created(URI.create("/api/v1/users/" + createdUser.getUserId())).build();
     }
 
     @PostMapping("/generateToken")

@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.stapledon.security.entities.UserInfo;
 import org.stapledon.security.filter.UserInfoDetails;
 import org.stapledon.security.mapper.AccountMapper;
@@ -23,6 +24,7 @@ public class UserInfoService implements UserDetailsService {
 
     @Lazy
     @Autowired
+    // Do not use remove @Autowired and use constructor injection - Will cause circular dependency
     private PasswordEncoder encoder;
 
     @Override
@@ -31,9 +33,9 @@ public class UserInfoService implements UserDetailsService {
         return mapper.toUserInfoDetails(userDetail.orElseThrow(() -> new UsernameNotFoundException("User not found " + username)));
     }
 
-    public String addUser(UserInfo userInfo) {
+    @Transactional
+    public UserInfo addUser(UserInfo userInfo) {
         userInfo.setPassword(encoder.encode(userInfo.getPassword()));
-        repository.save(userInfo);
-        return "User Added Successfully";
+        return repository.save(userInfo);
     }
 }

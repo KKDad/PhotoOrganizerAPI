@@ -1,12 +1,13 @@
 package org.stapledon.security.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@Builder
+@ToString
 @AllArgsConstructor
-@NoArgsConstructor
+@EqualsAndHashCode
 public class AuthRequest {
     private String username;
     private String password;

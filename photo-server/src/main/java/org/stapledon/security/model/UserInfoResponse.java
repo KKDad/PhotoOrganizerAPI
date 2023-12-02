@@ -1,10 +1,7 @@
 package org.stapledon.security.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.lang.NonNull;
 
 import java.util.Set;
@@ -13,6 +10,8 @@ import java.util.Set;
 @Setter
 @Builder
 @ToString
+@AllArgsConstructor
+@EqualsAndHashCode
 public class UserInfoResponse {
     @NonNull
     @Schema(description = "Email address",

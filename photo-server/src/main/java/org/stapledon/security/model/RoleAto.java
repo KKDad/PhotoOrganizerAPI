@@ -8,6 +8,7 @@ import org.stapledon.security.entities.enums.UserRole;
 @Setter
 @Builder
 @ToString
+@AllArgsConstructor
 @EqualsAndHashCode
 public class RoleAto {
     @Schema(description = "role name",

@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.stapledon.security.entities.UserInfo;
 import org.stapledon.security.entities.enums.UserRole;
 import org.stapledon.security.filter.UserInfoDetails;
@@ -81,9 +83,11 @@ class AccountMapperTest {
         UserInfoDetails details = accountMapper.toUserInfoDetails(userInfo);
 
         // Assertions to verify details
-        assertThat(details.getUsername()).isEqualTo(userInfo.getEmail());
+        assertThat(details.getUsername()).isEqualTo(userInfo.getUsername());
         assertThat(details.getPassword()).isEqualTo(userInfo.getPassword());
-    }
+        assertThat(details.getAuthorities())
+                .hasSize(2);
+    };
 
     private UserInfo generateTestUserInfo() {
         return UserInfo.builder()
