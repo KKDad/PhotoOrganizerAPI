@@ -2,12 +2,12 @@ package org.stapledon.security.mapper;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-import org.stapledon.security.entities.UserInfo;
 import org.stapledon.security.entities.Role;
-import org.stapledon.security.filter.UserInfoDetails;
+import org.stapledon.security.entities.UserInfo;
 import org.stapledon.security.entities.enums.UserRole;
-import org.stapledon.security.model.UserInfoResponse;
+import org.stapledon.security.filter.UserInfoDetails;
 import org.stapledon.security.model.RoleAto;
+import org.stapledon.security.model.UserInfoResponse;
 
 @Component
 public class AccountMapper {

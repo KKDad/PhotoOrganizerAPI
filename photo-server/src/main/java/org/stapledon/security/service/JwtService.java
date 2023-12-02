@@ -3,12 +3,10 @@ package org.stapledon.security.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.impl.DefaultJwtBuilder;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
 
 import java.util.Date;
 import java.util.HashMap;
@@ -34,6 +32,7 @@ public class JwtService {
                 .setClaims(claims)
                 .subject(userName)
                 .issuedAt(new Date(System.currentTimeMillis()))
+                .header().keyId(jwtCookieName).and()
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
                 .signWith(keyLocator.signingKey(jwtCookieName)).compact();
     }
@@ -56,7 +55,7 @@ public class JwtService {
                 .parser()
                 .keyLocator(keyLocator)
                 .build()
-                .parseEncryptedClaims(token).getPayload();
+                .parseSignedClaims(token).getPayload();
     }
 
     private Boolean isTokenExpired(String token) {
@@ -67,6 +66,4 @@ public class JwtService {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
-
-
 }
