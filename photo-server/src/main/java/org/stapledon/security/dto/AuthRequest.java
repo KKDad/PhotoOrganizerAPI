@@ -1,4 +1,4 @@
-package org.stapledon.security.model;
+package org.stapledon.security.dto;
 
 import lombok.*;
 

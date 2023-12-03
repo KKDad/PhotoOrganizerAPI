@@ -8,7 +8,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest()
 @Testcontainers
 @ActiveProfiles("test")
-class PhotoOrganizerApplicationTests {
+class PhotoOrganizerApplicationIT extends AbstractIntegrationTest {
 
 	@Test
 	void contextLoads() {

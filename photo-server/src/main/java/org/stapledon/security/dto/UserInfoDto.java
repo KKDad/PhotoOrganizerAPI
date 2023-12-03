@@ -1,8 +1,9 @@
-package org.stapledon.security.model;
+package org.stapledon.security.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.lang.NonNull;
+import org.stapledon.security.entities.enums.UserRole;
 
 import java.util.Set;
 
@@ -12,14 +13,13 @@ import java.util.Set;
 @ToString
 @AllArgsConstructor
 @EqualsAndHashCode
-public class UserInfoResponse {
+public class UserInfoDto {
     @NonNull
     @Schema(description = "Email address",
             example = "john@stapledon.local")
     private String email;
 
-    @NonNull
-    @Schema(description = "Password",
+    @Schema(description = "Password. Only used when creating or updating a user. Never returned from the server. Leave blank when updating a user to keep the existing password.",
             example = "password")
     private String password;
 
@@ -38,5 +38,6 @@ public class UserInfoResponse {
     private String lastName;
     @NonNull
     @Schema(description = "Assigned Roles")
-    private Set<RoleAto> roles;
+    @Builder.Default
+    private Set<String> roles = Set.of();
 }

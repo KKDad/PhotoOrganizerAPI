@@ -12,11 +12,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.stapledon.security.entities.UserInfo;
-import org.stapledon.security.mapper.AccountMapper;
+import org.stapledon.security.mapper.UserInfoMapper;
 import org.stapledon.security.repository.UserInfoRepository;
 import org.stapledon.security.service.JwtService;
+import org.stapledon.security.service.UserInfoService;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -26,8 +28,7 @@ import java.util.Optional;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final AccountMapper mapper;
-    private final UserInfoRepository repository;
+    private final UserInfoService userInfoService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {
@@ -40,7 +41,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = loadUserByUsername(username);
+            UserDetails userDetails = userInfoService.loadUserByUsername(username);
             if (Boolean.TRUE.equals(jwtService.validateToken(token, userDetails))) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -48,10 +49,5 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
-    }
-
-    private UserInfoDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserInfo> userDetail = repository.findByUsername(username);
-        return mapper.toUserInfoDetails(userDetail.orElseThrow(() -> new UsernameNotFoundException("User not found " + username)));
     }
 }

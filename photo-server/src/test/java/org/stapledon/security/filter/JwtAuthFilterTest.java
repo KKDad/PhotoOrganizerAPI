@@ -15,9 +15,10 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.stapledon.security.entities.UserInfo;
-import org.stapledon.security.mapper.AccountMapper;
+import org.stapledon.security.mapper.UserInfoMapper;
 import org.stapledon.security.repository.UserInfoRepository;
 import org.stapledon.security.service.JwtService;
+import org.stapledon.security.service.UserInfoService;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -33,10 +34,7 @@ class JwtAuthFilterTest {
     JwtService jwtService;
 
     @Mock
-    AccountMapper mapper;
-
-    @Mock
-    UserInfoRepository repository;
+    UserInfoService userInfoService;
 
     @InjectMocks
     JwtAuthFilter jwtAuthFilter;
@@ -58,8 +56,7 @@ class JwtAuthFilterTest {
 
         when(request.getHeader("Authorization")).thenReturn("Bearer validToken");
         when(jwtService.extractUsername("validToken")).thenReturn("validUsername");
-        when(repository.findByUsername("validUsername")).thenReturn(Optional.of(userInfo));
-        when(mapper.toUserInfoDetails(userInfo)).thenReturn(userDetails);
+        when(userInfoService.loadUserByUsername("validUsername")).thenReturn(userDetails);
         when(jwtService.validateToken("validToken", userDetails)).thenReturn(true);
 
         jwtAuthFilter.doFilterInternal(request, response, filterChain);
@@ -67,8 +64,8 @@ class JwtAuthFilterTest {
         verify(filterChain).doFilter(request, response);
         verify(jwtService, times(1)).validateToken("validToken", userDetails);
         verify(jwtService, times(1)).extractUsername("validToken");
-        verify(repository, times(1)).findByUsername("validUsername");
-        verify(mapper, times(1)).toUserInfoDetails(userInfo);
+        verify(userInfoService, times(1)).loadUserByUsername("validUsername");
+
 
         // verify the security context was set
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -84,6 +81,7 @@ class JwtAuthFilterTest {
 
         when(request.getHeader("Authorization")).thenReturn("Bearer invalidToken");
         when(jwtService.extractUsername("invalidToken")).thenReturn("invalidUsername");
+        when(userInfoService.loadUserByUsername("invalidUsername")).thenThrow(new UsernameNotFoundException("invalidUsername"));
 
         assertThrows(UsernameNotFoundException.class, () -> jwtAuthFilter.doFilterInternal(request, response, filterChain));
 
@@ -101,15 +99,13 @@ class JwtAuthFilterTest {
         when(request.getHeader("Authorization")).thenReturn("Bearer invalidToken");
         when(jwtService.validateToken(eq("invalidToken"), any())).thenReturn(false);
         when(jwtService.extractUsername("invalidToken")).thenReturn("validUsername");
-        when(repository.findByUsername("validUsername")).thenReturn(Optional.of(mock(UserInfo.class)));
-        when(mapper.toUserInfoDetails(any())).thenReturn(mock(UserInfoDetails.class));
+        when(userInfoService.loadUserByUsername("validUsername")).thenReturn(mock(UserInfoDetails.class));
 
         jwtAuthFilter.doFilterInternal(request, response, filterChain);
         verify(filterChain).doFilter(request, response);
         verify(jwtService, times(1)).validateToken(eq("invalidToken"), any());
         verify(jwtService, times(1)).extractUsername("invalidToken");
-        verify(repository, times(1)).findByUsername("validUsername");
-        verify(mapper, times(1)).toUserInfoDetails(any());
+        verify(userInfoService, times(1)).loadUserByUsername("validUsername");
 
         // verify the security context was not set
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
