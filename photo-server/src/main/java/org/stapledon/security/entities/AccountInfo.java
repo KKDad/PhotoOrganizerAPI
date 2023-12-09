@@ -47,8 +47,12 @@ public class AccountInfo {
     @Size(max = 20)
     private String lastName;
 
+    @ManyToMany
+    @JoinTable(
+            name = "account_roles",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_name")
+    )
     @Builder.Default
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     private Set<Role> roles = new HashSet<>();
 }

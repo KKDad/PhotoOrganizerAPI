@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.stapledon.security.entities.Role;
 import org.stapledon.security.entities.AccountInfo;
-import org.stapledon.security.entities.enums.UserRole;
+import org.stapledon.security.entities.enums.AccountRole;
 import org.stapledon.security.repository.RoleRepository;
 import org.stapledon.security.repository.AccountInfoRepository;
 import org.stapledon.security.service.JwtService;
@@ -50,16 +50,16 @@ public class StapledonAccountGivens implements ApplicationContextAware {
     @Transactional
     public void addDefaultRoles() {
         log.info("Adding default roles");
-        if (roleRepository.findByRoleName(UserRole.ROLE_USER).isEmpty()) {
+        if (roleRepository.findByRoleName(AccountRole.ROLE_USER).isEmpty()) {
             roleRepository.save(
                     Role.builder()
-                            .roleName(UserRole.ROLE_USER)
+                            .roleName(AccountRole.ROLE_USER)
                             .build());
         }
-        if (roleRepository.findByRoleName(UserRole.ROLE_ADMIN).isEmpty()) {
+        if (roleRepository.findByRoleName(AccountRole.ROLE_ADMIN).isEmpty()) {
             roleRepository.save(
                     Role.builder()
-                            .roleName(UserRole.ROLE_ADMIN)
+                            .roleName(AccountRole.ROLE_ADMIN)
                             .build());
         }
     }
@@ -90,7 +90,7 @@ public class StapledonAccountGivens implements ApplicationContextAware {
         @Builder.Default
         private final String email = "test@stapledon.ca";
         @Builder.Default
-        private final Set<UserRole> roles = Set.of(UserRole.ROLE_USER);
+        private final Set<AccountRole> roles = Set.of(AccountRole.ROLE_USER);
     }
     @Builder
     @Getter
@@ -118,7 +118,7 @@ public class StapledonAccountGivens implements ApplicationContextAware {
         return givenUser(AccountInfoParameters.builder()
                 .username("admin")
                 .email("admin@stapledon.ca")
-                .roles(Set.of(UserRole.ROLE_ADMIN))
+                .roles(Set.of(AccountRole.ROLE_ADMIN))
                 .build());
     }
 
@@ -126,17 +126,17 @@ public class StapledonAccountGivens implements ApplicationContextAware {
         return givenUser(AccountInfoParameters
                 .builder()
                 .email("user@stapledon.ca")
-                .roles(Set.of(UserRole.ROLE_USER))
+                .roles(Set.of(AccountRole.ROLE_USER))
                 .build());
     }
 
     @Transactional
     public GivenAccountContext givenUser(AccountInfoParameters parameters) {
         parameters.roles.forEach(role -> {
-            if (roleRepository.findByRoleName(Enum.valueOf(UserRole.class, role.name())).isEmpty()) {
+            if (roleRepository.findByRoleName(Enum.valueOf(AccountRole.class, role.name())).isEmpty()) {
                 log.info("Adding role {}", role.name());
                 roleRepository.saveAll(List.of(Role.builder()
-                        .roleName(Enum.valueOf(UserRole.class, role.name()))
+                        .roleName(Enum.valueOf(AccountRole.class, role.name()))
                         .build()));
             }
         });
@@ -147,7 +147,7 @@ public class StapledonAccountGivens implements ApplicationContextAware {
                 .lastName(parameters.lastName())
                 .email(parameters.email())
                 .roles(parameters.roles.stream()
-                        .map(role -> roleRepository.findByRoleName(Enum.valueOf(UserRole.class, role.name())).get())
+                        .map(role -> roleRepository.findByRoleName(Enum.valueOf(AccountRole.class, role.name())).get())
                         .collect(java.util.stream.Collectors.toSet())
                 )
                 .build();
@@ -161,7 +161,7 @@ public class StapledonAccountGivens implements ApplicationContextAware {
                 .lastName(entity.getLastName())
                 .email(entity.getEmail())
                 .roles(Set.of(Role.builder()
-                        .roleName(UserRole.ROLE_USER)
+                        .roleName(AccountRole.ROLE_USER)
                         .build()))
                 .build();
     }

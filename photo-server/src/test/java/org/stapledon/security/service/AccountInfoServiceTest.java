@@ -15,7 +15,7 @@ import org.stapledon.InvalidParameterException;
 import org.stapledon.security.dto.AccountInfoDto;
 import org.stapledon.security.entities.AccountInfo;
 import org.stapledon.security.entities.Role;
-import org.stapledon.security.entities.enums.UserRole;
+import org.stapledon.security.entities.enums.AccountRole;
 import org.stapledon.security.filter.AccountInfoDetails;
 import org.stapledon.security.mapper.AccountInfoMapper;
 import org.stapledon.security.repository.RoleRepository;
@@ -77,14 +77,14 @@ class AccountInfoServiceTest {
         AccountInfo accountInfo = generateUserInfo(false, true);
 
         when(accountInfoRepository.save(any(AccountInfo.class))).thenReturn(accountInfo);
-        when(roleRepository.findByRoleName(any(UserRole.class))).thenReturn(Optional.of(Role.builder().roleName(UserRole.ROLE_ADMIN).build()));
+        when(roleRepository.findByRoleName(any(AccountRole.class))).thenReturn(Optional.of(Role.builder().roleName(AccountRole.ROLE_ADMIN).build()));
         when(accountInfoRepository.findByUsername(anyString())).thenReturn(Optional.empty());
         when(encoder.encode(any())).thenReturn("password");
 
         AccountInfoDto result = accountInfoService.addAccount(accountInfoDto);
 
         verify(accountInfoRepository).findByUsername(anyString());
-        verify(roleRepository).findByRoleName(any(UserRole.class));
+        verify(roleRepository).findByRoleName(any(AccountRole.class));
         verify(accountInfoRepository).save(any(AccountInfo.class));
         verify(encoder).encode(any());
 
@@ -92,7 +92,7 @@ class AccountInfoServiceTest {
         assertThat(result.getUsername()).isEqualTo(accountInfo.getUsername());
         assertThat(result.getPassword()).isNull();
         assertThat(result.getRoles()).isNotEmpty().hasSize(1);
-        assertThat(result.getRoles().iterator().next()).isEqualTo(UserRole.ROLE_ADMIN.toString());
+        assertThat(result.getRoles().iterator().next()).isEqualTo(AccountRole.ROLE_ADMIN.toString());
     }
 
     @Test
@@ -152,7 +152,7 @@ class AccountInfoServiceTest {
         AccountInfoDto existingUserDto = generateUserInfoDto(true, false);
         when(accountInfoRepository.findById(anyLong())).thenReturn(Optional.of(existingUser));
         when(encoder.encode(any())).thenReturn("password");
-        when(roleRepository.findByRoleName(any(UserRole.class))).thenReturn(Optional.of(Role.builder().roleName(UserRole.ROLE_ADMIN).build()));
+        when(roleRepository.findByRoleName(any(AccountRole.class))).thenReturn(Optional.of(Role.builder().roleName(AccountRole.ROLE_ADMIN).build()));
 
         AccountInfo updatedUser = generateUserInfo(true, false);
         updatedUser.setUsername("updatedUsername");
@@ -239,10 +239,10 @@ class AccountInfoServiceTest {
                 .email("email@stapledon.ca")
                 .build();
         if (isUser) {
-            user.getRoles().add(Role.builder().roleName(UserRole.ROLE_USER).build());
+            user.getRoles().add(Role.builder().roleName(AccountRole.ROLE_USER).build());
         }
         if (isAdmin) {
-            user.getRoles().add(Role.builder().roleName(UserRole.ROLE_ADMIN).build());
+            user.getRoles().add(Role.builder().roleName(AccountRole.ROLE_ADMIN).build());
         }
         return user;
     }
@@ -256,10 +256,10 @@ class AccountInfoServiceTest {
                 .password("LongEnough1$")
                 .build();
         if (isUser) {
-            user.setRoles(Set.of(UserRole.ROLE_USER.toString()));
+            user.setRoles(Set.of(AccountRole.ROLE_USER.toString()));
         }
         if (isAdmin) {
-            user.setRoles(Set.of(UserRole.ROLE_ADMIN.toString()));
+            user.setRoles(Set.of(AccountRole.ROLE_ADMIN.toString()));
         }
         return user;
     }

@@ -1,6 +1,6 @@
 package org.stapledon.security.entities.enums;
 
-public enum UserRole {
+public enum AccountRole {
     ROLE_USER,
     ROLE_ADMIN
 }

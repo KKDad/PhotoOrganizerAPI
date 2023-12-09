@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.stapledon.InvalidParameterException;
 import org.stapledon.security.dto.AccountInfoDto;
 import org.stapledon.security.entities.AccountInfo;
-import org.stapledon.security.entities.enums.UserRole;
+import org.stapledon.security.entities.enums.AccountRole;
 import org.stapledon.security.filter.AccountInfoDetails;
 import org.stapledon.security.mapper.AccountInfoMapper;
 import org.stapledon.security.repository.RoleRepository;
@@ -50,7 +50,7 @@ public class AccountInfoService implements UserDetailsService {
         }
         AccountInfo toSave = mapper.toAccountInfo(userInfo);
         toSave.setRoles(userInfo.getRoles().stream()
-                .map(role -> roleRepository.findByRoleName(Enum.valueOf(UserRole.class, role))
+                .map(role -> roleRepository.findByRoleName(Enum.valueOf(AccountRole.class, role))
                 .orElseThrow(() -> new InvalidParameterException("Role not found: " + role)))
                 .collect(java.util.stream.Collectors.toSet())
         );
@@ -75,7 +75,7 @@ public class AccountInfoService implements UserDetailsService {
             mapper.merge(updatedUser, userInfo);
             updatedUser.getRoles().clear();
             updatedUser.setRoles(userInfo.getRoles().stream()
-                            .map(role -> roleRepository.findByRoleName(Enum.valueOf(UserRole.class, role))
+                            .map(role -> roleRepository.findByRoleName(Enum.valueOf(AccountRole.class, role))
                                     .orElseThrow(() -> new InvalidParameterException("Role not found: " + role)))
                             .collect(java.util.stream.Collectors.toSet()));
 

@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.stapledon.security.dto.AccountInfoDto;
 import org.stapledon.security.entities.AccountInfo;
 import org.stapledon.security.entities.Role;
-import org.stapledon.security.entities.enums.UserRole;
+import org.stapledon.security.entities.enums.AccountRole;
 import org.stapledon.security.filter.AccountInfoDetails;
 
 import java.util.Set;
@@ -41,7 +41,7 @@ class AccountInfoMapperTest {
         assertThat(response.getLastName()).isEqualTo(accountInfo.getLastName());
         assertThat(response.getRoles())
                 .hasSize(2)
-                .containsExactlyInAnyOrder(UserRole.ROLE_ADMIN.toString(), UserRole.ROLE_USER.toString());
+                .containsExactlyInAnyOrder(AccountRole.ROLE_ADMIN.toString(), AccountRole.ROLE_USER.toString());
     }
 
     @Test
@@ -54,7 +54,7 @@ class AccountInfoMapperTest {
                 .username("username")
                 .firstName("firstName")
                 .lastName("lastName")
-                .roles(Set.of(UserRole.ROLE_ADMIN.toString()))
+                .roles(Set.of(AccountRole.ROLE_ADMIN.toString()))
                 .build();
 
         AccountInfo accountInfo = accountInfoMapper.toAccountInfo(response);
@@ -67,7 +67,7 @@ class AccountInfoMapperTest {
         assertThat(accountInfo.getLastName()).isEqualTo(response.getLastName());
         assertThat(response.getRoles())
                 .hasSize(1)
-                .containsExactlyInAnyOrder(UserRole.ROLE_ADMIN.toString());
+                .containsExactlyInAnyOrder(AccountRole.ROLE_ADMIN.toString());
     }
 
     @Test
@@ -115,10 +115,10 @@ class AccountInfoMapperTest {
                 .lastName("lastName")
                 .roles(Set.of(
                         Role.builder()
-                            .roleName(UserRole.ROLE_ADMIN)
+                            .roleName(AccountRole.ROLE_ADMIN)
                             .build(),
                         Role.builder()
-                            .roleName(UserRole.ROLE_USER)
+                            .roleName(AccountRole.ROLE_USER)
                             .build()))
                 .build();
     }

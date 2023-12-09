@@ -19,195 +19,60 @@
       "description": "Generated server url"
     }
   ],
-  "tags": [
-    {
-      "name": "List Accounts",
-      "description": "List all accounts"
-    }
-  ],
   "paths": {
-    "/api/v1/user": {
-      "put": {
-        "tags": [
-          "account-controller"
-        ],
-        "operationId": "saveAccount",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AccountAto"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/AccountAto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/auth/signout": {
-      "post": {
-        "tags": [
-          "auth-controller"
-        ],
-        "operationId": "logoutUser",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/MessageResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/auth/signin": {
-      "post": {
-        "tags": [
-          "auth-controller"
-        ],
-        "operationId": "authenticateUser",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserInfoResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/users": {
+    "/api/v1/welcome": {
       "get": {
         "tags": [
-          "List Accounts"
+          "home-controller"
         ],
-        "operationId": "fetchAllAccounts",
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AccountAto"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid status value"
-          }
-        }
-      }
-    },
-    "/api/v1/user/{id}": {
-      "get": {
-        "tags": [
-          "account-controller"
-        ],
-        "operationId": "fetchAccount",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
+        "operationId": "welcome",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/AccountAto"
+                  "type": "string"
                 }
               }
             }
           }
         }
-      },
-      "delete": {
-        "tags": [
-          "account-controller"
-        ],
-        "operationId": "deleteAccount",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
       }
     },
-    "/api/v1/user/username/{username}": {
+    "/api/v1/user/userProfile": {
       "get": {
         "tags": [
-          "account-controller"
+          "home-controller"
         ],
-        "operationId": "fetchAccountByUsername",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "operationId": "userProfile",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/AccountAto"
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/adminProfile": {
+      "get": {
+        "tags": [
+          "home-controller"
+        ],
+        "operationId": "adminProfile",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -236,114 +101,5 @@
       }
     }
   },
-  "components": {
-    "schemas": {
-      "AccountAto": {
-        "required": [
-          "email",
-          "password",
-          "roles",
-          "username"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "Email address",
-            "example": "john@stapledon.local"
-          },
-          "password": {
-            "type": "string",
-            "description": "Password",
-            "example": "password"
-          },
-          "username": {
-            "type": "string",
-            "description": "Username used to log in",
-            "example": "kkdad"
-          },
-          "firstName": {
-            "type": "string",
-            "description": "users firstname",
-            "nullable": true,
-            "example": "John"
-          },
-          "lastName": {
-            "type": "string",
-            "description": "users surname",
-            "nullable": true,
-            "example": "Doe"
-          },
-          "roles": {
-            "uniqueItems": true,
-            "type": "array",
-            "description": "Assigned Roles",
-            "items": {
-              "$ref": "#/components/schemas/RoleAto"
-            }
-          }
-        }
-      },
-      "RoleAto": {
-        "type": "object",
-        "properties": {
-          "roleName": {
-            "type": "string",
-            "description": "role name",
-            "nullable": true,
-            "example": "ROLE_USER",
-            "enum": [
-              "ROLE_USER",
-              "ROLE_ADMIN"
-            ]
-          }
-        },
-        "description": "Assigned Roles"
-      },
-      "MessageResponse": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string"
-          }
-        }
-      },
-      "LoginRequest": {
-        "required": [
-          "password",
-          "username"
-        ],
-        "type": "object",
-        "properties": {
-          "username": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        }
-      },
-      "UserInfoResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "username": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "roles": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    }
-  }
+  "components": {}
 }

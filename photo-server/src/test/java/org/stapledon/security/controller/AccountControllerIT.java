@@ -8,7 +8,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.stapledon.StapledonAccountGivens;
 import org.stapledon.security.dto.AccountInfoDto;
-import org.stapledon.security.entities.enums.UserRole;
+import org.stapledon.security.entities.enums.AccountRole;
 
 
 import java.util.Set;
@@ -29,7 +29,7 @@ class AccountControllerIT extends AbstractIntegrationTest {
                 .email("test@stapledon.ca")
                 .firstName("Test")
                 .lastName("User")
-                .roles(Set.of(UserRole.ROLE_USER.toString()))
+                .roles(Set.of(AccountRole.ROLE_USER.toString()))
                 .build();
 
         String jsonRequest = objectMapper().writeValueAsString(request);
@@ -53,7 +53,7 @@ class AccountControllerIT extends AbstractIntegrationTest {
                 .email("test@stapledon.ca")
                 .firstName("Test")
                 .lastName("User")
-                .roles(Set.of(UserRole.ROLE_USER.toString()))
+                .roles(Set.of(AccountRole.ROLE_USER.toString()))
                 .build();
 
         String jsonRequest = objectMapper().writeValueAsString(request);
@@ -109,7 +109,7 @@ class AccountControllerIT extends AbstractIntegrationTest {
                 .email("test@stapledon.ca")
                 .firstName("Test")
                 .lastName("User")
-                .roles(Set.of(UserRole.ROLE_USER.toString()))
+                .roles(Set.of(AccountRole.ROLE_USER.toString()))
                 .build();
 
         String jsonRequest = objectMapper().writeValueAsString(request);
