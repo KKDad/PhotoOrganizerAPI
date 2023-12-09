@@ -83,9 +83,5 @@ public class UserInfoMapper {
         if (!Strings.isEmpty(source.getPassword())) {
             destination.setPassword(encoder.encode(source.getPassword()));
         }
-        destination.setRoles(new HashSet<>());
-        destination.getRoles().addAll(source.getRoles().stream()
-                .map(role -> Role.builder().roleName(UserRole.valueOf(role)).build())
-                .collect(java.util.stream.Collectors.toSet()));
     }
 }

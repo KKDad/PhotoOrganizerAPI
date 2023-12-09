@@ -152,6 +152,7 @@ class UserInfoServiceTest {
         UserInfoDto existingUserDto = generateUserInfoDto(true, false);
         when(userInfoRepository.findById(anyLong())).thenReturn(Optional.of(existingUser));
         when(encoder.encode(any())).thenReturn("password");
+        when(roleRepository.findByRoleName(any(UserRole.class))).thenReturn(Optional.of(Role.builder().roleName(UserRole.ROLE_ADMIN).build()));
 
         UserInfo updatedUser = generateUserInfo(true, false);
         updatedUser.setUsername("updatedUsername");

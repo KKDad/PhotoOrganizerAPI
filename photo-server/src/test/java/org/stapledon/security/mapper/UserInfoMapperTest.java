@@ -94,7 +94,6 @@ class UserInfoMapperTest {
                 .username("newUsername")
                 .firstName("newFirstName")
                 .lastName("newLastName")
-                .roles(Set.of(UserRole.ROLE_ADMIN.toString()))
                 .build();
 
         userInfoMapper.merge(destination, source);
@@ -105,9 +104,6 @@ class UserInfoMapperTest {
         assertThat(destination.getUsername()).isEqualTo(source.getUsername());
         assertThat(destination.getFirstName()).isEqualTo(source.getFirstName());
         assertThat(destination.getLastName()).isEqualTo(source.getLastName());
-        assertThat(destination.getRoles())
-                .hasSize(1)
-                .satisfies(roles -> assertThat(roles.stream().findFirst().get().getRoleName()).isEqualTo(UserRole.ROLE_ADMIN));
     }
 
     private UserInfo generateTestUserInfo() {

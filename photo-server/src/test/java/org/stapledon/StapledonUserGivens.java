@@ -96,6 +96,7 @@ public class StapledonUserGivens implements ApplicationContextAware {
     @Getter
     @Accessors(fluent = true)
     public static class GivenUserContext {
+        private final Long id;
         private final String username;
         private final String password;
         private final String firstName;
@@ -153,6 +154,7 @@ public class StapledonUserGivens implements ApplicationContextAware {
 
         var entity = userInfoRepository.save(user);
         return GivenUserContext.builder()
+                .id(entity.getUserId())
                 .username(entity.getUsername())
                 .password(parameters.password)
                 .firstName(entity.getFirstName())

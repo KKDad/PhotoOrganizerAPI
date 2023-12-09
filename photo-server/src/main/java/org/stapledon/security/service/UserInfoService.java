@@ -74,6 +74,12 @@ public class UserInfoService implements UserDetailsService {
         if (user.isPresent()) {
             UserInfo updatedUser = user.get();
             mapper.merge(updatedUser, userInfo);
+            updatedUser.getRoles().clear();
+            updatedUser.setRoles(userInfo.getRoles().stream()
+                            .map(role -> roleRepository.findByRoleName(Enum.valueOf(UserRole.class, role))
+                                    .orElseThrow(() -> new InvalidParameterException("Role not found: " + role)))
+                            .collect(java.util.stream.Collectors.toSet()));
+
             UserInfo savedUser = repository.save(updatedUser);
             return mapper.toDto(savedUser);
         } else {

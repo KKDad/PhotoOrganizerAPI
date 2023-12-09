@@ -55,7 +55,6 @@ public class UserController {
     public ResponseEntity<UserInfoDto> createUser(@RequestBody UserInfoDto userInfo) {
         UserInfoDto createdUser = userInfoFacade.addUser(userInfo);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
-        //return new ResponseEntity<>(userInfo, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Update a user")
