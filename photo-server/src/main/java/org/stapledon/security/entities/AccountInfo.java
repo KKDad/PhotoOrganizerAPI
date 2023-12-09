@@ -21,10 +21,10 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "email")
 })
 @ToString(of={ "firstName", "lastName"})
-public class UserInfo {
+public class AccountInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long accountId;
 
     @NotBlank
     @Size(max = 50)

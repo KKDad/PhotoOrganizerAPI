@@ -12,10 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.stapledon.security.entities.Role;
-import org.stapledon.security.entities.UserInfo;
+import org.stapledon.security.entities.AccountInfo;
 import org.stapledon.security.entities.enums.UserRole;
 import org.stapledon.security.repository.RoleRepository;
-import org.stapledon.security.repository.UserInfoRepository;
+import org.stapledon.security.repository.AccountInfoRepository;
 import org.stapledon.security.service.JwtService;
 
 import java.time.Clock;
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.doReturn;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class StapledonUserGivens implements ApplicationContextAware {
+public class StapledonAccountGivens implements ApplicationContextAware {
     private final Clock clock;
     private final AtomicInteger counter = new AtomicInteger(1000);
 
@@ -42,9 +42,9 @@ public class StapledonUserGivens implements ApplicationContextAware {
     }
 
     @Transactional
-    public void clearUsers() {
-        log.info("Clearing users from database");
-        userInfoRepository.deleteAll();
+    public void clearAccounts() {
+        log.info("Clearing accounts from database");
+        accountInfoRepository.deleteAll();
     }
 
     @Transactional
@@ -66,7 +66,7 @@ public class StapledonUserGivens implements ApplicationContextAware {
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        StapledonUserGivens.applicationContext = applicationContext;
+        StapledonAccountGivens.applicationContext = applicationContext;
     }
     private static ApplicationContext applicationContext;
     protected static JwtService jwtService() {
@@ -78,7 +78,7 @@ public class StapledonUserGivens implements ApplicationContextAware {
     @Builder
     @Getter
     @Accessors(fluent = true)
-    public static class UserInfoParameters {
+    public static class AccountInfoParameters {
         @Builder.Default
         private final String username = "user";
         @Builder.Default
@@ -95,7 +95,7 @@ public class StapledonUserGivens implements ApplicationContextAware {
     @Builder
     @Getter
     @Accessors(fluent = true)
-    public static class GivenUserContext {
+    public static class GivenAccountContext {
         private final Long id;
         private final String username;
         private final String password;
@@ -110,20 +110,20 @@ public class StapledonUserGivens implements ApplicationContextAware {
             return jwtService().generateToken(username);
         }
     }
-    private final UserInfoRepository userInfoRepository;
+    private final AccountInfoRepository accountInfoRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder encoder;
 
-    public GivenUserContext givenAdministrator() {
-        return givenUser(UserInfoParameters.builder()
+    public GivenAccountContext givenAdministrator() {
+        return givenUser(AccountInfoParameters.builder()
                 .username("admin")
                 .email("admin@stapledon.ca")
                 .roles(Set.of(UserRole.ROLE_ADMIN))
                 .build());
     }
 
-    public GivenUserContext givenUser() {
-        return givenUser(UserInfoParameters
+    public GivenAccountContext givenUser() {
+        return givenUser(AccountInfoParameters
                 .builder()
                 .email("user@stapledon.ca")
                 .roles(Set.of(UserRole.ROLE_USER))
@@ -131,7 +131,7 @@ public class StapledonUserGivens implements ApplicationContextAware {
     }
 
     @Transactional
-    public GivenUserContext givenUser(UserInfoParameters parameters) {
+    public GivenAccountContext givenUser(AccountInfoParameters parameters) {
         parameters.roles.forEach(role -> {
             if (roleRepository.findByRoleName(Enum.valueOf(UserRole.class, role.name())).isEmpty()) {
                 log.info("Adding role {}", role.name());
@@ -140,7 +140,7 @@ public class StapledonUserGivens implements ApplicationContextAware {
                         .build()));
             }
         });
-        var user = UserInfo.builder()
+        var user = AccountInfo.builder()
                 .username(parameters.username())
                 .password(encoder.encode(parameters.password()))
                 .firstName(parameters.firstName())
@@ -152,9 +152,9 @@ public class StapledonUserGivens implements ApplicationContextAware {
                 )
                 .build();
 
-        var entity = userInfoRepository.save(user);
-        return GivenUserContext.builder()
-                .id(entity.getUserId())
+        var entity = accountInfoRepository.save(user);
+        return GivenAccountContext.builder()
+                .id(entity.getAccountId())
                 .username(entity.getUsername())
                 .password(parameters.password)
                 .firstName(entity.getFirstName())

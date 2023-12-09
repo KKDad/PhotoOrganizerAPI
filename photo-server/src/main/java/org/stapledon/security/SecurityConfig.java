@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.stapledon.security.filter.JwtAuthFilter;
-import org.stapledon.security.service.UserInfoService;
+import org.stapledon.security.service.AccountInfoService;
 
 @Configuration
 @EnableWebSecurity
@@ -26,7 +26,7 @@ import org.stapledon.security.service.UserInfoService;
 public class SecurityConfig {
 
     private final JwtAuthFilter authFilter;
-    private final UserInfoService userInfoService;
+    private final AccountInfoService accountInfoService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -49,7 +49,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userInfoService);
+        authenticationProvider.setUserDetailsService(accountInfoService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }

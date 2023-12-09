@@ -9,26 +9,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.stapledon.security.entities.UserInfo;
-import org.stapledon.security.mapper.UserInfoMapper;
-import org.stapledon.security.repository.UserInfoRepository;
 import org.stapledon.security.service.JwtService;
-import org.stapledon.security.service.UserInfoService;
+import org.stapledon.security.service.AccountInfoService;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserInfoService userInfoService;
+    private final AccountInfoService accountInfoService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {
@@ -41,7 +35,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userInfoService.loadUserByUsername(username);
+            UserDetails userDetails = accountInfoService.loadUserByUsername(username);
             if (Boolean.TRUE.equals(jwtService.validateToken(token, userDetails))) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

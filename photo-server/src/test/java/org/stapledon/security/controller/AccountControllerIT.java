@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.stapledon.StapledonUserGivens;
-import org.stapledon.security.dto.UserInfoDto;
+import org.stapledon.StapledonAccountGivens;
+import org.stapledon.security.dto.AccountInfoDto;
 import org.stapledon.security.entities.enums.UserRole;
 
 
@@ -16,14 +16,14 @@ import java.util.Set;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UserControllerIT extends AbstractIntegrationTest {
+class AccountControllerIT extends AbstractIntegrationTest {
 
     @Test
     void createUserOkTest() throws Exception {
         String token = given().givenAdministrator().authenticate();
 
 
-        var request = UserInfoDto.builder()
+        var request = AccountInfoDto.builder()
                 .username("user1")
                 .password("F@kePassw0rd")
                 .email("test@stapledon.ca")
@@ -34,7 +34,7 @@ class UserControllerIT extends AbstractIntegrationTest {
 
         String jsonRequest = objectMapper().writeValueAsString(request);
 
-        mockMvc().perform(MockMvcRequestBuilders.post("/api/v1/users")
+        mockMvc().perform(MockMvcRequestBuilders.post("/api/v1/accounts")
                         .header("Authorization", "Bearer " + token)
                         .content(jsonRequest)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -47,7 +47,7 @@ class UserControllerIT extends AbstractIntegrationTest {
     void createUserInsufficientPermissionsTest() throws Exception {
         String token = given().givenUser().authenticate();
 
-        var request = UserInfoDto.builder()
+        var request = AccountInfoDto.builder()
                 .username("user1")
                 .password("F@kePassw0rd")
                 .email("test@stapledon.ca")
@@ -58,7 +58,7 @@ class UserControllerIT extends AbstractIntegrationTest {
 
         String jsonRequest = objectMapper().writeValueAsString(request);
 
-        mockMvc().perform(MockMvcRequestBuilders.post("/api/v1/users")
+        mockMvc().perform(MockMvcRequestBuilders.post("/api/v1/accounts")
                         .header("Authorization", "Bearer " + token)
                         .content(jsonRequest)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -70,7 +70,7 @@ class UserControllerIT extends AbstractIntegrationTest {
     void getAllUsersOkTest() throws Exception {
         String token = given().givenAdministrator().authenticate();
 
-        mockMvc().perform(MockMvcRequestBuilders.get("/api/v1/users")
+        mockMvc().perform(MockMvcRequestBuilders.get("/api/v1/accounts")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -82,12 +82,12 @@ class UserControllerIT extends AbstractIntegrationTest {
     void getUserOkTest() throws Exception {
         String token = given().givenAdministrator().authenticate();
 
-        var existingUser = given().givenUser(StapledonUserGivens.UserInfoParameters.builder()
+        var existingUser = given().givenUser(StapledonAccountGivens.AccountInfoParameters.builder()
                 .username("user1")
                 .build());
 
 
-        mockMvc().perform(MockMvcRequestBuilders.get("/api/v1/users/" + existingUser.id())
+        mockMvc().perform(MockMvcRequestBuilders.get("/api/v1/accounts/" + existingUser.id())
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -99,11 +99,11 @@ class UserControllerIT extends AbstractIntegrationTest {
     void updateUserOkTest() throws Exception {
         String token = given().givenAdministrator().authenticate();
 
-        var existingUser = given().givenUser(StapledonUserGivens.UserInfoParameters.builder()
+        var existingUser = given().givenUser(StapledonAccountGivens.AccountInfoParameters.builder()
                 .username("user1")
                 .build());
 
-        var request = UserInfoDto.builder()
+        var request = AccountInfoDto.builder()
                 .username("user1")
                 .password("F@kePassw0rd")
                 .email("test@stapledon.ca")
@@ -114,7 +114,7 @@ class UserControllerIT extends AbstractIntegrationTest {
 
         String jsonRequest = objectMapper().writeValueAsString(request);
 
-        mockMvc().perform(MockMvcRequestBuilders.put("/api/v1/users/" + existingUser.id())
+        mockMvc().perform(MockMvcRequestBuilders.put("/api/v1/accounts/" + existingUser.id())
                         .header("Authorization", "Bearer " + token)
                         .content(jsonRequest)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -128,7 +128,7 @@ class UserControllerIT extends AbstractIntegrationTest {
         String token = given().givenAdministrator().authenticate();
         long userId = 1L; 
 
-        mockMvc().perform(MockMvcRequestBuilders.delete("/api/v1/users/" + userId)
+        mockMvc().perform(MockMvcRequestBuilders.delete("/api/v1/accounts/" + userId)
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

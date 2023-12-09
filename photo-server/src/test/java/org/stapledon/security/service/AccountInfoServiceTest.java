@@ -12,14 +12,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.stapledon.InvalidParameterException;
-import org.stapledon.security.dto.UserInfoDto;
+import org.stapledon.security.dto.AccountInfoDto;
+import org.stapledon.security.entities.AccountInfo;
 import org.stapledon.security.entities.Role;
-import org.stapledon.security.entities.UserInfo;
 import org.stapledon.security.entities.enums.UserRole;
-import org.stapledon.security.filter.UserInfoDetails;
-import org.stapledon.security.mapper.UserInfoMapper;
+import org.stapledon.security.filter.AccountInfoDetails;
+import org.stapledon.security.mapper.AccountInfoMapper;
 import org.stapledon.security.repository.RoleRepository;
-import org.stapledon.security.repository.UserInfoRepository;
+import org.stapledon.security.repository.AccountInfoRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,36 +32,36 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class UserInfoServiceTest {
+class AccountInfoServiceTest {
 
     @Mock
-    private UserInfoRepository userInfoRepository;
+    private AccountInfoRepository accountInfoRepository;
     @Mock
     private RoleRepository roleRepository;
     @Spy
-    private UserInfoMapper mapper;
+    private AccountInfoMapper mapper;
     @Mock
     private PasswordEncoder encoder;
     @InjectMocks
-    UserInfoService userInfoService;
+    AccountInfoService accountInfoService;
 
    @BeforeEach
     void setUp() {
         ReflectionTestUtils.setField(mapper, "encoder", encoder);
-        ReflectionTestUtils.setField(userInfoService, "minPasswordLength", 2);
+        ReflectionTestUtils.setField(accountInfoService, "minPasswordLength", 2);
     }
 
     @Test
     void loadUserByUsernameSuccess() {
-       UserInfo userInfo = generateUserInfo(false, true);
-        when(userInfoRepository.findByUsername(anyString())).thenReturn(
-                Optional.of(userInfo));
+       AccountInfo accountInfo = generateUserInfo(false, true);
+        when(accountInfoRepository.findByUsername(anyString())).thenReturn(
+                Optional.of(accountInfo));
 
-        UserInfoDetails result = userInfoService.loadUserByUsername("username");
+        AccountInfoDetails result = accountInfoService.loadUserByUsername("username");
 
         assertThat(result).isNotNull();
-        assertThat(result.getUsername()).isEqualTo(userInfo.getUsername());
-        assertThat(result.getPassword()).isEqualTo(userInfo.getPassword());
+        assertThat(result.getUsername()).isEqualTo(accountInfo.getUsername());
+        assertThat(result.getPassword()).isEqualTo(accountInfo.getPassword());
         assertThat(result.getAuthorities()).isNotEmpty().hasSize(1);
         assertThat(result.getAuthorities().iterator().next().getAuthority()).isEqualTo("ROLE_ADMIN");
         assertThat(result.isEnabled()).isTrue();
@@ -73,23 +73,23 @@ class UserInfoServiceTest {
 
     @Test
     void addUser() {
-        UserInfoDto userInfoDto = generateUserInfoDto(false, true);
-        UserInfo userInfo = generateUserInfo(false, true);
+        AccountInfoDto accountInfoDto = generateUserInfoDto(false, true);
+        AccountInfo accountInfo = generateUserInfo(false, true);
 
-        when(userInfoRepository.save(any(UserInfo.class))).thenReturn(userInfo);
+        when(accountInfoRepository.save(any(AccountInfo.class))).thenReturn(accountInfo);
         when(roleRepository.findByRoleName(any(UserRole.class))).thenReturn(Optional.of(Role.builder().roleName(UserRole.ROLE_ADMIN).build()));
-        when(userInfoRepository.findByUsername(anyString())).thenReturn(Optional.empty());
+        when(accountInfoRepository.findByUsername(anyString())).thenReturn(Optional.empty());
         when(encoder.encode(any())).thenReturn("password");
 
-        UserInfoDto result = userInfoService.addUser(userInfoDto);
+        AccountInfoDto result = accountInfoService.addAccount(accountInfoDto);
 
-        verify(userInfoRepository).findByUsername(anyString());
+        verify(accountInfoRepository).findByUsername(anyString());
         verify(roleRepository).findByRoleName(any(UserRole.class));
-        verify(userInfoRepository).save(any(UserInfo.class));
+        verify(accountInfoRepository).save(any(AccountInfo.class));
         verify(encoder).encode(any());
 
         assertThat(result).isNotNull();
-        assertThat(result.getUsername()).isEqualTo(userInfo.getUsername());
+        assertThat(result.getUsername()).isEqualTo(accountInfo.getUsername());
         assertThat(result.getPassword()).isNull();
         assertThat(result.getRoles()).isNotEmpty().hasSize(1);
         assertThat(result.getRoles().iterator().next()).isEqualTo(UserRole.ROLE_ADMIN.toString());
@@ -97,50 +97,50 @@ class UserInfoServiceTest {
 
     @Test
     void addUserInsecurePassword() {
-        UserInfoDto userInfoDto = generateUserInfoDto(true, false);
-        userInfoDto.setPassword("short");
+        AccountInfoDto accountInfoDto = generateUserInfoDto(true, false);
+        accountInfoDto.setPassword("short");
 
-        assertThatThrownBy(() -> userInfoService.addUser(userInfoDto))
+        assertThatThrownBy(() -> accountInfoService.addAccount(accountInfoDto))
             .isInstanceOf(InvalidParameterException.class)
             .hasMessageContaining("Password must be at least");
     }
 
     @Test
     void addUserUsernameExists() {
-        UserInfoDto userInfoDto = generateUserInfoDto(true, false);
-        UserInfo userInfo = generateUserInfo(true, false);
-        when(userInfoRepository.findByUsername(anyString())).thenReturn(Optional.of(userInfo));
+        AccountInfoDto accountInfoDto = generateUserInfoDto(true, false);
+        AccountInfo accountInfo = generateUserInfo(true, false);
+        when(accountInfoRepository.findByUsername(anyString())).thenReturn(Optional.of(accountInfo));
 
-        assertThatThrownBy(() -> userInfoService.addUser(userInfoDto))
+        assertThatThrownBy(() -> accountInfoService.addAccount(accountInfoDto))
             .isInstanceOf(InvalidParameterException.class)
             .hasMessageContaining("User already exists");
     }
 
     @Test
     void updateUserInsecurePassword() {
-        UserInfoDto userInfoDto = generateUserInfoDto(true, false);
-        userInfoDto.setPassword("short");
+        AccountInfoDto accountInfoDto = generateUserInfoDto(true, false);
+        accountInfoDto.setPassword("short");
 
-        assertThatThrownBy(() -> userInfoService.updateUser(1L, userInfoDto))
+        assertThatThrownBy(() -> accountInfoService.updateAccount(1L, accountInfoDto))
             .isInstanceOf(InvalidParameterException.class)
             .hasMessageContaining("Password must be at least");
     }
 
     @Test
     void updateUserNotFound() {
-        UserInfoDto userInfoDto = generateUserInfoDto(true, false);
-        when(userInfoRepository.findById(anyLong())).thenReturn(Optional.empty());
+        AccountInfoDto accountInfoDto = generateUserInfoDto(true, false);
+        when(accountInfoRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> userInfoService.updateUser(1L, userInfoDto))
+        assertThatThrownBy(() -> accountInfoService.updateAccount(1L, accountInfoDto))
             .isInstanceOf(InvalidParameterException.class)
             .hasMessageContaining("User not found");
     }
 
     @Test
     void getUserNotFound() {
-        when(userInfoRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(accountInfoRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> userInfoService.getUser(1L))
+        assertThatThrownBy(() -> accountInfoService.getAccount(1L))
             .isInstanceOf(InvalidParameterException.class)
             .hasMessageContaining("User not found");
     }
@@ -148,18 +148,18 @@ class UserInfoServiceTest {
     @Test
     void updateUserTest() {
         // Arrange
-        UserInfo existingUser = generateUserInfo(true, false);
-        UserInfoDto existingUserDto = generateUserInfoDto(true, false);
-        when(userInfoRepository.findById(anyLong())).thenReturn(Optional.of(existingUser));
+        AccountInfo existingUser = generateUserInfo(true, false);
+        AccountInfoDto existingUserDto = generateUserInfoDto(true, false);
+        when(accountInfoRepository.findById(anyLong())).thenReturn(Optional.of(existingUser));
         when(encoder.encode(any())).thenReturn("password");
         when(roleRepository.findByRoleName(any(UserRole.class))).thenReturn(Optional.of(Role.builder().roleName(UserRole.ROLE_ADMIN).build()));
 
-        UserInfo updatedUser = generateUserInfo(true, false);
+        AccountInfo updatedUser = generateUserInfo(true, false);
         updatedUser.setUsername("updatedUsername");
-        when(userInfoRepository.save(any(UserInfo.class))).thenReturn(updatedUser);
+        when(accountInfoRepository.save(any(AccountInfo.class))).thenReturn(updatedUser);
 
         // Act
-        UserInfoDto result = userInfoService.updateUser(existingUser.getUserId(), existingUserDto);
+        AccountInfoDto result = accountInfoService.updateAccount(existingUser.getAccountId(), existingUserDto);
 
         // Assert
         assertThat(result.getUsername()).isEqualTo(updatedUser.getUsername());
@@ -168,11 +168,11 @@ class UserInfoServiceTest {
     @Test
     void getUserWhenUserIsPresent() {
         // Arrange
-        UserInfo existingUser = generateUserInfo(true, false);
-        when(userInfoRepository.findById(anyLong())).thenReturn(Optional.of(existingUser));
+        AccountInfo existingUser = generateUserInfo(true, false);
+        when(accountInfoRepository.findById(anyLong())).thenReturn(Optional.of(existingUser));
 
         // Act
-        UserInfoDto result = userInfoService.getUser(existingUser.getUserId());
+        AccountInfoDto result = accountInfoService.getAccount(existingUser.getAccountId());
 
         // Assert
         assertThat(result).isNotNull();
@@ -183,11 +183,11 @@ class UserInfoServiceTest {
     @Test
     void getAllUsers() {
         // Arrange
-        List<UserInfo> users = List.of(generateUserInfo(true, true), generateUserInfo(false, true));
-        when(userInfoRepository.findAll()).thenReturn(users);
+        List<AccountInfo> users = List.of(generateUserInfo(true, true), generateUserInfo(false, true));
+        when(accountInfoRepository.findAll()).thenReturn(users);
 
         // Act
-        List<UserInfoDto> result = userInfoService.getAllUsers();
+        List<AccountInfoDto> result = accountInfoService.getAllAccounts();
 
         // Assert
         assertThat(result).isNotNull().hasSize(2);
@@ -198,21 +198,21 @@ class UserInfoServiceTest {
     @Test
     void deleteUser() {
         // Act
-        userInfoService.deleteUser(5L);
+        accountInfoService.deleteAccount(5L);
 
         // Assert
-        verify(userInfoRepository).deleteById(5L);
+        verify(accountInfoRepository).deleteById(5L);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"a", "1234", "pass", "abcd", "password", "12345678", "qwerty", "admin", "111222333444"})
     void isInsecurePasswordShort(String password) {
         // Arrange
-        UserInfoDto userInfoDto = generateUserInfoDto(true, false);
-        userInfoDto.setPassword(password);
+        AccountInfoDto accountInfoDto = generateUserInfoDto(true, false);
+        accountInfoDto.setPassword(password);
 
         // Act & Assert
-        assertThatThrownBy(() -> userInfoService.addUser(userInfoDto))
+        assertThatThrownBy(() -> accountInfoService.addAccount(accountInfoDto))
             .isInstanceOf(InvalidParameterException.class)
             .hasMessageContaining("Password must be at least");
     }
@@ -221,7 +221,7 @@ class UserInfoServiceTest {
     void isInsecurePasswordSecure() {
         String password = "LongEnough1$";
 
-        boolean result = userInfoService.isInsecurePassword(password);
+        boolean result = accountInfoService.isInsecurePassword(password);
 
         assertThat(result).isFalse();
     }
@@ -229,9 +229,9 @@ class UserInfoServiceTest {
     
 
 
-    private UserInfo generateUserInfo(boolean isUser, boolean isAdmin) {
-        var user = UserInfo.builder()
-                .userId(5L)
+    private AccountInfo generateUserInfo(boolean isUser, boolean isAdmin) {
+        var user = AccountInfo.builder()
+                .accountId(5L)
                 .username("username")
                 .password("password")
                 .firstName("firstName")
@@ -246,8 +246,8 @@ class UserInfoServiceTest {
         }
         return user;
     }
-    private UserInfoDto generateUserInfoDto(boolean isUser, boolean isAdmin) {
-        var user = UserInfoDto.builder()
+    private AccountInfoDto generateUserInfoDto(boolean isUser, boolean isAdmin) {
+        var user = AccountInfoDto.builder()
                 .username("username")
                 .password("password")
                 .firstName("firstName")

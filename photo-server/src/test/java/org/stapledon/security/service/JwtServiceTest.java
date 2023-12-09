@@ -7,7 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.stapledon.security.filter.UserInfoDetails;
+import org.stapledon.security.filter.AccountInfoDetails;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -38,7 +38,7 @@ class JwtServiceTest {
         verify(stapledonKeyLocator).signingKey("test");
 
         // Validate the token
-        assertThat(jwtService.validateToken(jwtToken, UserInfoDetails.builder().username("test").build())).isTrue();
+        assertThat(jwtService.validateToken(jwtToken, AccountInfoDetails.builder().username("test").build())).isTrue();
 
 
         // Check that we can extract the username from jwtToken

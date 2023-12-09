@@ -3,7 +3,6 @@ package org.stapledon.security.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.lang.NonNull;
-import org.stapledon.security.entities.enums.UserRole;
 
 import java.util.Set;
 
@@ -13,7 +12,7 @@ import java.util.Set;
 @ToString
 @AllArgsConstructor
 @EqualsAndHashCode
-public class UserInfoDto {
+public class AccountInfoDto {
     @NonNull
     @Schema(description = "Email address",
             example = "john@stapledon.local")

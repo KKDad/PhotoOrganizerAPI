@@ -5,9 +5,9 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <changeSet author="agilbert" id="db.changelog-1.0" >
-        <!-- Create user table -->
-        <createTable tableName="user">
-            <column name="user_id" type="serial" autoIncrement="true" startWith="100">
+        <!-- Create account table -->
+        <createTable tableName="account">
+            <column name="account_id" type="serial" autoIncrement="true" startWith="100">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="username" type="varchar(20)">
@@ -32,9 +32,9 @@
 
         <!-- Create user_roles table -->
         <createTable tableName="user_roles">
-            <column name="user_id" type="int">
-                <constraints nullable="false" foreignKeyName="fk_user_roles_user" referencedTableName="user"
-                             referencedColumnNames="user_id"/>
+            <column name="account_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_user_roles_user" referencedTableName="account"
+                             referencedColumnNames="account_id"/>
             </column>
             <column name="role_name" type="varchar(20)">
                 <constraints nullable="false" foreignKeyName="fk_user_roles_roles" referencedTableName="roles"

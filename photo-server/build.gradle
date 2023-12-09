@@ -87,6 +87,6 @@ jacocoTestReport {
 }
 
 bootRun {
-	environment("SPRING_DATASOURCE_URL", "jdbc:tc:postgresql:13.9://localhost/testdb?TC_TMPFS=/var/lib/postgresql/data:rw")
-	environment("SPRING_DATASOURCE_DRIVERCLASSNAME", "org.testcontainers.jdbc.ContainerDatabaseDriver")
+	// set the datasource password
+	systemProperty "spring.datasource.password", "Ph0t0s@123!"
 }

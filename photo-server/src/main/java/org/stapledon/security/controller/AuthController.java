@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.stapledon.security.dto.AuthRequest;
 import org.stapledon.security.service.AuthenticationService;
-import org.stapledon.security.service.UserInfoService;
+import org.stapledon.security.service.AccountInfoService;
 
 
 @RestController
@@ -15,7 +15,7 @@ import org.stapledon.security.service.UserInfoService;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserInfoService userInfoFacade;
+    private final AccountInfoService userInfoFacade;
     private final AuthenticationService authenticationService;
 
     @PostMapping("/authenticate")

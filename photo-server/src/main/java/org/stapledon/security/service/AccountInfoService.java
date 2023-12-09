@@ -6,16 +6,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.stapledon.InvalidParameterException;
-import org.stapledon.security.dto.UserInfoDto;
-import org.stapledon.security.entities.UserInfo;
+import org.stapledon.security.dto.AccountInfoDto;
+import org.stapledon.security.entities.AccountInfo;
 import org.stapledon.security.entities.enums.UserRole;
-import org.stapledon.security.filter.UserInfoDetails;
-import org.stapledon.security.mapper.UserInfoMapper;
+import org.stapledon.security.filter.AccountInfoDetails;
+import org.stapledon.security.mapper.AccountInfoMapper;
 import org.stapledon.security.repository.RoleRepository;
-import org.stapledon.security.repository.UserInfoRepository;
+import org.stapledon.security.repository.AccountInfoRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,11 +22,11 @@ import java.util.regex.Pattern;
 
 @Component
 @RequiredArgsConstructor
-public class UserInfoService implements UserDetailsService {
+public class AccountInfoService implements UserDetailsService {
 
-    private final UserInfoRepository repository;
+    private final AccountInfoRepository repository;
     private final RoleRepository roleRepository;
-    private final UserInfoMapper mapper;
+    private final AccountInfoMapper mapper;
 
     @Value("${security.min-password-length:8}")
     private Integer minPasswordLength;
@@ -35,13 +34,13 @@ public class UserInfoService implements UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserInfoDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserInfo> userDetail = repository.findByUsername(username);
-        return mapper.toSecurityUserInfoDetails(userDetail.orElseThrow(() -> new UsernameNotFoundException("User not found " + username)));
+    public AccountInfoDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<AccountInfo> userDetail = repository.findByUsername(username);
+        return mapper.toSecurityAccountInfoDetails(userDetail.orElseThrow(() -> new UsernameNotFoundException("User not found " + username)));
     }
 
     @Transactional
-    public UserInfoDto addUser(UserInfoDto userInfo) {
+    public AccountInfoDto addAccount(AccountInfoDto userInfo) {
         if (isInsecurePassword(userInfo.getPassword())) {
             throw new InvalidParameterException("Password must be at least " + minPasswordLength + " characters and contain at least one uppercase letter, one lowercase letter, one digit and one special character");
         }
@@ -49,30 +48,30 @@ public class UserInfoService implements UserDetailsService {
         if (repository.findByUsername(userInfo.getUsername()).isPresent()) {
             throw new InvalidParameterException("User already exists");
         }
-        UserInfo toSave = mapper.toUserInfo(userInfo);
+        AccountInfo toSave = mapper.toAccountInfo(userInfo);
         toSave.setRoles(userInfo.getRoles().stream()
                 .map(role -> roleRepository.findByRoleName(Enum.valueOf(UserRole.class, role))
                 .orElseThrow(() -> new InvalidParameterException("Role not found: " + role)))
                 .collect(java.util.stream.Collectors.toSet())
         );
-        UserInfo savedUser = repository.save(toSave);
+        AccountInfo savedUser = repository.save(toSave);
         return mapper.toDto(savedUser);
     }
 
 
     @Transactional
-    public void deleteUser(Long id) {
+    public void deleteAccount(Long id) {
         repository.deleteById(id);
     }
 
     @Transactional
-    public UserInfoDto updateUser(Long id, UserInfoDto userInfo) {
+    public AccountInfoDto updateAccount(Long id, AccountInfoDto userInfo) {
         if (!Strings.isEmpty(userInfo.getPassword()) && isInsecurePassword(userInfo.getPassword())) {
             throw new InvalidParameterException("Password must be at least " + minPasswordLength + " characters and contain at least one uppercase letter, one lowercase letter, one digit and one special character");
         }
-        Optional<UserInfo> user = repository.findById(id);
+        Optional<AccountInfo> user = repository.findById(id);
         if (user.isPresent()) {
-            UserInfo updatedUser = user.get();
+            AccountInfo updatedUser = user.get();
             mapper.merge(updatedUser, userInfo);
             updatedUser.getRoles().clear();
             updatedUser.setRoles(userInfo.getRoles().stream()
@@ -80,7 +79,7 @@ public class UserInfoService implements UserDetailsService {
                                     .orElseThrow(() -> new InvalidParameterException("Role not found: " + role)))
                             .collect(java.util.stream.Collectors.toSet()));
 
-            UserInfo savedUser = repository.save(updatedUser);
+            AccountInfo savedUser = repository.save(updatedUser);
             return mapper.toDto(savedUser);
         } else {
             throw new InvalidParameterException("User not found");
@@ -88,8 +87,8 @@ public class UserInfoService implements UserDetailsService {
     }
 
     @Transactional(readOnly = true)
-    public UserInfoDto getUser(Long id) {
-        Optional<UserInfo> user = repository.findById(id);
+    public AccountInfoDto getAccount(Long id) {
+        Optional<AccountInfo> user = repository.findById(id);
         if (user.isPresent()) {
             return mapper.toDto(user.get());
         } else {
@@ -98,7 +97,7 @@ public class UserInfoService implements UserDetailsService {
     }
 
     @Transactional(readOnly = true)
-    public List<UserInfoDto> getAllUsers() {
+    public List<AccountInfoDto> getAllAccounts() {
        return repository.findAll().stream().map(mapper::toDto).toList();
     }
 
