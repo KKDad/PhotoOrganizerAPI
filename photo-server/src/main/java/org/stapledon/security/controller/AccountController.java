@@ -1,8 +1,13 @@
 package org.stapledon.security.controller;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +26,13 @@ public class AccountController {
     private final AccountInfoService accountInfoFacade;
 
     @GetMapping("/accounts")
-    @Operation(summary = "Get all accounts")
+    @Operation(summary = "Get all accounts", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the accounts"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "404", description = "Accounts not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<AccountInfoDto>> getAllaccounts() {
         List<AccountInfoDto> accounts = accountInfoFacade.getAllAccounts();
         return ResponseEntity.ok(accounts);
@@ -36,6 +42,7 @@ public class AccountController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the account"),
             @ApiResponse(responseCode = "400", description = "Invalid id supplied"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "404", description = "Account not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
@@ -49,6 +56,7 @@ public class AccountController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created the account"),
             @ApiResponse(responseCode = "400", description = "Invalid account supplied"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/accounts")
@@ -61,10 +69,14 @@ public class AccountController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated the account"),
             @ApiResponse(responseCode = "400", description = "Invalid account supplied"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "404", description = "account not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     @PutMapping("/accounts/{id}")
+    @Parameter(name = "id", description = "account id", required = true, example = "1")
+    @Parameter(name = "account", description = "account object", required = true)
+    @Parameter()
     public ResponseEntity<AccountInfoDto> updateaccount(@PathVariable Long id, @RequestBody AccountInfoDto accountInfo) {
         AccountInfoDto updatedaccount = accountInfoFacade.updateAccount(id, accountInfo);
         return ResponseEntity.ok(updatedaccount);
@@ -74,6 +86,7 @@ public class AccountController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Deleted the account"),
             @ApiResponse(responseCode = "400", description = "Invalid id supplied"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "404", description = "account not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PreAuthorize("hasRole('ADMIN')")

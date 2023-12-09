@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.stapledon.security.dto.AccountInfoDto;
 import org.stapledon.security.entities.AccountInfo;
+import org.stapledon.security.entities.enums.AccountRole;
 import org.stapledon.security.filter.AccountInfoDetails;
 
 @Component
@@ -43,6 +44,12 @@ public class AccountInfoMapper {
                 .firstName(accountInfoResponse.getFirstName())
                 .lastName(accountInfoResponse.getLastName())
                 .password(encoder.encode(accountInfoResponse.getPassword()))
+                .roles(accountInfoResponse.getRoles().stream()
+                        .map(AccountRole::valueOf)
+                        .map(role -> org.stapledon.security.entities.Role.builder()
+                                .roleName(role)
+                                .build())
+                        .collect(java.util.stream.Collectors.toSet()))
                 .build();
     }
 

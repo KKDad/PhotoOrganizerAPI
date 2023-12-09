@@ -19,7 +19,372 @@
       "description": "Generated server url"
     }
   ],
+  "security": [
+    {
+      "bearerAuth": [
+        "bearer-token"
+      ],
+      "apiKey": [
+        "api-key"
+      ]
+    }
+  ],
   "paths": {
+    "/api/v1/accounts/{id}": {
+      "get": {
+        "tags": [
+          "account-controller"
+        ],
+        "summary": "Get a account by its id",
+        "operationId": "getaccount",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid id supplied",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Account not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Found the account",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "account-controller"
+        ],
+        "summary": "Update a account",
+        "operationId": "updateaccount",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "account id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 1
+          },
+          {
+            "name": "account",
+            "in": "query",
+            "description": "account object",
+            "required": true
+          },
+          {
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountInfoDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Invalid account supplied",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Updated the account",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "account not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "account-controller"
+        ],
+        "summary": "Delete a account",
+        "operationId": "deleteaccount",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid id supplied"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "200": {
+            "description": "Deleted the account"
+          },
+          "404": {
+            "description": "account not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/authenticate": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "authenticateAndGetToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts": {
+      "get": {
+        "tags": [
+          "account-controller"
+        ],
+        "summary": "Get all accounts",
+        "operationId": "getAllaccounts",
+        "responses": {
+          "404": {
+            "description": "Accounts not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AccountInfoDto"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AccountInfoDto"
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Found the accounts",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AccountInfoDto"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AccountInfoDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "account-controller"
+        ],
+        "summary": "Create a new account",
+        "operationId": "createaccount",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountInfoDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Invalid account supplied",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDto"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created the account",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountInfoDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/welcome": {
       "get": {
         "tags": [
@@ -40,7 +405,7 @@
         }
       }
     },
-    "/api/v1/user/userProfile": {
+    "/api/v1/accounts/userProfile": {
       "get": {
         "tags": [
           "home-controller"
@@ -60,7 +425,7 @@
         }
       }
     },
-    "/api/v1/admin/adminProfile": {
+    "/api/v1/accounts/adminProfile": {
       "get": {
         "tags": [
           "home-controller"
@@ -101,5 +466,79 @@
       }
     }
   },
-  "components": {}
+  "components": {
+    "schemas": {
+      "AccountInfoDto": {
+        "required": [
+          "email",
+          "roles",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email address",
+            "example": "john@stapledon.local"
+          },
+          "password": {
+            "type": "string",
+            "description": "Password. Only used when creating or updating a user. Never returned from the server. Leave blank when updating a user to keep the existing password.",
+            "example": "password"
+          },
+          "username": {
+            "type": "string",
+            "description": "Username used to log in",
+            "example": "kkdad"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "users firstname",
+            "nullable": true,
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "users surname",
+            "nullable": true,
+            "example": "Doe"
+          },
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "Assigned Roles",
+            "items": {
+              "type": "string",
+              "description": "Assigned Roles"
+            }
+          }
+        }
+      },
+      "AuthRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "description": "JWT Authentication",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "apiKey": {
+        "type": "apiKey",
+        "description": "API Key Authentication",
+        "name": "api-key",
+        "in": "header"
+      }
+    }
+  }
 }

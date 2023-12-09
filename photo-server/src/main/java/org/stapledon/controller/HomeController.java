@@ -24,13 +24,13 @@ public class HomeController {
         return "Welcome this endpoint is not secure";
     }
 
-    @GetMapping("/user/userProfile")
+    @GetMapping("/accounts/userProfile")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public String userProfile() {
         return "Welcome to User Profile";
     }
 
-    @GetMapping("/admin/adminProfile")
+    @GetMapping("/accounts/adminProfile")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String adminProfile() {
         return "Welcome to Admin Profile";

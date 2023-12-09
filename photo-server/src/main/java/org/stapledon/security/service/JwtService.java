@@ -2,8 +2,10 @@ package org.stapledon.security.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.impl.DefaultJwtBuilder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -13,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtService {
@@ -34,6 +37,7 @@ public class JwtService {
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .header().keyId(jwtCookieName).and()
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
+                .audience().add("photo-server").and()
                 .signWith(keyLocator.signingKey(jwtCookieName)).compact();
     }
 
@@ -47,15 +51,24 @@ public class JwtService {
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
+        if (claims == null) {
+            return null;
+        }
         return claimsResolver.apply(claims);
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts
-                .parser()
-                .keyLocator(keyLocator)
-                .build()
-                .parseSignedClaims(token).getPayload();
+        try {
+            return Jwts
+                    .parser()
+                    .keyLocator(keyLocator)
+                    .build()
+                    .parseSignedClaims(token).getPayload();
+
+        } catch (MalformedJwtException e) {
+            log.debug("MalformedJwtException: {}", e.getMessage());
+            return null;
+        }
     }
 
     private Boolean isTokenExpired(String token) {
