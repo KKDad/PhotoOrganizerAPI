@@ -2,7 +2,8 @@ package org.stapledon.security.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.stapledon.security.entities.enums.UserRole;
+import org.hibernate.annotations.Type;
+import org.stapledon.security.entities.enums.AccountRole;
 
 @Entity
 @Getter
@@ -10,13 +11,10 @@ import org.stapledon.security.entities.enums.UserRole;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "role")
+@Table(name = "roles")
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer roleId;
-
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private UserRole roleName;
+    private AccountRole roleName;
 }

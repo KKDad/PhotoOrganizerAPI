@@ -34,7 +34,7 @@ public abstract class AbstractIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private StapledonUserGivens given;
+    private StapledonAccountGivens given;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -46,7 +46,7 @@ public abstract class AbstractIntegrationTest {
     @BeforeEach
     public void setup() {
         given().useDefaultClock();
-        given().clearUsers();
+        given().clearAccounts();
         given().addDefaultRoles();
     }
 

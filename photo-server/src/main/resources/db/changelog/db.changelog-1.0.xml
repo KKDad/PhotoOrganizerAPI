@@ -5,18 +5,9 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <changeSet author="agilbert" id="db.changelog-1.0" >
-
-        <createTable tableName="role">
-            <column name="role_id" type="serial" autoIncrement="true" startWith="5000">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="role_name" type="varchar(20)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-        </createTable>
-
-        <createTable tableName="user">
-            <column name="user_id" type="serial" autoIncrement="true" startWith="100">
+        <!-- Create account table -->
+        <createTable tableName="account">
+            <column name="account_id" type="bigint" autoIncrement="true" startWith="100">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="username" type="varchar(20)">
@@ -30,45 +21,38 @@
             </column>
             <column name="first_name" type="varchar(20)"/>
             <column name="last_name" type="varchar(20)"/>
-            <column name="role" type="varchar(200)"/>
         </createTable>
 
-        <createTable tableName="user_role">
-            <column name="user_id" type="integer">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="role_id" type="integer">
+        <!-- Create roles table -->
+        <createTable tableName="roles">
+            <column name="role_name" type="varchar(20)" >
                 <constraints nullable="false" primaryKey="true"/>
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="user_role"
-                                 constraintName="fk_user_role_user_id"
-                                 referencedColumnNames="user_id"
-                                 referencedTableName="user"
-                                 onDelete="NO ACTION"/>
+        <!-- Create user_roles table -->
+        <createTable tableName="account_roles">
+            <column name="account_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_account_account_id" referencedTableName="account"
+                             referencedColumnNames="account_id"/>
+            </column>
+            <column name="role_name" type="varchar(20)">
+                <constraints nullable="false" foreignKeyName="fk_roles_role_name" referencedTableName="roles"
+                             referencedColumnNames="role_name"/>
+            </column>
+        </createTable>
 
-        <addForeignKeyConstraint baseColumnNames="role_id"
-                                 baseTableName="user_role"
-                                 constraintName="fk_user_role_role_id"
-                                 referencedColumnNames="role_id"
-                                 referencedTableName="role"/>
-
-        <insert tableName="role">
+        <insert tableName="roles">
             <column name="role_name" value="ROLE_USER"/>
         </insert>
-        <insert tableName="role">
+        <insert tableName="roles">
             <column name="role_name" value="ROLE_ADMIN"/>
         </insert>
 
         <rollback>
-            <dropTable tableName="account_role"/>
-            <dropTable tableName="userInfo"/>
-            <dropTable tableName="role"/>
+            <dropTable tableName="user_roles"/>
+            <dropTable tableName="roles"/>
+            <dropTable tableName="user"/>
         </rollback>
     </changeSet>
-
-
-
 </databaseChangeLog>

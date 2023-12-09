@@ -33,22 +33,18 @@ $ ./gradlew bootrun
  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
   '  |____| .__|_| |_|_| |_\__, | / / / /
  =========|_|==============|___/=/_/_/_/
- :: Spring Boot ::                (v2.7.5)
+ :: Spring Boot ::                (v3.2.0)
 
-2022-03-23 20:07:42.987  INFO 7772 --- [           main] org.stapledon.PhotoOrganizerApplication  : Starting PhotoOrganizerApplication using Java 13 on VDI-w10-Development with PID 7772 (C:\git\PhotoOrganizer\build\classes\java\main started by Adrian in C:\git\PhotoOrganizer)
-2022-03-23 20:07:42.989  INFO 7772 --- [           main] org.stapledon.PhotoOrganizerApplication  : No active profile set, falling back to 1 default profile: "default"
-2022-03-23 20:07:43.640  INFO 7772 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Elasticsearch repositories in DEFAULT mode.
-2022-03-23 20:07:43.650  INFO 7772 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6 ms. Found 0 Elasticsearch repository interfaces.
-2022-03-23 20:07:43.654  INFO 7772 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Reactive Elasticsearch repositories in DEFAULT mode.
-2022-03-23 20:07:43.657  INFO 7772 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 3 ms. Found 0 Reactive Elasticsearch repository interfaces.
-2022-03-23 20:07:44.099  INFO 7772 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2022-03-23 20:07:44.108  INFO 7772 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2022-03-23 20:07:44.108  INFO 7772 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.58]
-2022-03-23 20:07:44.210  INFO 7772 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2022-03-23 20:07:44.211  INFO 7772 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1187 ms
-2022-03-23 20:07:44.408  INFO 7772 --- [           main] o.s.c.g.core.DefaultCredentialsProvider  : Default credentials provider for service userInfo visionapio-453@speedy-emissary-344223.iam.gserviceaccount.com
-2022-03-23 20:07:45.566  INFO 7772 --- [           main] o.s.c.g.a.c.GcpContextAutoConfiguration  : The default project ID is speedy-emissary-344223
-2022-03-23 20:07:45.569  INFO 7772 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoint(s) beneath base path '/actuator'
+2023-12-09T14:15:22.832-05:00  INFO 1571 --- [PhotoOrganizer] [           main] o.stapledon.PhotoOrganizerApplication    : Starting PhotoOrganizerApplication using Java 17.0.9 with PID 1571 (/Users/agilbert/git/PhotoOrganizerAPI/photo-server/build/classes/java/main started by agilbert in /Users/agilbert/git/PhotoOrganizerAPI/photo-server)
+2023-12-09T14:15:22.833-05:00  INFO 1571 --- [PhotoOrganizer] [           main] o.stapledon.PhotoOrganizerApplication    : No active profile set, falling back to 1 default profile: "default"
+2023-12-09T14:15:23.399-05:00  INFO 1571 --- [PhotoOrganizer] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-12-09T14:15:23.445-05:00  INFO 1571 --- [PhotoOrganizer] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 40 ms. Found 2 JPA repository interfaces.
+2023-12-09T14:15:23.952-05:00  INFO 1571 --- [PhotoOrganizer] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2023-12-09T14:15:23.958-05:00  INFO 1571 --- [PhotoOrganizer] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-12-09T14:15:23.959-05:00  INFO 1571 --- [PhotoOrganizer] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.16]
+2023-12-09T14:15:23.999-05:00  INFO 1571 --- [PhotoOrganizer] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-12-09T14:15:24.000-05:00  INFO 1571 --- [PhotoOrganizer] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1143 ms
+2023-12-09T14:15:24.331-05:00  INFO 1571 --- [PhotoOrganizer] [           main] liquibase.database                       : Set default schema name to public
 ~~~
 
 ## Google API
@@ -68,3 +64,7 @@ Docker image build using buildpacks
 ~~~
 $ ./gradlew bootBuildImage
 ~~~
+
+## Accessing the swagger UI
+
+The swagger UI is available at http://localhost:8080/swagger-ui.html

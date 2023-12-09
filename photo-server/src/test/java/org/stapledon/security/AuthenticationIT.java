@@ -5,7 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.stapledon.AbstractIntegrationTest;
-import org.stapledon.StapledonUserGivens;
+import org.stapledon.StapledonAccountGivens;
 import org.stapledon.security.dto.AuthRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,7 +16,7 @@ class AuthenticationIT extends AbstractIntegrationTest {
 
     @Test
     void generateTokenTest() throws Exception {
-        var context = given().givenUser(StapledonUserGivens.UserInfoParameters.builder().build());
+        var context = given().givenUser(StapledonAccountGivens.AccountInfoParameters.builder().build());
 
         var request = AuthRequest.builder()
                 .username(context.username())

@@ -21,10 +21,10 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "email")
 })
 @ToString(of={ "firstName", "lastName"})
-public class UserInfo {
+public class AccountInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long accountId;
 
     @NotBlank
     @Size(max = 50)
@@ -47,10 +47,12 @@ public class UserInfo {
     @Size(max = 20)
     private String lastName;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @ManyToMany
+    @JoinTable(
+            name = "account_roles",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_name")
+    )
     @Builder.Default
     private Set<Role> roles = new HashSet<>();
 }

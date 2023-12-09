@@ -6,11 +6,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.stapledon.security.dto.UserInfoDto;
+import org.stapledon.security.dto.AccountInfoDto;
+import org.stapledon.security.entities.AccountInfo;
 import org.stapledon.security.entities.Role;
-import org.stapledon.security.entities.UserInfo;
-import org.stapledon.security.entities.enums.UserRole;
-import org.stapledon.security.filter.UserInfoDetails;
+import org.stapledon.security.entities.enums.AccountRole;
+import org.stapledon.security.filter.AccountInfoDetails;
 
 import java.util.Set;
 
@@ -20,65 +20,65 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-class UserInfoMapperTest {
+class AccountInfoMapperTest {
 
     @Mock
     private PasswordEncoder encoder;
 
     @InjectMocks
-    private UserInfoMapper userInfoMapper;
+    private AccountInfoMapper accountInfoMapper;
 
     @Test
     void testToDto() {
-        UserInfo userInfo = generateTestUserInfo();
-        UserInfoDto response = userInfoMapper.toDto(userInfo);
+        AccountInfo accountInfo = generateTestUserInfo();
+        AccountInfoDto response = accountInfoMapper.toDto(accountInfo);
 
         // Assertions to verify the response
-        assertThat(response.getEmail()).isEqualTo(userInfo.getEmail());
+        assertThat(response.getEmail()).isEqualTo(accountInfo.getEmail());
         assertThat(response.getPassword()).isNull();
-        assertThat(response.getUsername()).isEqualTo(userInfo.getUsername());
-        assertThat(response.getFirstName()).isEqualTo(userInfo.getFirstName());
-        assertThat(response.getLastName()).isEqualTo(userInfo.getLastName());
+        assertThat(response.getUsername()).isEqualTo(accountInfo.getUsername());
+        assertThat(response.getFirstName()).isEqualTo(accountInfo.getFirstName());
+        assertThat(response.getLastName()).isEqualTo(accountInfo.getLastName());
         assertThat(response.getRoles())
                 .hasSize(2)
-                .containsExactlyInAnyOrder(UserRole.ROLE_ADMIN.toString(), UserRole.ROLE_USER.toString());
+                .containsExactlyInAnyOrder(AccountRole.ROLE_ADMIN.toString(), AccountRole.ROLE_USER.toString());
     }
 
     @Test
     void testToUserInfo() {
         when(encoder.encode(anyString())).thenReturn("encodedPassword");
 
-        UserInfoDto response = UserInfoDto.builder()
+        AccountInfoDto response = AccountInfoDto.builder()
                 .email("test@stapledon.ca")
                 .password("password")
                 .username("username")
                 .firstName("firstName")
                 .lastName("lastName")
-                .roles(Set.of(UserRole.ROLE_ADMIN.toString()))
+                .roles(Set.of(AccountRole.ROLE_ADMIN.toString()))
                 .build();
 
-        UserInfo userInfo = userInfoMapper.toUserInfo(response);
+        AccountInfo accountInfo = accountInfoMapper.toAccountInfo(response);
 
-        // Assertions to verify userInfo
-        assertThat(userInfo.getEmail()).isEqualTo(response.getEmail());
-        assertThat(userInfo.getPassword()).isEqualTo("encodedPassword");
-        assertThat(userInfo.getUsername()).isEqualTo(response.getUsername());
-        assertThat(userInfo.getFirstName()).isEqualTo(response.getFirstName());
-        assertThat(userInfo.getLastName()).isEqualTo(response.getLastName());
+        // Assertions to verify accountInfo
+        assertThat(accountInfo.getEmail()).isEqualTo(response.getEmail());
+        assertThat(accountInfo.getPassword()).isEqualTo("encodedPassword");
+        assertThat(accountInfo.getUsername()).isEqualTo(response.getUsername());
+        assertThat(accountInfo.getFirstName()).isEqualTo(response.getFirstName());
+        assertThat(accountInfo.getLastName()).isEqualTo(response.getLastName());
         assertThat(response.getRoles())
                 .hasSize(1)
-                .containsExactlyInAnyOrder(UserRole.ROLE_ADMIN.toString());
+                .containsExactlyInAnyOrder(AccountRole.ROLE_ADMIN.toString());
     }
 
     @Test
     void testToUserInfoDetails() {
-        UserInfo userInfo = generateTestUserInfo();
+        AccountInfo accountInfo = generateTestUserInfo();
 
-        UserInfoDetails details = userInfoMapper.toSecurityUserInfoDetails(userInfo);
+        AccountInfoDetails details = accountInfoMapper.toSecurityAccountInfoDetails(accountInfo);
 
         // Assertions to verify details
-        assertThat(details.getUsername()).isEqualTo(userInfo.getUsername());
-        assertThat(details.getPassword()).isEqualTo(userInfo.getPassword());
+        assertThat(details.getUsername()).isEqualTo(accountInfo.getUsername());
+        assertThat(details.getPassword()).isEqualTo(accountInfo.getPassword());
         assertThat(details.getAuthorities())
                 .hasSize(2);
     };
@@ -87,17 +87,16 @@ class UserInfoMapperTest {
     void testMerge() {
         when(encoder.encode(anyString())).thenReturn("encodedPassword");
 
-        UserInfo destination = generateTestUserInfo();
-        UserInfoDto source = UserInfoDto.builder()
+        AccountInfo destination = generateTestUserInfo();
+        AccountInfoDto source = AccountInfoDto.builder()
                 .email("test@stapledon.ca")
                 .password("newPassword")
                 .username("newUsername")
                 .firstName("newFirstName")
                 .lastName("newLastName")
-                .roles(Set.of(UserRole.ROLE_ADMIN.toString()))
                 .build();
 
-        userInfoMapper.merge(destination, source);
+        accountInfoMapper.merge(destination, source);
 
         // Assertions to verify destination
         assertThat(destination.getEmail()).isEqualTo(source.getEmail());
@@ -105,13 +104,10 @@ class UserInfoMapperTest {
         assertThat(destination.getUsername()).isEqualTo(source.getUsername());
         assertThat(destination.getFirstName()).isEqualTo(source.getFirstName());
         assertThat(destination.getLastName()).isEqualTo(source.getLastName());
-        assertThat(destination.getRoles())
-                .hasSize(1)
-                .satisfies(roles -> assertThat(roles.stream().findFirst().get().getRoleName()).isEqualTo(UserRole.ROLE_ADMIN));
     }
 
-    private UserInfo generateTestUserInfo() {
-        return UserInfo.builder()
+    private AccountInfo generateTestUserInfo() {
+        return AccountInfo.builder()
                 .email("test@stapledon.ca")
                 .password("password")
                 .username("username")
@@ -119,10 +115,10 @@ class UserInfoMapperTest {
                 .lastName("lastName")
                 .roles(Set.of(
                         Role.builder()
-                            .roleName(UserRole.ROLE_ADMIN)
+                            .roleName(AccountRole.ROLE_ADMIN)
                             .build(),
                         Role.builder()
-                            .roleName(UserRole.ROLE_USER)
+                            .roleName(AccountRole.ROLE_USER)
                             .build()))
                 .build();
     }
