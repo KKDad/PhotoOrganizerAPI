@@ -15,8 +15,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.stapledon.security.entities.AccountInfo;
-import org.stapledon.security.service.JwtService;
 import org.stapledon.security.service.AccountInfoService;
+import org.stapledon.security.service.JwtService;
 
 import java.io.IOException;
 

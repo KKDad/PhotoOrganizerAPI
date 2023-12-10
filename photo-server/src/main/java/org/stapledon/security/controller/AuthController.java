@@ -1,6 +1,8 @@
 package org.stapledon.security.controller;
 
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.stapledon.security.dto.AuthRequest;
 import org.stapledon.security.service.AuthenticationService;
-import org.stapledon.security.service.AccountInfoService;
 
 
 @RestController

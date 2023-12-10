@@ -2,7 +2,6 @@ package org.stapledon.security.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Type;
 import org.stapledon.security.entities.enums.AccountRole;
 
 @Entity
