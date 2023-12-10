@@ -8,8 +8,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.transaction.annotation.Transactional;
 import org.stapledon.security.dto.AccountInfoDto;
-import org.stapledon.security.entities.AccountInfo;
-import org.stapledon.security.entities.Role;
 import org.stapledon.security.entities.enums.AccountRole;
 import org.stapledon.security.mapper.AccountInfoMapper;
 import org.stapledon.security.repository.AccountInfoRepository;
