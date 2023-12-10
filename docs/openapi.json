@@ -111,22 +111,11 @@
           {
             "name": "id",
             "in": "path",
-            "description": "account id",
             "required": true,
             "schema": {
               "type": "integer",
               "format": "int64"
-            },
-            "example": 1
-          },
-          {
-            "name": "account",
-            "in": "query",
-            "description": "account object",
-            "required": true
-          },
-          {
-            "in": "query"
+            }
           }
         ],
         "requestBody": {
@@ -495,24 +484,29 @@
             "type": "string",
             "description": "users firstname",
             "nullable": true,
-            "example": "John"
+            "example": "Johnathan"
           },
           "lastName": {
             "type": "string",
             "description": "users surname",
             "nullable": true,
-            "example": "Doe"
+            "example": "McDoe"
           },
           "roles": {
             "uniqueItems": true,
             "type": "array",
             "description": "Assigned Roles",
+            "nullable": true,
+            "example": "ROLE_ADMIN",
             "items": {
               "type": "string",
-              "description": "Assigned Roles"
+              "description": "Assigned Roles",
+              "nullable": true,
+              "example": "ROLE_ADMIN"
             }
           }
-        }
+        },
+        "description": "Account information"
       },
       "AuthRequest": {
         "type": "object",
@@ -523,7 +517,8 @@
           "password": {
             "type": "string"
           }
-        }
+        },
+        "description": "Authentication request"
       }
     },
     "securitySchemes": {
