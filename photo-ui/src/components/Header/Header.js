@@ -1,10 +1,23 @@
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+    const navigate = useNavigate();
+    const isLoggedIn = !!localStorage.getItem('jwt');
+
     const handleLogin = () => {
-        // Add your login logic here
-    };   
+        if (isLoggedIn) {
+            localStorage.removeItem('jwt');
+            navigate('/login');
+        } else {
+            navigate('/login');
+        }
+    };
+
+    if (!isLoggedIn) {
+        history.push('/login');
+    }
+
     return (
         <header>
             <div className="logo">Website Logo</div>

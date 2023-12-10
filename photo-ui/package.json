@@ -9,15 +9,18 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "keywords": ["react", "ui"],
+  "keywords": [
+    "react",
+    "ui"
+  ],
   "author": "agilbert",
   "license": "ISC",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.1",
     "react-scripts": "5.0.1"
   },
-  "devDependencies": {},
   "browserslist": {
     "production": [
       ">0.2%",
