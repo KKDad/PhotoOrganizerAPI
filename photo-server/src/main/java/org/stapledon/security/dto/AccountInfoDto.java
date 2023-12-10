@@ -12,6 +12,7 @@ import java.util.Set;
 @ToString
 @AllArgsConstructor
 @EqualsAndHashCode
+@Schema(description = "Account information")
 public class AccountInfoDto {
     @NonNull
     @Schema(description = "Email address",
@@ -29,14 +30,16 @@ public class AccountInfoDto {
 
     @Schema(description = "users firstname",
             nullable = true,
-            example = "John")
+            example = "Johnathan")
     private String firstName;
     @Schema(description = "users surname",
             nullable = true,
-            example = "Doe")
+            example = "McDoe")
     private String lastName;
     @NonNull
-    @Schema(description = "Assigned Roles")
+    @Schema(description = "Assigned Roles",
+            nullable = true,
+            example = "ROLE_ADMIN")
     @Builder.Default
     private Set<String> roles = Set.of();
 }

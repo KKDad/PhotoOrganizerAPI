@@ -74,9 +74,6 @@ public class AccountController {
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     @PutMapping("/accounts/{id}")
-    @Parameter(name = "id", description = "account id", required = true, example = "1")
-    @Parameter(name = "account", description = "account object", required = true)
-    @Parameter()
     public ResponseEntity<AccountInfoDto> updateaccount(@PathVariable Long id, @RequestBody AccountInfoDto accountInfo) {
         AccountInfoDto updatedaccount = accountInfoFacade.updateAccount(id, accountInfo);
         return ResponseEntity.ok(updatedaccount);
