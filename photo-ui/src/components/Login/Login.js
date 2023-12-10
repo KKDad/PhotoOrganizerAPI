@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { authenticateAndGetToken } from '../../api/apis/AuthControllerApi';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -12,19 +13,12 @@ const Login = () => {
         setPassword(event.target.value);
     };
 
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const response = await fetch('https://your-api-url.com/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: username,
-                password: password
-            })
-        });
+        const response = await authenticateAndGetToken(username, password);
+        console.log(response);
 
         if (response.ok) {
             const data = await response.json();
