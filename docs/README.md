@@ -26,17 +26,21 @@ See https://openapi-generator.tech/docs/installation
 Shell script using npx
 ~~~
 #!/bin/bash
+
+cd photo-ui
 rm -rf src/api 
 npx @openapitools/openapi-generator-cli generate \
-   -i docs/openapi.json \
-   -g react-fetch \
+   -i ../docs/openapi.json \
+   -g typescript-fetch \
    -o src/api
 ~~~
 
 or via docker
 ~~~
+cd photo-ui
+rm -rf src/api
 docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
-    -i docs/openapi.json \
-    -g react-fetch \
+    -i ../docs/openapi.json \
+    -g typescript-fetch \
     -o src/api
 ~~~
