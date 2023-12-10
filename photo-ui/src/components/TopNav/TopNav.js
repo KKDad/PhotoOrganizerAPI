@@ -1,9 +1,10 @@
-import React from 'react';
+import { React, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Header = () => {
+const TopNav = () => {
     const navigate = useNavigate();
     const isLoggedIn = !!localStorage.getItem('jwt');
+    console.log('isLoggedIn', isLoggedIn);
 
     const handleLogin = () => {
         if (isLoggedIn) {
@@ -14,12 +15,14 @@ const Header = () => {
         }
     };
 
-    if (!isLoggedIn) {
-        history.push('/login');
-    }
+    useEffect(() => {
+        if (!isLoggedIn) {
+            navigate('/login');
+        }
+    }, [isLoggedIn, navigate]);
 
     return (
-        <header>
+        <div className='topnav'>
             <div className="logo">Website Logo</div>
             <nav>
                 <ul>
@@ -29,8 +32,8 @@ const Header = () => {
                     <li><a href="/login" className="login-button" onClick={handleLogin}>Login</a></li>
                 </ul>
             </nav>
-        </header>
+        </div>
     );
 };
 
-export default Header;
+export default TopNav;

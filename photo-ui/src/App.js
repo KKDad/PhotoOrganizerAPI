@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './components/Header/Header';
+import TopNav from './components/TopNav/TopNav';
 import FolderList from './components/FolderList/FolderList';
 import MainPanel from './components/MainPanel/MainPanel';
 import About from './components/About/About';
@@ -11,7 +11,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Header />
+        <TopNav />
         <div className="container">
           <Routes>
             <Route path="/" element={<MainScreen />} />
