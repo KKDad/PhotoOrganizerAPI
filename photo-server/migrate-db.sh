@@ -3,6 +3,7 @@
 # Using docker, drop and recreate the database used by photo-organizer-api
 
 set +e
+#set -x
 DATASOURCE_PASSWORD=$1
 if [ -z "${DATASOURCE_PASSWORD}" ]; then
    echo "DATASOURCE_PASSWORD is required"
