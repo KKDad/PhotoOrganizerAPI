@@ -1,20 +1,18 @@
 package org.stapledon.security.controller;
 
-import org.stapledon.AbstractIntegrationTest;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.stapledon.AbstractIntegrationTest;
 import org.stapledon.StapledonAccountGivens;
 import org.stapledon.security.dto.AccountInfoDto;
 import org.stapledon.security.entities.enums.AccountRole;
 
-
 import java.util.Set;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 class AccountControllerIT extends AbstractIntegrationTest {
 
