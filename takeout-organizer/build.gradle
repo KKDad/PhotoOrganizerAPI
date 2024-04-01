@@ -23,7 +23,7 @@ dependencies {
 
 	// Google Vision APIs
 	implementation 'com.google.cloud:spring-cloud-gcp-dependencies:5.0.2'
-	implementation 'com.google.cloud:spring-cloud-gcp-starter-vision:5.0.1'
+	implementation 'com.google.cloud:spring-cloud-gcp-starter-vision:5.1.2'
     implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
