@@ -7,7 +7,5 @@
             <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>
-
     <logger name="org.testcontainers" level="ERROR"/>
-
 </configuration>

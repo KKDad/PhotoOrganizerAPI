@@ -10,28 +10,26 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
-import org.stapledon.data.FolderService;
-import org.stapledon.entities.Folder;
+import org.stapledon.data.ItemService;
+import org.stapledon.entities.Item;
 import org.stapledon.security.entities.AccountInfo;
 import org.stapledon.security.entities.Role;
 import org.stapledon.security.entities.enums.AccountRole;
 import org.stapledon.security.repository.AccountInfoRepository;
 import org.stapledon.security.repository.RoleRepository;
 import org.stapledon.security.service.JwtService;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 
@@ -174,14 +172,16 @@ public class StapledonAccountGivens implements ApplicationContextAware {
                 .build();
     }
 
+    private final ItemService itemService;
+
     @Builder
     @Getter
     @Accessors(fluent = true)
-    public static class FolderParameters {
+    public static class ItemParameters {
         private final String name;
         private final String date;
         @Builder.Default
-        private final List<FolderParameters> childFolders = new ArrayList<>();
+        private final List<ItemParameters> childFolders = new ArrayList<>();
     }
 
     @Builder
@@ -193,29 +193,31 @@ public class StapledonAccountGivens implements ApplicationContextAware {
         private final List<FolderContext> childFolders;
     }
     @SuppressWarnings("unchecked")
-    public List<FolderContext> givenFolders(List<FolderParameters> parameters) {
-        List<Folder> folderCache = parameters.stream().map(f -> Folder.builder()
+    public List<FolderContext> givenItems(List<ItemParameters> parameters) {
+        List<Item> itemCache = parameters.stream().map(f -> Item.builder()
                 .name(f.name())
-                .date(Date.from(LocalDate.parse(f.date()).atStartOfDay().toInstant(ZoneOffset.UTC)))
-                .childFolders(new ArrayList<>())
+                .date(LocalDate.parse(f.date()))
+                .childItems(f.childFolders().stream()
+                        .map(cf -> Item.builder()
+                                .name(cf.name())
+                                .date(LocalDate.parse(cf.date()))
+                                .build())
+                        .toList())
                 .build()).toList();
-        // Get around the fact that the folder service is a singleton
-        var c = (List<Folder>)ReflectionTestUtils.getField(FolderService.class, "folderCache");
-       assertThat(c).isNotNull();
-        c.clear();
-        c.addAll(folderCache);
 
-        return folderCache.stream().flatMap(f -> {
+        ReflectionTestUtils.setField(itemService, "itemCache", itemCache);
+
+        return itemCache.stream().flatMap(f -> {
             var folder = FolderContext.builder()
                     .name(f.getName())
-                    .date(f.getDate().toInstant().atZone(ZoneOffset.UTC).toLocalDate())
+                    .date(f.getDate())
                     .childFolders(new ArrayList<>())
                     .build();
-            if (f.getChildFolders() != null) {
-                f.getChildFolders().forEach(cf -> {
+            if (f.getChildItems() != null) {
+                f.getChildItems().forEach(cf -> {
                     var childFolder = FolderContext.builder()
                             .name(cf.getName())
-                            .date(cf.getDate().toInstant().atZone(ZoneOffset.UTC).toLocalDate())
+                            .date(cf.getDate())
                             .childFolders(new ArrayList<>())
                             .build();
                     folder.childFolders().add(childFolder);
@@ -225,7 +227,7 @@ public class StapledonAccountGivens implements ApplicationContextAware {
         }).toList();
     }
 
-    public FolderContext givenFolder(FolderParameters parameters) {
+    public FolderContext givenFolder(ItemParameters parameters) {
         return FolderContext.builder()
                 .name(parameters.name())
                 .date(LocalDate.parse(parameters.date()))
@@ -234,7 +236,7 @@ public class StapledonAccountGivens implements ApplicationContextAware {
                         .collect(java.util.stream.Collectors.toList()))
                 .build();
     }
-    private FolderContext folder(FolderParameters parameters) {
+    private FolderContext folder(ItemParameters parameters) {
         return FolderContext.builder()
                 .name(parameters.name())
                 .date(LocalDate.parse(parameters.date()))

@@ -15,7 +15,7 @@ Currently, the following paths are available:
 "/api/v1/accounts/userProfile"
 "/api/v1/accounts/{id}"
 "/api/v1/auth/authenticate"
-"/api/v1/folders"
+"/api/v1/items"
 "/api/v1/welcome"
 ~~~
 
@@ -35,7 +35,7 @@ npx @openapitools/openapi-generator-cli generate \
    -o src/api
 ~~~
 
-or via docker
+or via ~~docker~~
 ~~~
 cd photo-ui
 rm -rf src/api
