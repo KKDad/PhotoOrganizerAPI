@@ -13,6 +13,7 @@ build/
 .settings
 .springBeans
 .sts4-cache
+.DS_Store
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
@@ -37,3 +38,5 @@ out/
 .vscode/
 # Google Service Key
 **/speedy-emissary-344223-ac439d946b21.json
+
+**/node_modules/** 
