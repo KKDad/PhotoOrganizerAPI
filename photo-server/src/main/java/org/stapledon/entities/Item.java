@@ -1,9 +1,6 @@
 package org.stapledon.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,6 +9,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
+@EqualsAndHashCode
 public class Item {
 
     private String name;

@@ -58,8 +58,8 @@ class ItemControllerIT extends AbstractIntegrationTest {
         assertThat(items.get(0).getName()).isEqualTo("test");
         assertThat(items.get(0).getDate()).isEqualTo("2021-01-01");
         assertThat(items.get(0).getChildItems()).hasSize(2).containsExactlyInAnyOrder(
-                Item.builder().name("test2").date(Date.valueOf("2021-02-02")).build(),
-                Item.builder().name("test3").date(Date.valueOf("2021-03-03")).build()
+                Item.builder().name("test2").date(Date.valueOf("2021-02-02").toLocalDate()).build(),
+                Item.builder().name("test3").date(Date.valueOf("2021-03-03").toLocalDate()).build()
         );
         assertThat(items.get(1).getName()).isEqualTo("test4");
         assertThat(items.get(1).getDate()).isEqualTo("2021-04-04");
