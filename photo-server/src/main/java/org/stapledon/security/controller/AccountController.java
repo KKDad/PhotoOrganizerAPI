@@ -1,10 +1,6 @@
 package org.stapledon.security.controller;
 
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -74,9 +70,6 @@ public class AccountController {
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     @PutMapping("/accounts/{id}")
-    @Parameter(name = "id", description = "account id", required = true, example = "1")
-    @Parameter(name = "account", description = "account object", required = true)
-    @Parameter()
     public ResponseEntity<AccountInfoDto> updateaccount(@PathVariable Long id, @RequestBody AccountInfoDto accountInfo) {
         AccountInfoDto updatedaccount = accountInfoFacade.updateAccount(id, accountInfo);
         return ResponseEntity.ok(updatedaccount);

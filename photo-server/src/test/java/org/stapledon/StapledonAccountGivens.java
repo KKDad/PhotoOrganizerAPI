@@ -11,16 +11,21 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.stapledon.security.entities.Role;
+import org.stapledon.data.ItemService;
+import org.stapledon.entities.Item;
 import org.stapledon.security.entities.AccountInfo;
+import org.stapledon.security.entities.Role;
 import org.stapledon.security.entities.enums.AccountRole;
-import org.stapledon.security.repository.RoleRepository;
 import org.stapledon.security.repository.AccountInfoRepository;
+import org.stapledon.security.repository.RoleRepository;
 import org.stapledon.security.service.JwtService;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.Clock;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -32,6 +37,7 @@ import static org.mockito.Mockito.doReturn;
 @Component
 @RequiredArgsConstructor
 public class StapledonAccountGivens implements ApplicationContextAware {
+
     private final Clock clock;
     private final AtomicInteger counter = new AtomicInteger(1000);
 
@@ -163,6 +169,80 @@ public class StapledonAccountGivens implements ApplicationContextAware {
                 .roles(Set.of(Role.builder()
                         .roleName(AccountRole.ROLE_USER)
                         .build()))
+                .build();
+    }
+
+    private final ItemService itemService;
+
+    @Builder
+    @Getter
+    @Accessors(fluent = true)
+    public static class ItemParameters {
+        private final String name;
+        private final String date;
+        @Builder.Default
+        private final List<ItemParameters> childFolders = new ArrayList<>();
+    }
+
+    @Builder
+    @Getter
+    @Accessors(fluent = true)
+    public static class FolderContext {
+        private final String name;
+        private final LocalDate date;
+        private final List<FolderContext> childFolders;
+    }
+    @SuppressWarnings("unchecked")
+    public List<FolderContext> givenItems(List<ItemParameters> parameters) {
+        List<Item> itemCache = parameters.stream().map(f -> Item.builder()
+                .name(f.name())
+                .date(LocalDate.parse(f.date()))
+                .childItems(f.childFolders().stream()
+                        .map(cf -> Item.builder()
+                                .name(cf.name())
+                                .date(LocalDate.parse(cf.date()))
+                                .build())
+                        .toList())
+                .build()).toList();
+
+        ReflectionTestUtils.setField(itemService, "itemCache", itemCache);
+
+        return itemCache.stream().flatMap(f -> {
+            var folder = FolderContext.builder()
+                    .name(f.getName())
+                    .date(f.getDate())
+                    .childFolders(new ArrayList<>())
+                    .build();
+            if (f.getChildItems() != null) {
+                f.getChildItems().forEach(cf -> {
+                    var childFolder = FolderContext.builder()
+                            .name(cf.getName())
+                            .date(cf.getDate())
+                            .childFolders(new ArrayList<>())
+                            .build();
+                    folder.childFolders().add(childFolder);
+                });
+            }
+            return List.of(folder).stream();
+        }).toList();
+    }
+
+    public FolderContext givenFolder(ItemParameters parameters) {
+        return FolderContext.builder()
+                .name(parameters.name())
+                .date(LocalDate.parse(parameters.date()))
+                .childFolders(parameters.childFolders().stream()
+                        .map(this::folder)
+                        .collect(java.util.stream.Collectors.toList()))
+                .build();
+    }
+    private FolderContext folder(ItemParameters parameters) {
+        return FolderContext.builder()
+                .name(parameters.name())
+                .date(LocalDate.parse(parameters.date()))
+                .childFolders(parameters.childFolders().stream()
+                        .map(this::folder)
+                        .collect(java.util.stream.Collectors.toList()))
                 .build();
     }
 }

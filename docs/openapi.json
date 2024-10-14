@@ -111,22 +111,11 @@
           {
             "name": "id",
             "in": "path",
-            "description": "account id",
             "required": true,
             "schema": {
               "type": "integer",
               "format": "int64"
-            },
-            "example": 1
-          },
-          {
-            "name": "account",
-            "in": "query",
-            "description": "account object",
-            "required": true
-          },
-          {
-            "in": "query"
+            }
           }
         ],
         "requestBody": {
@@ -405,6 +394,69 @@
         }
       }
     },
+    "/api/v1/folders": {
+      "get": {
+        "tags": [
+          "folder-controller"
+        ],
+        "summary": "Get all folders",
+        "operationId": "getAllFolders",
+        "responses": {
+          "404": {
+            "description": "Folders not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Folder"
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Found the folders",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Folder"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Folder"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Folder"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/accounts/userProfile": {
       "get": {
         "tags": [
@@ -495,24 +547,29 @@
             "type": "string",
             "description": "users firstname",
             "nullable": true,
-            "example": "John"
+            "example": "Johnathan"
           },
           "lastName": {
             "type": "string",
             "description": "users surname",
             "nullable": true,
-            "example": "Doe"
+            "example": "McDoe"
           },
           "roles": {
             "uniqueItems": true,
             "type": "array",
             "description": "Assigned Roles",
+            "nullable": true,
+            "example": "ROLE_ADMIN",
             "items": {
               "type": "string",
-              "description": "Assigned Roles"
+              "description": "Assigned Roles",
+              "nullable": true,
+              "example": "ROLE_ADMIN"
             }
           }
-        }
+        },
+        "description": "Account information"
       },
       "AuthRequest": {
         "type": "object",
@@ -522,6 +579,19 @@
           },
           "password": {
             "type": "string"
+          }
+        },
+        "description": "Authentication request"
+      },
+      "Folder": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       }
