@@ -16,12 +16,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @EnableJpaRepositories(basePackages = {"org.stapledon" })
 @RequiredArgsConstructor
-public class AuthControllerIntegrationTest {
+@SuppressWarnings({"java:S5960", })
+public class AuthControllerIntegrationIT {
 
     @Value(value="${local.server.port}")
     private int port;
 
     private TestRestTemplate restTemplate;
+
 
     @Test
     public void testSignInEndpoint() {

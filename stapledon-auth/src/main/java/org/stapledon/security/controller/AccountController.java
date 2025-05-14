@@ -15,7 +15,6 @@ import org.stapledon.security.service.AccountService;
 import org.springframework.web.server.ResponseStatusException;
 import org.stapledon.security.service.DuplicateAccountException;
 
-
 import java.util.List;
 
 @Slf4j

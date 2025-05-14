@@ -1,3 +1,7 @@
 plugins {
     id 'photoOrganizer.java-library-conventions'
 }
+
+bootJar {
+    enabled = false
+}

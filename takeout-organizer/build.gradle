@@ -10,3 +10,7 @@ dependencies {
 	implementation project(':common-utils')
 	testImplementation project(':common-utils')
 }
+
+bootJar {
+	enabled = false
+}
